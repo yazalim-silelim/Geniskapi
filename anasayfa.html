@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenişKapı - Akıllı Arama Motoru</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --dark-color: #121212;
+            --light-color: #f8f9fa;
+            --border-color: #dfe1e5;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-color);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.5s ease;
+        }
+        
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin-top: -100px;
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 1.5em;
+        }
+        
+        .search-container {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 12px 24px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        body.dark .search-box {
+            background-color: #1e1e1e;
+        }
+        
+        .search-box:hover {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.dark .search-box:hover {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+            padding: 8px 12px;
+        }
+        
+        .search-box button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #5f6368;
+        }
+        
+        .search-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            margin: 0 8px;
+            transition: all 0.3s;
+            min-width: 140px;
+        }
+        
+        .search-button:hover {
+            background-color: #3e8e41;
+            transform: translateY(-2px);
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        footer {
+            background-color: #f2f2f2;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #70757a;
+            transition: all 0.5s ease;
+        }
+        
+        /* Karanlık tema stilleri */
+        body.dark {
+            background-color: var(--dark-color);
+            color: #e8eaed;
+        }
+        
+        body.dark .search-box {
+            border-color: #5f6368;
+        }
+        
+        body.dark input {
+            color: #e8eaed;
+        }
+        
+        body.dark footer {
+            background-color: #1e1e1e;
+            color: #9aa0a6;
+        }
+        
+        body.dark .search-box button {
+            color: #9aa0a6;
+        }
+        
+        /* Tema değiştirme butonu */
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 8px;
+            transition: all 0.3s;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            transform: rotate(30deg);
+        }
+        
+        body.dark .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive tasarım */
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .search-button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div></div> <!-- Boş div for flex space-between -->
+        <button class="theme-toggle" id="theme-toggle">🌙</button>
+    </header>
+    
+    <main>
+        <div class="logo" id="logo">
+            <span class="logo-icon">🚪</span>
+            <span>GenişKapı</span>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="GenişKapı'da arama yapın..." autofocus>
+                <button id="search-button">🔍</button>
+            </div>
+            
+            <div class="buttons">
+                <button class="search-button" id="google-search">GenişKapı'da Ara</button>
+                <button class="search-button" id="lucky-button">Kendimi Şanslı Hissediyorum</button>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2023 GenişKapı Arama Motoru | Google arama teknolojisi kullanılmaktadır</p>
+    </footer>
+    
+    <script>
+        // Tema kontrol değişkeni
+        let manualThemeOverride = false;
+        
+        // Sayfa yüklendiğinde tema ayarı
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kullanıcının manuel tema tercihini kontrol et
+            const savedTheme = localStorage.getItem('geniskapi-theme');
+            
+            if (savedTheme) {
+                // Kullanıcı daha önce tema değiştirmişse
+                manualThemeOverride = true;
+                document.body.classList.toggle('dark', savedTheme === 'dark');
+                updateThemeIcon(savedTheme === 'dark');
+            } else {
+                // Otomatik tema belirleme (saate göre)
+                setThemeBasedOnTime();
+            }
+        });
+        
+        // Saate göre tema ayarlama fonksiyonu
+        function setThemeBasedOnTime() {
+            if (manualThemeOverride) return;
+            
+            const now = new Date();
+            const hours = now.getHours();
+            
+            // Sabah 6'dan akşam 18'e kadar aydınlık tema, diğer zamanlarda karanlık tema
+            const isDarkMode = hours < 6 || hours >= 18;
+            document.body.classList.toggle('dark', isDarkMode);
+            updateThemeIcon(isDarkMode);
+        }
+        
+        // Tema değiştirme butonu
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            manualThemeOverride = true;
+            const isDark = document.body.classList.toggle('dark');
+            
+            // Kullanıcı manuel olarak tema seçtiğinde, tercihi kaydet
+            localStorage.setItem('geniskapi-theme', isDark ? 'dark' : 'light');
+            updateThemeIcon(isDark);
+        });
+        
+        // Tema ikonunu güncelleme
+        function updateThemeIcon(isDark) {
+            const icon = document.getElementById('theme-toggle');
+            icon.textContent = isDark ? '☀️' : '🌙';
+        }
+        
+        // Logo tıklama
+        document.getElementById('logo').addEventListener('click', function() {
+            window.location.href = 'https://www.google.com';
+        });
+        
+        // Arama fonksiyonları
+        function performSearch() {
+            const query = document.getElementById('search-input').value.trim();
+            if (query) {
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+            }
+        }
+        
+        function luckySearch() {
+            const query = document.getElementById('search-input').value.trim();
+            if (query) {
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}&btnI=I'm+Feeling+Lucky`, '_blank');
+            }
+        }
+        
+        // Buton event listener'ları
+        document.getElementById('search-button').addEventListener('click', performSearch);
+        document.getElementById('google-search').addEventListener('click', performSearch);
+        document.getElementById('lucky-button').addEventListener('click', luckySearch);
+        
+        // Enter tuşu ile arama
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    </script>
+</body>
+                  </html>
