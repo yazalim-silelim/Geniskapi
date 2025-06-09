@@ -53,7 +53,6 @@
             color: var(--text-light);
         }
 
-        /* Header Styles */
         header {
             padding: 1.5rem 2rem;
             display: flex;
@@ -88,7 +87,6 @@
             color: var(--primary);
         }
 
-        /* Main Content */
         main {
             flex: 1;
             display: flex;
@@ -100,7 +98,6 @@
             overflow: hidden;
         }
 
-        /* Logo Styles */
         .logo-container {
             display: flex;
             flex-direction: column;
@@ -142,7 +139,6 @@
             color: var(--light-3);
         }
 
-        /* Search Container */
         .search-container {
             width: 100%;
             max-width: 700px;
@@ -151,7 +147,6 @@
             z-index: 20;
         }
 
-        /* Search Box */
         .search-box {
             display: flex;
             align-items: center;
@@ -230,7 +225,6 @@
             cursor: pointer;
         }
 
-        /* Action Buttons */
         .action-buttons {
             display: flex;
             justify-content: center;
@@ -283,7 +277,6 @@
             background-color: var(--dark-2);
         }
 
-        /* Footer */
         footer {
             padding: 1.5rem 2rem;
             text-align: center;
@@ -320,7 +313,6 @@
             text-decoration: underline;
         }
 
-        /* Theme Toggle */
         .theme-toggle {
             background: none;
             border: none;
@@ -350,7 +342,6 @@
             background-color: var(--dark-2);
         }
 
-        /* Advanced Features */
         .search-suggestions {
             position: absolute;
             top: 100%;
@@ -396,7 +387,6 @@
             color: var(--light-3);
         }
 
-        /* Background Animation */
         .bg-pattern {
             position: absolute;
             top: 0;
@@ -419,7 +409,6 @@
             filter: blur(60px);
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             header {
                 padding: 1rem;
@@ -448,7 +437,6 @@
             }
         }
 
-        /* Micro Interactions */
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
@@ -462,7 +450,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* Voice Search Animation */
         @keyframes voicePulse {
             0% {
                 box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
@@ -481,8 +468,7 @@
             color: var(--primary) !important;
         }
 
-        /* Settings Panel */
-        .settings-panel {
+        .versions-panel {
             position: fixed;
             top: 0;
             right: -400px;
@@ -497,27 +483,27 @@
             overflow-y: auto;
         }
 
-        body.dark .settings-panel {
+        body.dark .versions-panel {
             background-color: var(--dark-2);
         }
 
-        .settings-panel.active {
+        .versions-panel.active {
             right: 0;
         }
 
-        .settings-header {
+        .versions-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
         }
 
-        .settings-title {
+        .versions-title {
             font-size: 1.25rem;
             font-weight: 600;
         }
 
-        .close-settings {
+        .close-versions {
             background: none;
             border: none;
             font-size: 1.5rem;
@@ -525,87 +511,69 @@
             color: var(--dark-3);
         }
 
-        body.dark .close-settings {
+        body.dark .close-versions {
             color: var(--light-3);
         }
 
-        .settings-group {
+        .version-item {
             margin-bottom: 2rem;
-        }
-
-        .settings-group-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .setting-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
+            padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--light-3);
         }
 
-        body.dark .setting-item {
+        body.dark .version-item {
             border-bottom-color: var(--dark-3);
         }
 
-        .setting-label {
-            font-size: 0.875rem;
+        .version-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
         }
 
-        .toggle-switch {
-            position: relative;
+        .version-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .version-features {
+            margin: 1rem 0;
+            padding-left: 1.25rem;
+        }
+
+        .version-features li {
+            margin-bottom: 0.5rem;
+        }
+
+        .version-note {
+            font-style: italic;
+            color: var(--dark-3);
+            margin-top: 1rem;
+        }
+
+        body.dark .version-note {
+            color: var(--light-3);
+        }
+
+        .download-btn {
             display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--light-3);
-            transition: var(--transition);
-            border-radius: 34px;
-        }
-
-        body.dark .slider {
-            background-color: var(--dark-3);
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: var(--transition);
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
             background-color: var(--primary);
+            color: white;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
         }
 
-        input:checked + .slider:before {
-            transform: translateX(26px);
+        .download-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
-        /* Overlay */
         .overlay {
             position: fixed;
             top: 0;
@@ -622,7 +590,6 @@
             display: block;
         }
 
-        /* Quick Actions */
         .quick-actions {
             display: flex;
             justify-content: center;
@@ -665,7 +632,6 @@
             text-align: center;
         }
 
-        /* Loading Animation */
         .loader {
             display: none;
             position: fixed;
@@ -712,7 +678,6 @@
             font-weight: 500;
         }
 
-        /* Modern Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -735,7 +700,6 @@
             background: var(--light-3);
         }
 
-        /* Tooltip */
         .tooltip {
             position: relative;
             display: inline-block;
@@ -769,48 +733,41 @@
     <!-- Overlay Elements -->
     <div class="overlay" id="overlay"></div>
     
-    <!-- Settings Panel -->
-    <div class="settings-panel" id="settingsPanel">
-        <div class="settings-header">
-            <h3 class="settings-title">Ayarlar</h3>
-            <button class="close-settings" id="closeSettings">
+    <!-- Versiyonlar Paneli -->
+    <div class="versions-panel" id="versionsPanel">
+        <div class="versions-header">
+            <h3 class="versions-title">Versiyon Geçmişi</h3>
+            <button class="close-versions" id="closeVersions">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         
-        <div class="settings-group">
-            <h4 class="settings-group-title">Görünüm</h4>
-            <div class="setting-item">
-                <span class="setting-label">Karanlık Mod</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="darkModeToggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="setting-item">
-                <span class="setting-label">Animasyonlar</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="animationsToggle" checked>
-                    <span class="slider"></span>
-                </label>
+        <div class="version-item">
+            <h4 class="version-title">GenişKapı V1</h4>
+            <div class="version-content">
+                <p>GenişKapı arama motoru uygulamamızın ilk sürümü.</p>
+                <ul class="version-features">
+                    <li>İnternetsiz kullanabilme: İnternetsiz sayfa açılır ama arama yapamazsınız.</li>
+                    <li>Daha hızlı deneyim: Siteden daha hızlı, işinizi kolaylaştırır.</li>
+                </ul>
+                <p class="version-note">Şu anlık bu kadar güncellemeler için takipte kalın!</p>
+                <a href="https://github.com/yazalim-silelim/Geniskapi/releases/download/Geni%C5%9FKap%C4%B1/GenisKapiSearch-debug.apk" class="download-btn">
+                    <i class="fas fa-download"></i> V1'i İndir
+                </a>
             </div>
         </div>
         
-        <div class="settings-group">
-            <h4 class="settings-group-title">Arama Ayarları</h4>
-            <div class="setting-item">
-                <span class="setting-label">Güvenli Arama</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="safeSearchToggle" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="setting-item">
-                <span class="setting-label">Arama Önerileri</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="suggestionsToggle" checked>
-                    <span class="slider"></span>
-                </label>
+        <div class="version-item">
+            <h4 class="version-title">GenişKapı V2</h4>
+            <div class="version-content">
+                <p>Yeni nesil arama deneyimi ile karşınızdayız!</p>
+                <ul class="version-features">
+                    <li>Akıllı arama özellikleri</li>
+                    <li>Gelişmiş performans optimizasyonu</li>
+                    <li>Modern ve şık arayüz</li>
+                    <li>Gelişmiş gezinme özellikleri</li>
+                </ul>
+                <p class="version-note">Şu anda bu sürümü kullanıyorsunuz.</p>
             </div>
         </div>
     </div>
@@ -824,9 +781,9 @@
     <!-- Main App -->
     <header>
         <div class="header-nav">
-            <a href="#" class="nav-link" id="settingsButton">
-                <i class="fas fa-cog"></i>
-                <span>Ayarlar</span>
+            <a href="#" class="nav-link" id="versionsButton">
+                <i class="fas fa-code-branch"></i>
+                <span>Versiyonlar</span>
             </a>
         </div>
         
@@ -945,12 +902,10 @@
         // Tema kontrol fonksiyonu
         function checkTheme() {
             const savedTheme = localStorage.getItem('geniskapi-v2-theme');
-            const darkModeToggle = document.getElementById('darkModeToggle');
             const themeToggle = document.getElementById('themeToggle');
             
             if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.classList.add('dark');
-                darkModeToggle.checked = true;
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
         }
@@ -959,7 +914,6 @@
         function setupEventListeners() {
             // Tema değiştirme butonu
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-            document.getElementById('darkModeToggle').addEventListener('change', toggleThemeFromSettings);
             
             // Arama butonları
             document.getElementById('searchButton').addEventListener('click', performSearch);
@@ -1016,9 +970,10 @@
                 window.open('https://www.google.com/maps', '_blank');
             });
             
-            // Ayarlar paneli
-            document.getElementById('settingsButton').addEventListener('click', openSettings);
-            document.getElementById('closeSettings').addEventListener('click', closeSettings);
+            // Versiyonlar paneli
+            document.getElementById('versionsButton').addEventListener('click', openVersions);
+            document.getElementById('closeVersions').addEventListener('click', closeVersions);
+            document.getElementById('overlay').addEventListener('click', closeVersions);
         }
         
         // Tema değiştirme fonksiyonu
@@ -1027,28 +982,19 @@
             localStorage.setItem('geniskapi-v2-theme', isDark ? 'dark' : 'light');
             
             const themeToggle = document.getElementById('themeToggle');
-            const darkModeToggle = document.getElementById('darkModeToggle');
             
             if (isDark) {
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                darkModeToggle.checked = true;
             } else {
                 themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                darkModeToggle.checked = false;
             }
-        }
-        
-        // Ayarlardan tema değiştirme
-        function toggleThemeFromSettings() {
-            toggleTheme();
         }
         
         // Arama fonksiyonu
         function performSearch() {
             const query = document.getElementById('searchInput').value.trim();
             if (query) {
-                const safeSearch = document.getElementById('safeSearchToggle').checked ? '&safe=active' : '';
-                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}${safeSearch}`, '_blank');
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
             }
         }
         
@@ -1071,15 +1017,15 @@
             }, 3000);
         }
         
-        // Ayarlar panelini açma
-        function openSettings() {
-            document.getElementById('settingsPanel').classList.add('active');
+        // Versiyonlar panelini açma
+        function openVersions() {
+            document.getElementById('versionsPanel').classList.add('active');
             document.getElementById('overlay').classList.add('active');
         }
         
-        // Ayarlar panelini kapatma
-        function closeSettings() {
-            document.getElementById('settingsPanel').classList.remove('active');
+        // Versiyonlar panelini kapatma
+        function closeVersions() {
+            document.getElementById('versionsPanel').classList.remove('active');
             document.getElementById('overlay').classList.remove('active');
         }
         
