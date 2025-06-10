@@ -1,6 +1,6 @@
 # Genişkapı arama motoru
 Bizim arama motorumuz modern ve hızlı bir tarayıcıya ihtiyaç olanlar için yapılmıştır. Google tabanlı olması kodun kısalması demek ve böylece hızlı olur.
-Nasıl indirim?
+## Nasıl indirim?
 Görsellerle en kolay anlatımı yaptım. İlk önce sitemizi açın ve sol yukardaki versiyonlara tıklayın: https://yazalim-silelim.github.io/Geniskapi/#
 ![1000006205](https://github.com/user-attachments/assets/00bda611-7495-41a4-be64-353c1ff1a023)
 sonra V1 i indir butonuna tıklayın:
