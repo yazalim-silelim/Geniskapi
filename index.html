@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GenişKapı V1 - Next Generation Search</title>
+    <title>GenişKapı V2 - Next Generation Search</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -743,21 +743,6 @@
         </div>
         
         <div class="version-item">
-            <h4 class="version-title">GenişKapı V1</h4>
-            <div class="version-content">
-                <p>GenişKapı arama motoru uygulamamızın ilk sürümü.</p>
-                <ul class="version-features">
-                    <li>İnternetsiz kullanabilme: İnternetsiz sayfa açılır ama arama yapamazsınız.</li>
-                    <li>Daha hızlı deneyim: Siteden daha hızlı, işinizi kolaylaştırır.</li>
-                </ul>
-                <p class="version-note">Şu anlık bu kadar güncellemeler için takipte kalın!</p>
-                <a href="https://github.com/yazalim-silelim/Geniskapi/releases/download/Geni%C5%9FKap%C4%B1/GenisKapiSearch-debug.1.apk " class="download-btn">
-                    <i class="fas fa-download"></i> V1'i İndir
-                </a>
-            </div>
-        </div>
-        
-        <div class="version-item">
             <h4 class="version-title">GenişKapı V2</h4>
             <div class="version-content">
                 <p>Yeni nesil arama deneyimi ile karşınızdayız!</p>
@@ -766,8 +751,28 @@
                     <li>Gelişmiş performans optimizasyonu</li>
                     <li>Modern ve şık arayüz</li>
                     <li>Gelişmiş gezinme özellikleri</li>
+                    <li>Daha hızlı arama sonuçları</li>
+                    <li>Geliştirilmiş karanlık mod</li>
                 </ul>
-                <p class="version-note">Şu anda bu sürüm için çalışıyoruz.</p>
+                <p class="version-note">V2 sürümü artık kullanıma hazır!</p>
+                <a href="https://yazalim-silelim.github.io/Geniskapi/releases/download/Geni%C5%9FKap%C4%B1V2/GenisKapi.arama.apk" class="download-btn">
+                    <i class="fas fa-download"></i> V2'yi İndir
+                </a>
+            </div>
+        </div>
+        
+        <div class="version-item">
+            <h4 class="version-title">GenişKapı V1</h4>
+            <div class="version-content">
+                <p>GenişKapı arama motoru uygulamamızın ilk sürümü.</p>
+                <ul class="version-features">
+                    <li>İnternetsiz kullanabilme: İnternetsiz sayfa açılır ama arama yapamazsınız.</li>
+                    <li>Daha hızlı deneyim: Siteden daha hızlı, işinizi kolaylaştırır.</li>
+                </ul>
+                <p class="version-note">Artık V2 sürümü kullanılabilir durumda.</p>
+                <a href="https://github.com/yazalim-silelim/Geniskapi/releases/download/Geni%C5%9FKap%C4%B1/GenisKapiSearch-debug.1.apk" class="download-btn">
+                    <i class="fas fa-download"></i> V1'i İndir
+                </a>
             </div>
         </div>
     </div>
@@ -775,7 +780,7 @@
     <!-- Loading Screen -->
     <div class="loader" id="loader">
         <div class="spinner"></div>
-        <p class="loading-text">GenişKapı V1 Yükleniyor...</p>
+        <p class="loading-text">GenişKapı V2 Yükleniyor...</p>
     </div>
     
     <!-- Main App -->
@@ -784,6 +789,10 @@
             <a href="#" class="nav-link" id="versionsButton">
                 <i class="fas fa-code-branch"></i>
                 <span>Versiyonlar</span>
+            </a>
+            <a href="#" class="nav-link" id="feedbackButton">
+                <i class="fas fa-comment-dots"></i>
+                <span>Geri Bildirim</span>
             </a>
         </div>
         
@@ -809,7 +818,7 @@
         
         <div class="search-container">
             <div class="search-box" id="searchBox">
-                <input type="text" class="search-input" id="searchInput" placeholder="GenişKapı V1'de arama yapın..." autofocus>
+                <input type="text" class="search-input" id="searchInput" placeholder="GenişKapı V2'de arama yapın..." autofocus>
                 <button class="search-button" id="voiceSearch">
                     <i class="fas fa-microphone"></i>
                 </button>
@@ -863,7 +872,7 @@
     </main>
     
     <footer>
-        <p>© 2025 GenişKapı V1 | Google arama teknolojisi kullanılmaktadır</p>
+        <p>© 2025 GenişKapı V2 | Google arama teknolojisi kullanılmaktadır</p>
         <div class="footer-links">
             <a href="#" class="footer-link">Gizlilik Politikası</a>
             <a href="#" class="footer-link">Kullanım Şartları</a>
@@ -901,7 +910,7 @@
         
         // Tema kontrol fonksiyonu
         function checkTheme() {
-            const savedTheme = localStorage.getItem('geniskapi-v2-theme');
+            const savedTheme = localStorage.getItem('geniskapi-theme');
             const themeToggle = document.getElementById('themeToggle');
             
             if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -974,12 +983,18 @@
             document.getElementById('versionsButton').addEventListener('click', openVersions);
             document.getElementById('closeVersions').addEventListener('click', closeVersions);
             document.getElementById('overlay').addEventListener('click', closeVersions);
+            
+            // Geri bildirim butonu
+            document.getElementById('feedbackButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Geri bildiriminiz için teşekkür ederiz! V2 sürümüyle ilgili görüşlerinizi bekliyoruz.");
+            });
         }
         
         // Tema değiştirme fonksiyonu
         function toggleTheme() {
             const isDark = document.body.classList.toggle('dark');
-            localStorage.setItem('geniskapi-v2-theme', isDark ? 'dark' : 'light');
+            localStorage.setItem('geniskapi-theme', isDark ? 'dark' : 'light');
             
             const themeToggle = document.getElementById('themeToggle');
             
@@ -1055,11 +1070,13 @@
         // Demo arama önerileri
         function showDemoSuggestions() {
             const suggestions = [
-                { icon: 'fa-search', text: 'GenişKapı nedir?' },
-                { icon: 'fa-newspaper', text: 'Son teknoloji haberleri' },
+                { icon: 'fa-search', text: 'GenişKapı V2 nedir?' },
+                { icon: 'fa-newspaper', text: 'Son teknoloji haberleri 2025' },
                 { icon: 'fa-map', text: 'İstanbul hava durumu' },
-                { icon: 'fa-film', text: '2023 film önerileri' },
-                { icon: 'fa-utensils', text: 'En iyi restoranlar' }
+                { icon: 'fa-film', text: '2025 film önerileri' },
+                { icon: 'fa-utensils', text: 'En iyi restoranlar' },
+                { icon: 'fa-mobile', text: 'Yeni çıkan telefonlar' },
+                { icon: 'fa-gamepad', text: 'Popüler oyunlar' }
             ];
             
             const suggestionsContainer = document.getElementById('searchSuggestions');
