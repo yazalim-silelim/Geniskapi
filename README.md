@@ -1,8 +1,6 @@
-# 🚀 GenişKapı Arama Motoru
+# 🌐 GenişKapı - Hafif ve Hızlı Web Tarayıcısı
 
-GenişKapı, modern ve hızlı bir tarayıcıya ihtiyaç duyan kullanıcılar için geliştirilmiş açık kaynaklı bir **arama motorudur**.  
-Google tabanlı olması sayesinde kod yapısı daha sade ve hızlıdır.
-
+GenişKapı, modern kullanıcılar için geliştirilen açık kaynaklı bir arama motorudur. Hızlı yapısı ve sade tasarımıyla öne çıkar.
 ---
 
 ## 📥 Nasıl İndirilir?
