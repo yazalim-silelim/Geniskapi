@@ -6,7 +6,8 @@
     <meta name="google-site-verification" content="H-LVYvpQfniUFVbnM2VLTdYwmG_adbopJwsQLPD7ACI" />
     <meta name="msvalidate.01" content="2572B86A9F2EE5C376ABEC7FE2BA749A" />
     <title>GenişKapı V2 - Next Generation Search</title>
-    <meta name="description" content="GenişKapı tarayıcısı normal tarayıcılardan daha modern ve hızlı tarayıcıdır.">
+     <meta name="description" content="GenişKapı tarayıcısı normal tarayıcılardan daha modern ve hızlı tarayıcıdır.">
+</head>
     <meta name="keywords" content="GenişKapı, Yazalım Silelim, GenişKapı search engine, Geniskapi search engine, search engine, search">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,11 +16,6 @@
             --primary: #10B981;
             --primary-dark: #059669;
             --primary-light: #D1FAE5;
-            --drive-primary: #4285F4;
-            --drive-primary-light: #8AB4F8;
-            --drive-secondary: #34A853;
-            --drive-danger: #EA4335;
-            --drive-warning: #FBBC05;
             --dark-1: #18181B;
             --dark-2: #27272A;
             --dark-3: #3F3F46;
@@ -62,7 +58,6 @@
             color: var(--text-light);
         }
 
-        /* Header Styles */
         header {
             padding: 1.5rem 2rem;
             display: flex;
@@ -70,11 +65,6 @@
             align-items: center;
             position: relative;
             z-index: 50;
-            border-bottom: 1px solid var(--light-3);
-        }
-
-        body.dark header {
-            border-bottom-color: var(--dark-3);
         }
 
         .header-nav {
@@ -102,39 +92,17 @@
             color: var(--primary);
         }
 
-        .nav-link.active {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* Main Content Styles */
         main {
             flex: 1;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
             padding: 2rem;
             position: relative;
             overflow: hidden;
         }
 
-        /* Search Page Styles */
-        .search-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-
-        /* Drive Page Styles */
-        .drive-page {
-            display: none;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Logo Container */
         .logo-container {
             display: flex;
             flex-direction: column;
@@ -176,7 +144,6 @@
             color: var(--light-3);
         }
 
-        /* Search Container */
         .search-container {
             width: 100%;
             max-width: 700px;
@@ -263,7 +230,6 @@
             cursor: pointer;
         }
 
-        /* Action Buttons */
         .action-buttons {
             display: flex;
             justify-content: center;
@@ -316,7 +282,6 @@
             background-color: var(--dark-2);
         }
 
-        /* Footer Styles */
         footer {
             padding: 1.5rem 2rem;
             text-align: center;
@@ -353,7 +318,6 @@
             text-decoration: underline;
         }
 
-        /* Theme Toggle */
         .theme-toggle {
             background: none;
             border: none;
@@ -383,7 +347,6 @@
             background-color: var(--dark-2);
         }
 
-        /* Search Suggestions */
         .search-suggestions {
             position: absolute;
             top: 100%;
@@ -429,7 +392,6 @@
             color: var(--light-3);
         }
 
-        /* Background Pattern */
         .bg-pattern {
             position: absolute;
             top: 0;
@@ -452,410 +414,65 @@
             filter: blur(60px);
         }
 
-        /* Drive Specific Styles */
-        .storage-card {
-            background-color: var(--light-2);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-            overflow: hidden;
-        }
-
-        body.dark .storage-card {
-            background-color: var(--dark-2);
-        }
-
-        .storage-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .upgrade-btn {
-            background: linear-gradient(to right, var(--drive-primary), var(--drive-primary-light));
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .upgrade-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 10px;
-            background-color: rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        body.dark .progress-container {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(to right, var(--drive-primary), var(--drive-secondary));
-            border-radius: 5px;
-            transition: width 0.5s ease;
-        }
-
-        .storage-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: var(--dark-3);
-        }
-
-        body.dark .storage-details {
-            color: var(--light-3);
-        }
-
-        /* Upload Section */
-        .upload-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
         @media (max-width: 768px) {
-            .upload-section {
-                grid-template-columns: 1fr;
+            header {
+                padding: 1rem;
             }
-        }
 
-        .upload-card {
-            background-color: var(--light-2);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.3s ease;
-        }
-
-        body.dark .upload-card {
-            background-color: var(--dark-2);
-        }
-
-        .upload-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .upload-card.request {
-            background: linear-gradient(135deg, var(--drive-primary), var(--drive-secondary));
-            color: white;
-        }
-
-        .upload-area {
-            border: 2px dashed var(--light-3);
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-            background-color: rgba(66, 133, 244, 0.05);
-        }
-
-        body.dark .upload-area {
-            border-color: var(--dark-3);
-        }
-
-        .upload-area:hover {
-            border-color: var(--drive-primary);
-            background-color: rgba(66, 133, 244, 0.1);
-        }
-
-        .upload-area i {
-            font-size: 48px;
-            color: var(--drive-primary);
-            margin-bottom: 15px;
-        }
-
-        .upload-area.request i {
-            color: white;
-        }
-
-        /* Files Container */
-        .files-container {
-            background-color: var(--light-2);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        body.dark .files-container {
-            background-color: var(--dark-2);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        /* Files List */
-        .files-list {
-            list-style: none;
-        }
-
-        .file-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            background-color: rgba(255, 255, 255, 0.5);
-            transition: all 0.3s;
-        }
-
-        body.dark .file-item {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .file-item:hover {
-            background-color: rgba(255, 255, 255, 0.7);
-        }
-
-        body.dark .file-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .file-icon {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            border-radius: 12px;
-            background-color: rgba(66, 133, 244, 0.1);
-            color: var(--drive-primary);
-            font-size: 20px;
-        }
-
-        .file-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .file-name {
-            font-weight: 500;
-            margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .file-details {
-            display: flex;
-            gap: 15px;
-            font-size: 12px;
-            color: var(--dark-3);
-        }
-
-        body.dark .file-details {
-            color: var(--light-3);
-        }
-
-        .file-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-btn {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: var(--dark-3);
-        }
-
-        body.dark .action-btn {
-            color: var(--light-3);
-        }
-
-        .action-btn:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-            color: var(--text-dark);
-        }
-
-        body.dark .action-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-        }
-
-        .action-btn.download:hover {
-            color: var(--drive-secondary);
-        }
-
-        .action-btn.delete:hover {
-            color: var(--drive-danger);
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 0;
-            color: var(--dark-3);
-        }
-
-        body.dark .empty-state {
-            color: var(--light-3);
-        }
-
-        .empty-state i {
-            font-size: 64px;
-            margin-bottom: 15px;
-            opacity: 0.3;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: var(--light-1);
-            border-radius: 16px;
-            width: 90%;
-            max-width: 500px;
-            padding: 30px;
-            box-shadow: var(--shadow-lg);
-        }
-
-        body.dark .modal-content {
-            background-color: var(--dark-2);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--dark-3);
-            cursor: pointer;
-        }
-
-        body.dark .modal-close {
-            color: var(--light-3);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            background-color: var(--light-2);
-            border: 1px solid var(--light-3);
-            border-radius: 8px;
-            color: var(--text-dark);
-            font-size: 16px;
-        }
-
-        body.dark .form-control {
-            background-color: var(--dark-3);
-            border-color: var(--dark-3);
-            color: var(--text-light);
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--light-1);
-            color: var(--text-dark);
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: var(--shadow-lg);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.4s ease;
-            z-index: 1001;
-            border-left: 4px solid var(--primary);
-        }
-
-        body.dark .toast {
-            background-color: var(--dark-2);
-            color: var(--text-light);
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.success {
-            border-left-color: var(--drive-secondary);
-        }
-
-        .toast.error {
-            border-left-color: var(--drive-danger);
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
+            .logo {
+                font-size: 2rem;
             }
-            
-            .section-header {
+
+            .logo-slogan {
+                font-size: 0.875rem;
+            }
+
+            .search-box {
+                padding: 0.75rem 1rem;
+            }
+
+            .action-buttons {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
+                align-items: center;
             }
-            
-            .file-item {
-                flex-wrap: wrap;
-            }
-            
-            .file-actions {
-                margin-left: auto;
+
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
 
-        /* Versions Panel */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes voicePulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        .voice-active {
+            animation: voicePulse 1.5s infinite;
+            border-radius: 50%;
+            color: var(--primary) !important;
+        }
+
         .versions-panel {
             position: fixed;
             top: 0;
@@ -962,7 +579,6 @@
             box-shadow: var(--shadow);
         }
 
-        /* Overlay */
         .overlay {
             position: fixed;
             top: 0;
@@ -979,7 +595,6 @@
             display: block;
         }
 
-        /* Quick Actions */
         .quick-actions {
             display: flex;
             justify-content: center;
@@ -1022,7 +637,6 @@
             text-align: center;
         }
 
-        /* Loader */
         .loader {
             display: none;
             position: fixed;
@@ -1069,7 +683,6 @@
             font-weight: 500;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -1092,7 +705,6 @@
             background: var(--light-3);
         }
 
-        /* Tooltip */
         .tooltip {
             position: relative;
             display: inline-block;
@@ -1120,45 +732,13 @@
             visibility: visible;
             opacity: 1;
         }
-
-        /* Animations */
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes voicePulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-            }
-        }
-
-        .voice-active {
-            animation: voicePulse 1.5s infinite;
-            border-radius: 50%;
-            color: var(--primary) !important;
-        }
     </style>
 </head>
 <body>
     <!-- Overlay Elements -->
     <div class="overlay" id="overlay"></div>
     
-    <!-- Versions Panel -->
+    <!-- Versiyonlar Paneli -->
     <div class="versions-panel" id="versionsPanel">
         <div class="versions-header">
             <h3 class="versions-title">Versiyon Geçmişi</h3>
@@ -1178,7 +758,6 @@
                     <li>Gelişmiş gezinme özellikleri</li>
                     <li>Daha hızlı arama sonuçları</li>
                     <li>Geliştirilmiş karanlık mod</li>
-                    <li>GenişKapı Drive entegrasyonu</li>
                 </ul>
                 <p class="version-note">V2 sürümü artık kullanıma hazır!</p>
                 <a href="https://yazalim-silelim.github.io/Geniskapi/releases/download/Geni%C5%9FKap%C4%B1V2/GenisKapi.arama.apk" class="download-btn">
@@ -1212,14 +791,6 @@
     <!-- Main App -->
     <header>
         <div class="header-nav">
-            <a href="#" class="nav-link active" id="searchTab">
-                <i class="fas fa-search"></i>
-                <span>Arama</span>
-            </a>
-            <a href="#" class="nav-link" id="driveTab">
-                <i class="fas fa-cloud"></i>
-                <span>Drive</span>
-            </a>
             <a href="#" class="nav-link" id="versionsButton">
                 <i class="fas fa-code-branch"></i>
                 <span>Versiyonlar</span>
@@ -1236,146 +807,70 @@
     </header>
     
     <main>
-        <!-- Search Page -->
-        <div class="search-page" id="searchPage">
-            <!-- Background Animation -->
-            <div class="bg-pattern">
-                <div class="bg-circle" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
-                <div class="bg-circle" style="width: 500px; height: 500px; bottom: -200px; right: -100px;"></div>
-            </div>
-            
-            <div class="logo-container">
-                <div class="logo" id="logo">
-                    <i class="fas fa-door-open logo-icon"></i>
-                    <span>GenişKapı</span>
-                </div>
-                <p class="logo-slogan">Yeni Nesil Arama Deneyimi</p>
-            </div>
-            
-            <div class="search-container">
-                <div class="search-box" id="searchBox">
-                    <input type="text" class="search-input" id="searchInput" placeholder="GenişKapı V2'de arama yapın..." autofocus>
-                    <button class="search-button" id="voiceSearch">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                    <button class="search-button" id="searchButton">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    
-                    <div class="search-suggestions" id="searchSuggestions">
-                        <!-- Suggestions will be populated here -->
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button class="btn btn-primary" id="searchAction">
-                        <i class="fas fa-search"></i>
-                        GenişKapı'da Ara
-                    </button>
-                    <button class="btn btn-secondary" id="luckyButton">
-                        <i class="fas fa-feather-alt"></i>
-                        Kendimi Şanslı Hissediyorum
-                    </button>
-                </div>
-                
-                <div class="quick-actions">
-                    <div class="quick-action" id="quickNews">
-                        <div class="action-icon">
-                            <i class="fas fa-newspaper"></i>
-                        </div>
-                        <span class="action-label">Haberler</span>
-                    </div>
-                    <div class="quick-action" id="quickImages">
-                        <div class="action-icon">
-                            <i class="fas fa-image"></i>
-                        </div>
-                        <span class="action-label">Görseller</span>
-                    </div>
-                    <div class="quick-action" id="quickVideos">
-                        <div class="action-icon">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <span class="action-label">Videolar</span>
-                    </div>
-                    <div class="quick-action" id="quickMaps">
-                        <div class="action-icon">
-                            <i class="fas fa-map-marked-alt"></i>
-                        </div>
-                        <span class="action-label">Haritalar</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Background Animation -->
+        <div class="bg-pattern">
+            <div class="bg-circle" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+            <div class="bg-circle" style="width: 500px; height: 500px; bottom: -200px; right: -100px;"></div>
         </div>
         
-        <!-- Drive Page -->
-        <div class="drive-page" id="drivePage">
-            <div class="auth-section" id="driveAuthSection">
-                <button id="loginBtn" class="btn">Giriş Yap</button>
-                <div id="userInfo" style="display: none;">
+        <div class="logo-container">
+            <div class="logo" id="logo">
+                <i class="fas fa-door-open logo-icon"></i>
+                <span>GenişKapı</span>
             </div>
-            
-            <div class="storage-card">
-                <div class="storage-header">
-                    <h3>Depolama Kullanımı</h3>
-                    <button id="upgradeBtn" class="upgrade-btn">+ Depolama Al</button>
-                </div>
-                <div class="progress-container">
-                    <div id="storageProgress" class="progress-bar"></div>
-                </div>
-                <div class="storage-details">
-                    <span id="storageUsed">0 GB kullanıldı</span>
-                    <span id="storageTotal">1 GB</span>
-                </div>
-            </div>
-            
-            <div class="upload-section">
-                <div class="upload-card">
-                    <div id="uploadArea" class="upload-area">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <h3>Dosyalarınızı sürükleyip bırakın</h3>
-                        <p>veya</p>
-                        <button class="btn">Dosya Seç</button>
-                        <input type="file" id="fileInput" multiple style="display: none;">
-                    </div>
-                    <div id="uploadProgressContainer" style="display: none; margin-top: 10px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span>Yükleniyor...</span>
-                            <span id="uploadPercent">0%</span>
-                        </div>
-                        <div style="height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px;">
-                            <div id="uploadProgress" style="height: 100%; width: 0%; background: var(--drive-secondary); border-radius: 3px;"></div>
-                        </div>
-                    </div>
-                </div>
+            <p class="logo-slogan">Yeni Nesil Arama Deneyimi</p>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box" id="searchBox">
+                <input type="text" class="search-input" id="searchInput" placeholder="GenişKapı V2'de arama yapın..." autofocus>
+                <button class="search-button" id="voiceSearch">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="search-button" id="searchButton">
+                    <i class="fas fa-search"></i>
+                </button>
                 
-                <div class="upload-card request">
-                    <div class="upload-area request">
-                        <i class="fas fa-envelope"></i>
-                        <h3>Ekstra Depolama İste</h3>
-                        <p>Bize ulaşın, ihtiyacınıza göre çözüm sunalım</p>
-                        <button id="requestStorageBtn" class="btn" style="background: white; color: var(--drive-primary);">Talep Gönder</button>
-                    </div>
+                <div class="search-suggestions" id="searchSuggestions">
+                    <!-- Suggestions will be populated here -->
                 </div>
             </div>
             
-            <div class="files-container">
-                <div class="section-header">
-                    <h3>Dosyalarım</h3>
-                    <div class="file-actions">
-                        <button id="refreshBtn" class="btn">
-                            <i class="fas fa-sync-alt"></i> Yenile
-                        </button>
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="searchAction">
+                    <i class="fas fa-search"></i>
+                    GenişKapı'da Ara
+                </button>
+                <button class="btn btn-secondary" id="luckyButton">
+                    <i class="fas fa-feather-alt"></i>
+                    Kendimi Şanslı Hissediyorum
+                </button>
+            </div>
+            
+            <div class="quick-actions">
+                <div class="quick-action" id="quickNews">
+                    <div class="action-icon">
+                        <i class="fas fa-newspaper"></i>
                     </div>
+                    <span class="action-label">Haberler</span>
                 </div>
-                
-                <ul id="filesList" class="files-list">
-                    <!-- Dosyalar buraya eklenecek -->
-                </ul>
-                
-                <div id="emptyState" class="empty-state">
-                    <i class="far fa-folder-open"></i>
-                    <h3>Henüz dosya yüklenmedi</h3>
-                    <p>Dosyalarınızı yüklemek için yukarıdaki alanı kullanın</p>
+                <div class="quick-action" id="quickImages">
+                    <div class="action-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <span class="action-label">Görseller</span>
+                </div>
+                <div class="quick-action" id="quickVideos">
+                    <div class="action-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <span class="action-label">Videolar</span>
+                </div>
+                <div class="quick-action" id="quickMaps">
+                    <div class="action-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <span class="action-label">Haritalar</span>
                 </div>
             </div>
         </div>
@@ -1391,91 +886,8 @@
         </div>
     </footer>
     
-    <!-- Giriş Modalı -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Google ile Giriş Yap</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="width: 80px; height: 80px; background: #f1f1f1; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fab fa-google" style="font-size: 36px; color: var(--drive-primary);"></i>
-                </div>
-                <p>Google hesabınızla giriş yaparak tüm cihazlarınızdan dosyalarınıza erişebilirsiniz</p>
-            </div>
-            <button id="googleLoginBtn" class="btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <i class="fab fa-google"></i> Google ile Giriş Yap
-            </button>
-        </div>
-    </div>
-    
-    <!-- Depolama Talep Modalı -->
-    <div id="requestModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Ekstra Depolama Talebi</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <form id="requestForm">
-                <div class="form-group">
-                    <label for="requestEmail">E-posta Adresiniz</label>
-                    <input type="email" id="requestEmail" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="requestGB">İstediğiniz Ekstra Depolama (GB)</label>
-                    <input type="number" id="requestGB" class="form-control" min="1" max="100" required>
-                </div>
-                <div class="form-group">
-                    <label for="requestReason">Kullanım Amacı</label>
-                    <textarea id="requestReason" class="form-control" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn" style="width: 100%;">Talep Gönder</button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Toast Bildirimi -->
-    <div id="toast" class="toast"></div>
-    
     <script>
-        // Uygulama sabitleri
-        const MAX_STORAGE = 1 * 1024 * 1024 * 1024; // 1GB bayt cinsinden
-        const STORAGE_KEY = 'geniskapi_drive_files_v3';
-        const USER_KEY = 'geniskapi_user';
-        const REQUEST_EMAIL = 'geniskapisirketi@gmail.com';
-        
-        // DOM elementleri
-        const fileInput = document.getElementById('fileInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const uploadProgress = document.getElementById('uploadProgress');
-        const uploadPercent = document.getElementById('uploadPercent');
-        const uploadProgressContainer = document.getElementById('uploadProgressContainer');
-        const filesList = document.getElementById('filesList');
-        const emptyState = document.getElementById('emptyState');
-        const storageProgress = document.getElementById('storageProgress');
-        const storageUsed = document.getElementById('storageUsed');
-        const storageTotal = document.getElementById('storageTotal');
-        const refreshBtn = document.getElementById('refreshBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-        const userInfo = document.getElementById('userInfo');
-        const userAvatar = document.getElementById('userAvatar');
-        const requestStorageBtn = document.getElementById('requestStorageBtn');
-        const toast = document.getElementById('toast');
-        const loginModal = document.getElementById('loginModal');
-        const requestModal = document.getElementById('requestModal');
-        const requestForm = document.getElementById('requestForm');
-        const searchTab = document.getElementById('searchTab');
-        const driveTab = document.getElementById('driveTab');
-        const searchPage = document.getElementById('searchPage');
-        const drivePage = document.getElementById('drivePage');
-        
-        // Uygulama durumu
-        let files = [];
-        let currentUser = null;
-        
-        // Sayfa yüklendiğinde
+        // Uygulama başlatma
         document.addEventListener('DOMContentLoaded', function() {
             // Yükleme ekranını göster
             const loader = document.getElementById('loader');
@@ -1499,11 +911,6 @@
             setTimeout(() => {
                 showDemoSuggestions();
             }, 2000);
-            
-            // Drive sayfası için kullanıcı ve dosyaları yükle
-            loadUser();
-            loadFiles();
-            updateStorageDisplay();
         });
         
         // Tema kontrol fonksiyonu
@@ -1587,117 +994,6 @@
                 e.preventDefault();
                 alert("Geri bildiriminiz için teşekkür ederiz! V2 sürümüyle ilgili görüşlerinizi bekliyoruz.");
             });
-            
-            // Tab geçişleri
-            searchTab.addEventListener('click', (e) => {
-                e.preventDefault();
-                switchTab('search');
-            });
-            
-            driveTab.addEventListener('click', (e) => {
-                e.preventDefault();
-                switchTab('drive');
-            });
-            
-            // Drive sayfası event listener'ları
-            // Dosya yükleme
-            uploadArea.addEventListener('click', () => fileInput.click());
-            fileInput.addEventListener('change', handleFileUpload);
-            
-            // Yenile butonu
-            refreshBtn.addEventListener('click', () => {
-                loadFiles();
-                showToast('Dosya listesi yenilendi', 'success');
-            });
-            
-            // Giriş butonları
-            loginBtn.addEventListener('click', () => {
-                loginModal.style.display = 'flex';
-            });
-            
-            googleLoginBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                // Burada gerçekte Google Auth API kullanılmalı
-                // Demo amaçlı fake bir kullanıcı oluşturuyoruz
-                currentUser = {
-                    id: 'google_' + Math.random().toString(36).substring(2),
-                    name: 'Demo Kullanıcı',
-                    email: 'demo@geniskapi.com',
-                    photo: null
-                };
-                
-                localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-                loginModal.style.display = 'none';
-                loadUser();
-                showToast('Başarıyla giriş yapıldı', 'success');
-            });
-            
-            // Depolama talep butonu
-            requestStorageBtn.addEventListener('click', () => {
-                if (!currentUser) {
-                    showToast('Lütfen önce giriş yapın', 'error');
-                    loginModal.style.display = 'flex';
-                    return;
-                }
-                requestModal.style.display = 'flex';
-                document.getElementById('requestEmail').value = currentUser.email;
-            });
-            
-            // Talep formu
-            requestForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const email = document.getElementById('requestEmail').value;
-                const gb = document.getElementById('requestGB').value;
-                const reason = document.getElementById('requestReason').value;
-                
-                // Burada gerçekte bir API çağrısı yapılmalı
-                // Demo amaçlı mailto linki kullanıyoruz
-                const subject = `${gb}GB Depolama Talebi`;
-                const body = `Merhaba,\n\n${gb}GB ekstra depolama alanı talep ediyorum.\n\nKullanım Amacı: ${reason}\n\nSaygılarımla,\n${currentUser.name}`;
-                
-                window.open(`mailto:${REQUEST_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-                
-                requestModal.style.display = 'none';
-                showToast('Talebiniz başarıyla gönderildi', 'success');
-            });
-            
-            // Sürükle bırak desteği
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.style.borderColor = 'var(--drive-primary)';
-                uploadArea.style.backgroundColor = 'rgba(66, 133, 244, 0.1)';
-            });
-            
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.style.borderColor = 'var(--light-3)';
-                uploadArea.style.backgroundColor = 'rgba(66, 133, 244, 0.05)';
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.style.borderColor = 'var(--light-3)';
-                uploadArea.style.backgroundColor = 'rgba(66, 133, 244, 0.05)';
-                
-                if (e.dataTransfer.files.length > 0) {
-                    fileInput.files = e.dataTransfer.files;
-                    handleFileUpload({ target: fileInput });
-                }
-            });
-        }
-        
-        // Tab geçiş fonksiyonu
-        function switchTab(tab) {
-            if (tab === 'search') {
-                searchTab.classList.add('active');
-                driveTab.classList.remove('active');
-                searchPage.style.display = 'flex';
-                drivePage.style.display = 'none';
-            } else if (tab === 'drive') {
-                driveTab.classList.add('active');
-                searchTab.classList.remove('active');
-                searchPage.style.display = 'none';
-                drivePage.style.display = 'block';
-            }
         }
         
         // Tema değiştirme fonksiyonu
@@ -1807,273 +1103,6 @@
                 suggestionsContainer.appendChild(suggestionItem);
             });
         }
-        
-        /* Drive Fonksiyonları */
-        function loadUser() {
-            const userData = localStorage.getItem(USER_KEY);
-            if (userData) {
-                currentUser = JSON.parse(userData);
-                loginBtn.style.display = 'none';
-                userInfo.style.display = 'flex';
-                userAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
-                userAvatar.style.backgroundColor = getRandomColor();
-            }
-        }
-        
-        function getRandomColor() {
-            const colors = ['#4285F4', '#34A853', '#EA4335', '#FBBC05', '#673AB7'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-        
-        function loadFiles() {
-            const storedFiles = localStorage.getItem(STORAGE_KEY);
-            if (storedFiles) {
-                files = JSON.parse(storedFiles);
-            }
-            
-            if (files.length === 0) {
-                emptyState.style.display = 'block';
-                filesList.style.display = 'none';
-            } else {
-                emptyState.style.display = 'none';
-                filesList.style.display = 'block';
-                renderFiles();
-            }
-        }
-        
-        function renderFiles() {
-            filesList.innerHTML = '';
-            
-            files.forEach(file => {
-                const fileSize = formatFileSize(file.size);
-                const fileType = file.type.split('/')[0];
-                const fileIcon = getFileIcon(file.type);
-                
-                const fileItem = document.createElement('li');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
-                    <div class="file-icon">
-                        <i class="${fileIcon}"></i>
-                    </div>
-                    <div class="file-info">
-                        <div class="file-name">${file.name}</div>
-                        <div class="file-details">
-                            <span><i class="fas fa-hdd"></i> ${fileSize}</span>
-                            <span><i class="far fa-calendar-alt"></i> ${new Date(file.uploadDate).toLocaleDateString()}</span>
-                        </div>
-                        ${fileType === 'video' ? `<video src="${file.data}" controls style="width:100%; max-height:200px; margin-top:10px;"></video>` : ''}
-                        ${fileType === 'image' ? `<img src="${file.data}" style="width:100%; max-height:200px; margin-top:10px;">` : ''}
-                    </div>
-                    <div class="file-actions">
-                        <button class="action-btn download" data-id="${file.id}">
-                            <i class="fas fa-download"></i>
-                        </button>
-                        <button class="action-btn delete" data-id="${file.id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                
-                filesList.appendChild(fileItem);
-            });
-            
-            // Dinamik olarak eklenen butonlara event listener ekle
-            document.querySelectorAll('.download').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const fileId = e.currentTarget.getAttribute('data-id');
-                    downloadFile(fileId);
-                });
-            });
-            
-            document.querySelectorAll('.delete').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const fileId = e.currentTarget.getAttribute('data-id');
-                    deleteFile(fileId);
-                });
-            });
-        }
-        
-        function handleFileUpload(event) {
-            const selectedFiles = event.target.files;
-            if (!selectedFiles || selectedFiles.length === 0) return;
-            
-            // Depolama kontrolü
-            const usedStorage = calculateUsedStorage();
-            if (usedStorage >= MAX_STORAGE) {
-                showToast('Depolama alanınız dolu!', 'error');
-                return;
-            }
-            
-            uploadProgressContainer.style.display = 'block';
-            
-            Array.from(selectedFiles).forEach((file, index) => {
-                const reader = new FileReader();
-                
-                reader.onloadstart = () => {
-                    uploadProgress.style.width = '0%';
-                    uploadPercent.textContent = '0%';
-                };
-                
-                reader.onprogress = (e) => {
-                    if (e.lengthComputable) {
-                        const percent = Math.round((e.loaded / e.total) * 100);
-                        uploadProgress.style.width = `${percent}%`;
-                        uploadPercent.textContent = `${percent}%`;
-                    }
-                };
-                
-                reader.onload = (e) => {
-                    const fileData = {
-                        id: Date.now() + index,
-                        name: file.name,
-                        size: file.size,
-                        type: file.type,
-                        uploadDate: Date.now(),
-                        data: e.target.result,
-                        owner: currentUser ? currentUser.id : null
-                    };
-                    
-                    files.push(fileData);
-                    saveFiles();
-                    loadFiles();
-                    updateStorageDisplay();
-                    
-                    showToast(`${file.name} başarıyla yüklendi`, 'success');
-                    
-                    // Son dosya yüklendikten sonra progress bar'ı gizle
-                    if (index === selectedFiles.length - 1) {
-                        setTimeout(() => {
-                            uploadProgressContainer.style.display = 'none';
-                        }, 1000);
-                    }
-                };
-                
-                reader.onerror = () => {
-                    showToast(`${file.name} yüklenirken hata oluştu`, 'error');
-                    uploadProgressContainer.style.display = 'none';
-                };
-                
-                reader.readAsDataURL(file);
-            });
-            
-            // Input'u temizle
-            fileInput.value = '';
-        }
-        
-        function calculateUsedStorage() {
-            return files.reduce((total, file) => total + file.size, 0);
-        }
-        
-        function updateStorageDisplay() {
-            const usedStorage = calculateUsedStorage();
-            const percent = Math.round((usedStorage / MAX_STORAGE) * 100);
-            
-            storageProgress.style.width = `${percent}%`;
-            storageUsed.textContent = `${formatFileSize(usedStorage)} kullanıldı`;
-            storageTotal.textContent = `1 GB`;
-            
-            if (percent > 90) {
-                storageProgress.style.background = 'var(--drive-danger)';
-            } else if (percent > 70) {
-                storageProgress.style.background = 'var(--drive-warning)';
-            } else {
-                storageProgress.style.background = 'linear-gradient(to right, var(--drive-primary), var(--drive-secondary))';
-            }
-        }
-        
-        function saveFiles() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(files));
-        }
-        
-        function downloadFile(fileId) {
-            const file = files.find(f => f.id.toString() === fileId.toString());
-            if (!file) return;
-            
-            const a = document.createElement('a');
-            a.href = file.data;
-            a.download = file.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
-            showToast(`${file.name} indiriliyor...`, 'success');
-        }
-        
-        function deleteFile(fileId) {
-            if (!confirm('Bu dosyayı silmek istediğinize emin misiniz?')) return;
-            
-            const index = files.findIndex(f => f.id.toString() === fileId.toString());
-            if (index !== -1) {
-                files.splice(index, 1);
-                saveFiles();
-                loadFiles();
-                updateStorageDisplay();
-                showToast('Dosya silindi', 'success');
-            }
-        }
-        
-        function getFileIcon(fileType) {
-            const type = fileType.split('/')[0];
-            const extension = fileType.split('/')[1];
-            
-            switch (type) {
-                case 'image':
-                    return 'far fa-image';
-                case 'video':
-                    return 'fas fa-video';
-                case 'audio':
-                    return 'fas fa-music';
-                case 'application':
-                    if (extension.includes('pdf')) return 'far fa-file-pdf';
-                    if (extension.includes('zip') || extension.includes('rar') || extension.includes('7z')) return 'far fa-file-archive';
-                    if (extension.includes('msword') || extension.includes('wordprocessingml')) return 'far fa-file-word';
-                    if (extension.includes('spreadsheetml') || extension.includes('excel')) return 'far fa-file-excel';
-                    if (extension.includes('presentationml') || extension.includes('powerpoint')) return 'far fa-file-powerpoint';
-                    if (extension.includes('vnd.android.package-archive')) return 'fab fa-android';
-                    return 'far fa-file';
-                case 'text':
-                    return 'far fa-file-alt';
-                default:
-                    return 'far fa-file';
-            }
-        }
-        
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-        
-        function showToast(message, type = '') {
-            toast.textContent = message;
-            toast.className = 'toast';
-            
-            if (type === 'success') {
-                toast.classList.add('success');
-            } else if (type === 'error') {
-                toast.classList.add('error');
-            }
-            
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-        
-        // Pencere dışına tıklandığında modal'ı kapat
-        window.addEventListener('click', (e) => {
-            if (e.target === loginModal) {
-                loginModal.style.display = 'none';
-            }
-            if (e.target === requestModal) {
-                requestModal.style.display = 'none';
-            }
-        });
     </script>
 </body>
 </html>
