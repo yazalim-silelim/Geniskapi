@@ -473,128 +473,6 @@
             color: var(--primary) !important;
         }
 
-        .versions-panel {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 400px;
-            max-width: 100%;
-            height: 100vh;
-            background-color: white;
-            box-shadow: var(--shadow-lg);
-            z-index: 1000;
-            transition: var(--transition);
-            padding: 2rem;
-            overflow-y: auto;
-        }
-
-        body.dark .versions-panel {
-            background-color: var(--dark-2);
-        }
-
-        .versions-panel.active {
-            right: 0;
-        }
-
-        .versions-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .versions-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .close-versions {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--dark-3);
-        }
-
-        body.dark .close-versions {
-            color: var(--light-3);
-        }
-
-        .version-item {
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--light-3);
-        }
-
-        body.dark .version-item {
-            border-bottom-color: var(--dark-3);
-        }
-
-        .version-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--primary);
-        }
-
-        .version-content {
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .version-features {
-            margin: 1rem 0;
-            padding-left: 1.25rem;
-        }
-
-        .version-features li {
-            margin-bottom: 0.5rem;
-        }
-
-        .version-note {
-            font-style: italic;
-            color: var(--dark-3);
-            margin-top: 1rem;
-        }
-
-        body.dark .version-note {
-            color: var(--light-3);
-        }
-
-        .download-btn {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.75rem 1.5rem;
-            background-color: var(--primary);
-            color: white;
-            border-radius: var(--radius);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .download-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-            transition: var(--transition);
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
         .quick-actions {
             display: flex;
             justify-content: center;
@@ -735,53 +613,6 @@
     </style>
 </head>
 <body>
-    <!-- Overlay Elements -->
-    <div class="overlay" id="overlay"></div>
-    
-    <!-- Versiyonlar Paneli -->
-    <div class="versions-panel" id="versionsPanel">
-        <div class="versions-header">
-            <h3 class="versions-title">Versiyon Geçmişi</h3>
-            <button class="close-versions" id="closeVersions">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="version-item">
-            <h4 class="version-title">GenişKapı V2</h4>
-            <div class="version-content">
-                <p>Yeni nesil arama deneyimi ile karşınızdayız!</p>
-                <ul class="version-features">
-                    <li>Akıllı arama özellikleri</li>
-                    <li>Gelişmiş performans optimizasyonu</li>
-                    <li>Modern ve şık arayüz</li>
-                    <li>Gelişmiş gezinme özellikleri</li>
-                    <li>Daha hızlı arama sonuçları</li>
-                    <li>Geliştirilmiş karanlık mod</li>
-                </ul>
-                <p class="version-note">V2 sürümü artık kullanıma hazır!</p>
-                <a href="https://github.com/yazalim-silelim/Geniskapi/releases/download/Geni%C5%9FKap%C4%B1V2/GenisKapi.arama.apk" class="download-btn">
-                    <i class="fas fa-download"></i> V2'yi İndir
-                </a>
-            </div>
-        </div>
-        
-        <div class="version-item">
-            <h4 class="version-title">GenişKapı V1</h4>
-            <div class="version-content">
-                <p>GenişKapı arama motoru uygulamamızın ilk sürümü.</p>
-                <ul class="version-features">
-                    <li>İnternetsiz kullanabilme: İnternetsiz sayfa açılır ama arama yapamazsınız.</li>
-                    <li>Daha hızlı deneyim: Siteden daha hızlı, işinizi kolaylaştırır.</li>
-                </ul>
-                <p class="version-note">Artık V2 sürümü kullanılabilir durumda.</p>
-                <a href="https://github.com/yazalim-silelim/Geniskapi/releases/download/Geni%C5%9FKap%C4%B1/GenisKapiSearch-debug.1.apk" class="download-btn">
-                    <i class="fas fa-download"></i> V1'i İndir
-                </a>
-            </div>
-        </div>
-    </div>
-    
     <!-- Loading Screen -->
     <div class="loader" id="loader">
         <div class="spinner"></div>
@@ -791,7 +622,7 @@
     <!-- Main App -->
     <header>
         <div class="header-nav">
-            <a href="#" class="nav-link" id="versionsButton">
+            <a href="download.html" class="nav-link">
                 <i class="fas fa-code-branch"></i>
                 <span>Versiyonlar</span>
             </a>
@@ -984,11 +815,6 @@
                 window.open('https://www.google.com/maps', '_blank');
             });
             
-            // Versiyonlar paneli
-            document.getElementById('versionsButton').addEventListener('click', openVersions);
-            document.getElementById('closeVersions').addEventListener('click', closeVersions);
-            document.getElementById('overlay').addEventListener('click', closeVersions);
-            
             // Geri bildirim butonu
             document.getElementById('feedbackButton').addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1035,18 +861,6 @@
                 voiceButton.classList.remove('voice-active');
                 alert("Sesli arama özelliği demo sürümde çalışmamaktadır. Gerçek uygulamada bu özellik için Web Speech API kullanılabilir.");
             }, 3000);
-        }
-        
-        // Versiyonlar panelini açma
-        function openVersions() {
-            document.getElementById('versionsPanel').classList.add('active');
-            document.getElementById('overlay').classList.add('active');
-        }
-        
-        // Versiyonlar panelini kapatma
-        function closeVersions() {
-            document.getElementById('versionsPanel').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
         }
         
         // Arka plan animasyonu
