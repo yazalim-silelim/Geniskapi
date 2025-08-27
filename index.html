@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="google-site-verification" content="H-LVYvpQfniUFVbnM2VLTdYwmG_adbopJwsQLPD7ACI" />
     <meta name="msvalidate.01" content="2572B86A9F2EE5C376ABEC7FE2BA749A" />
     <title>Yeni çağın arama motoru: GenişKapı.</title>
@@ -57,6 +57,10 @@
             display: flex;
             flex-direction: column;
             transition: var(--transition);
+            padding-top: env(safe-area-inset-top);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         body.dark {
@@ -459,6 +463,8 @@
         body.glass-off footer { background: color-mix(in oklab, white 94%, var(--primary) 2%); }
         body.dark.glass-off footer { background: color-mix(in oklab, black 86%, var(--primary) 8%); }
         body.glass-off .search-box { backdrop-filter: none; -webkit-backdrop-filter: none; }
+        @media (max-width: 480px) { .modal-card { width: 100vw; height: 100vh; border-radius: 0; padding: 1rem; } }
+        a, button { -webkit-tap-highlight-color: transparent; }
         body.minimal-on * { box-shadow: none !important; }
         body.minimal-on header, body.minimal-on footer { border-color: color-mix(in oklab, var(--primary), white 90%); }
         body.dark.minimal-on header, body.dark.minimal-on footer { border-color: color-mix(in oklab, var(--primary), black 80%); }
@@ -1020,7 +1026,7 @@
         
         <div class="search-container" role="search" aria-label="Sitede ara">
             <div class="search-box" id="searchBox">
-                <input type="text" class="search-input" id="searchInput" placeholder="GenişKapı V2'de arama yapın..." autocomplete="on" aria-label="Arama" autofocus>
+                <input type="search" inputmode="search" enterkeyhint="search" class="search-input" id="searchInput" placeholder="GenişKapı V2'de arama yapın..." autocomplete="on" aria-label="Arama" autofocus>
                 <button class="search-button" id="voiceSearch" aria-label="Sesli arama">
                     <i class="fas fa-microphone"></i>
                 </button>
@@ -1272,14 +1278,17 @@
                 }
             });
 
-            // Parallax grid subtle move
+            // Parallax grid subtle move (desktop only)
             const bg = document.querySelector('.bg-pattern');
-            window.addEventListener('mousemove', (e) => {
-                if (!bg || !(bg instanceof HTMLElement)) return;
-                const x = (e.clientX / window.innerWidth - 0.5) * 6;
-                const y = (e.clientY / window.innerHeight - 0.5) * 6;
-                bg.style.backgroundPosition = `${x}px ${y}px, ${-x}px ${-y}px`;
-            });
+            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            if (!isTouch) {
+                window.addEventListener('mousemove', (e) => {
+                    if (!bg || !(bg instanceof HTMLElement)) return;
+                    const x = (e.clientX / window.innerWidth - 0.5) * 6;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 6;
+                    bg.style.backgroundPosition = `${x}px ${y}px, ${-x}px ${-y}px`;
+                });
+            }
 
             // Theme transition helper
             document.body.classList.add('theme-anim');
