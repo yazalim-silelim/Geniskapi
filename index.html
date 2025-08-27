@@ -174,9 +174,8 @@
             box-shadow: var(--shadow);
         }
 
-        .search-box.focused {
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
-        }
+        /* Override legacy focused class to avoid duplicate ring */
+        .search-box.focused { box-shadow: none; }
 
         body.dark .search-box.focused {
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5);
@@ -359,7 +358,7 @@
             overflow-y: auto;
             z-index: 100;
             display: none;
-            margin-top: -1.5rem;
+            margin-top: 0;
         }
 
         body.dark .search-suggestions {
@@ -378,6 +377,7 @@
 
         .suggestion-item:hover {
             background-color: var(--light-2);
+            transform: translateX(2px);
         }
 
         body.dark .suggestion-item:hover {
@@ -412,6 +412,7 @@
             border-radius: 50%;
             background-color: var(--primary);
             filter: blur(60px);
+            transition: transform 15s linear;
         }
 
         @media (max-width: 768px) {
@@ -454,6 +455,30 @@
         .pulse {
             animation: pulse 2s infinite;
         }
+
+        /* Dropdown placement and animation */
+        .search-suggestions { top: calc(100% + 8px); border-radius: var(--radius-lg); }
+        @keyframes dropdownIn {
+            0% { opacity: 0; transform: translateY(-6px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .search-suggestions.open { display: block; animation: dropdownIn 240ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+        /* Search box focus micro-interactions */
+        .search-box:focus-within .search-button { color: var(--primary); transform: scale(1.05); }
+        .search-box:focus-within .logo-icon { transform: scale(1.03); }
+
+        /* Gentle float for quick actions */
+        @keyframes floatY {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0); }
+        }
+        .quick-action { animation: floatY 6s ease-in-out infinite; }
+        .quick-actions .quick-action:nth-child(1) { animation-delay: 0s; }
+        .quick-actions .quick-action:nth-child(2) { animation-delay: 0.8s; }
+        .quick-actions .quick-action:nth-child(3) { animation-delay: 1.6s; }
+        .quick-actions .quick-action:nth-child(4) { animation-delay: 2.4s; }
 
         @keyframes voicePulse {
             0% {
@@ -508,12 +533,29 @@
             padding: 0.75rem;
             border-radius: 50%;
             background-color: var(--primary-light);
+            transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
         }
 
         .action-label {
             font-size: 0.75rem;
             text-align: center;
         }
+
+        .quick-action:hover .action-icon { transform: translateY(-2px) rotate(-4deg) scale(1.05); }
+
+        /* Suggestion items entrance */
+        @keyframes suggestIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .search-suggestions.open .suggestion-item { animation: suggestIn 220ms ease forwards; }
+        .search-suggestions.open .suggestion-item:nth-child(1) { animation-delay: 0ms; }
+        .search-suggestions.open .suggestion-item:nth-child(2) { animation-delay: 30ms; }
+        .search-suggestions.open .suggestion-item:nth-child(3) { animation-delay: 60ms; }
+        .search-suggestions.open .suggestion-item:nth-child(4) { animation-delay: 90ms; }
+        .search-suggestions.open .suggestion-item:nth-child(5) { animation-delay: 120ms; }
+        .search-suggestions.open .suggestion-item:nth-child(6) { animation-delay: 150ms; }
+        .search-suggestions.open .suggestion-item:nth-child(7) { animation-delay: 180ms; }
 
         .loader {
             display: none;
@@ -903,7 +945,7 @@
             // Demo arama önerileri ekle
             setTimeout(() => {
                 showDemoSuggestions();
-            }, 2000);
+            }, 1000);
         });
         
         // Tema kontrol fonksiyonu
@@ -937,13 +979,15 @@
             // Arama kutusu odaklanma
             document.getElementById('searchInput').addEventListener('focus', function() {
                 document.getElementById('searchBox').classList.add('focused');
-                document.getElementById('searchSuggestions').style.display = 'block';
+                const s = document.getElementById('searchSuggestions');
+                s.classList.add('open');
             });
             
             document.getElementById('searchInput').addEventListener('blur', function() {
                 setTimeout(() => {
                     document.getElementById('searchBox').classList.remove('focused');
-                    document.getElementById('searchSuggestions').style.display = 'none';
+                    const s = document.getElementById('searchSuggestions');
+                    s.classList.remove('open');
                 }, 200);
             });
             
