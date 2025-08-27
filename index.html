@@ -952,19 +952,19 @@
         <div class="header-nav" role="navigation" aria-label="Üst gezinme">
             <a href="loading.html" class="nav-link" aria-label="Versiyonlar sayfası">
                 <i class="fas fa-code-branch"></i>
-                <span>Versiyonlar</span>
+                <span id="navVersionsLabel">Versiyonlar</span>
             </a>
             <a href="#" class="nav-link" id="feedbackButton" aria-label="Geri bildirim gönder">
                 <i class="fas fa-comment-dots"></i>
-                <span>Geri Bildirim</span>
+                <span id="navFeedbackLabel">Geri Bildirim</span>
             </a>
             <a href="#yenilikler" class="nav-link" aria-label="Yenilikler">
                 <i class="fas fa-bolt"></i>
-                <span>Yenilikler</span>
+                <span id="navWhatsNewLabel">Yenilikler</span>
             </a>
             <a href="#" class="nav-link" id="settingsOpen" aria-label="Ayarlar">
                 <i class="fas fa-gear"></i>
-                <span>Ayarlar</span>
+                <span id="navSettingsLabel">Ayarlar</span>
             </a>
         </div>
         
@@ -1221,10 +1221,10 @@
             // Parallax grid subtle move
             const bg = document.querySelector('.bg-pattern');
             window.addEventListener('mousemove', (e) => {
-                if (!bg) return;
+                if (!bg || !(bg instanceof HTMLElement)) return;
                 const x = (e.clientX / window.innerWidth - 0.5) * 6;
                 const y = (e.clientY / window.innerHeight - 0.5) * 6;
-                (bg as HTMLElement).style.backgroundPosition = `${x}px ${y}px, ${-x}px ${-y}px`;
+                bg.style.backgroundPosition = `${x}px ${y}px, ${-x}px ${-y}px`;
             });
 
             // Theme transition helper
@@ -1322,10 +1322,13 @@
             const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
             if (pref.grid) document.body.classList.add('grid-on');
             if (pref.qa) document.querySelectorAll('.quick-action').forEach(el => el.classList.add('qa-animated'));
-            if (pref.dark != null ? pref.dark : document.body.classList.contains('dark')) {
-                document.body.classList.add('dark');
-            } else {
-                document.body.classList.remove('dark');
+            // Ensure theme reflects saved pref OR system
+            if (pref.dark != null) {
+                if (pref.dark) {
+                    if (!document.body.classList.contains('dark')) toggleTheme();
+                } else {
+                    if (document.body.classList.contains('dark')) toggleTheme();
+                }
             }
             if (pref.lang) document.documentElement.lang = pref.lang;
 
@@ -1345,8 +1348,23 @@
 
             grid?.addEventListener('change', () => { document.body.classList.toggle('grid-on', grid.checked); save(); });
             qa?.addEventListener('change', () => { document.querySelectorAll('.quick-action').forEach(el => el.classList.toggle('qa-animated', qa.checked)); save(); });
-            dark?.addEventListener('change', () => { const wantDark = dark.checked; if (wantDark !== document.body.classList.contains('dark')) toggleTheme(); save(); });
+            dark?.addEventListener('change', () => { const wantDark = dark.checked; if (wantDark !== document.body.classList.contains('dark')) { toggleTheme(); } save(); });
             lang?.addEventListener('change', () => { const v = lang.value; document.documentElement.lang = v; save(); });
+
+            // i18n minimal labels (TR/EN)
+            function applyLabels(locale) {
+                const dict = locale === 'en' ? {
+                    versions: 'Versions', feedback: 'Feedback', whatsnew: "What's New", settings: 'Settings'
+                } : {
+                    versions: 'Versiyonlar', feedback: 'Geri Bildirim', whatsnew: 'Yenilikler', settings: 'Ayarlar'
+                };
+                const id = (x) => document.getElementById(x);
+                id('navVersionsLabel')?.replaceChildren(document.createTextNode(dict.versions));
+                id('navFeedbackLabel')?.replaceChildren(document.createTextNode(dict.feedback));
+                id('navWhatsNewLabel')?.replaceChildren(document.createTextNode(dict.whatsnew));
+                id('navSettingsLabel')?.replaceChildren(document.createTextNode(dict.settings));
+            }
+            applyLabels(document.documentElement.lang || 'tr');
         }
         
         // Tema değiştirme fonksiyonu
