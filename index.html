@@ -1275,6 +1275,12 @@
             
             // Öneriler kaldırıldı
         });
+
+        // Install prompt hook
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window._deferredPrompt = e;
+        });
         
         // Tema kontrol fonksiyonu
         function checkTheme() {
@@ -1375,6 +1381,7 @@
                 { label: 'Dil: Türkçe', run: () => { const el = document.getElementById('setLang'); if (el instanceof HTMLSelectElement) { el.value = 'tr'; el.dispatchEvent(new Event('change')); } } },
                 { label: 'Language: English', run: () => { const el = document.getElementById('setLang'); if (el instanceof HTMLSelectElement) { el.value = 'en'; el.dispatchEvent(new Event('change')); } } },
                 { label: 'Arama: Odaklan', run: () => document.getElementById('searchInput')?.focus() },
+                { label: 'Uygulamayı yükle', run: () => window._deferredPrompt?.prompt?.() }
             ];
             function renderActions(filter = '') {
                 const q = filter.trim().toLowerCase();
