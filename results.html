@@ -27,6 +27,21 @@
 		.skeleton::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(0,0,0,.04), rgba(0,0,0,.08), rgba(0,0,0,.04)); background-size:200% 100%; animation: shimmer 1.4s infinite; }
 		@media (prefers-color-scheme: dark) { .card { background: rgba(0,0,0,.5); border-color: rgba(255,255,255,.12);} .skeleton::after { background: linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.08), rgba(255,255,255,.04)); } }
 		.badge { display:inline-flex; align-items:center; gap:.4rem; padding:.2rem .5rem; border-radius:999px; font-size:.7rem; background: rgba(16,185,129,.12); color:#03624d; }
+		/* Image grid */
+		.grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:6px; }
+		@media (min-width:640px){ .grid { grid-template-columns: repeat(3, 1fr);} }
+		@media (min-width:900px){ .grid { grid-template-columns: repeat(4, 1fr);} }
+		.thumb { position: relative; overflow: hidden; border-radius: 12px; background: rgba(0,0,0,.06); }
+		.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.02); transition: transform .3s ease; }
+		.thumb:hover img { transform: scale(1.06); }
+		/* Lightbox */
+		.lightbox { position: fixed; inset:0; display: none; align-items:center; justify-content:center; background: rgba(0,0,0,.75); z-index: 50; }
+		.lightbox.open { display: flex; }
+		.lightbox img { max-width: 92vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+		.lightbox .close { position: absolute; top: 1rem; right: 1rem; color: white; font-size: 1.5rem; cursor: pointer; }
+		/* Video overlay */
+		.play { position: absolute; inset:auto auto 8px 8px; background: rgba(0,0,0,.6); color: white; padding: 4px 8px; border-radius: 999px; font-size: .75rem; display: none; }
+		.thumb.video:hover .play { display: inline-flex; align-items:center; gap:6px; }
 	</style>
 </head>
 <body>
@@ -42,6 +57,10 @@
 		<button class="tab" data-tab="maps"><i class="fas fa-map-marked-alt"></i> Haritalar</button>
 	</nav>
 	<main class="results" id="results"></main>
+	<div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+		<i class="fas fa-times close" id="lbClose" aria-label="Kapat"></i>
+		<img id="lbImg" alt="" />
+	</div>
 	<script>
 		const params = new URLSearchParams(location.search);
 		const q = params.get('q') || '';
@@ -49,6 +68,9 @@
 		const meta = document.getElementById('meta');
 		const results = document.getElementById('results');
 		const tabs = document.getElementById('tabs');
+		const lb = document.getElementById('lightbox');
+		const lbImg = document.getElementById('lbImg');
+		const lbClose = document.getElementById('lbClose');
 		let activeTab = 'news';
 		function setActive(tab){
 			activeTab = tab;
@@ -58,8 +80,9 @@
 			results.innerHTML = '';
 			for(let i=0;i<n;i++){
 				const c = document.createElement('div');
-				c.className = 'card skeleton';
-				c.innerHTML = '<h3>_____</h3><p>__________</p>';
+				c.className = activeTab==='images' ? 'thumb skeleton' : 'card skeleton';
+				if(activeTab==='images') c.style.aspectRatio = (Math.random()*0.6 + 0.7).toFixed(2);
+				else c.innerHTML = '<h3>_____</h3><p>__________</p>';
 				results.appendChild(c);
 			}
 		}
@@ -69,12 +92,34 @@
 				{title:`${query} Nasıl Yapılır?`, desc:`Adım adım anlatım.`, url:'https://example.com/howto'},
 				{title:`${query} Son Haberler`, desc:`Güncel gelişmeler.`, url:'https://news.google.com'}
 			],
-			images: (query)=> Array.from({length:8}).map((_,i)=>({title:`${query} Görsel ${i+1}`, desc:'', url:'https://www.google.com/imghp'})),
-			videos: (query)=> Array.from({length:6}).map((_,i)=>({title:`${query} Video ${i+1}`, desc:'', url:'https://www.youtube.com'})),
+			images: (query)=> Array.from({length:12}).map((_,i)=>({src:`https://picsum.photos/seed/${encodeURIComponent(query)}-${i}/600/400`, alt:`${query} Görsel ${i+1}`})),
+			videos: (query)=> Array.from({length:6}).map((_,i)=>({title:`${query} Video ${i+1}`, url:'https://www.youtube.com', thumb:`https://picsum.photos/seed/${encodeURIComponent(query)}-v${i}/480/270`})),
 			maps: (query)=>[{title:`${query} Harita`, desc:'Haritalarda ara', url:'https://www.google.com/maps'}]
 		};
 		function render(items){
 			results.innerHTML = '';
+			if(activeTab==='images'){
+				const grid = document.createElement('div');
+				grid.className = 'grid';
+				items.forEach(({src,alt})=>{
+					const t = document.createElement('div'); t.className = 'thumb';
+					const img = document.createElement('img'); img.loading = 'lazy'; img.src = src; img.alt = alt; img.decoding = 'async';
+					img.addEventListener('click', ()=>{ lb.classList.add('open'); lbImg.src = src; lbImg.alt = alt; });
+					t.appendChild(img); grid.appendChild(t);
+				});
+				results.appendChild(grid);
+				return;
+			}
+			if(activeTab==='videos'){
+				items.forEach(({title,url,thumb})=>{
+					const t = document.createElement('div'); t.className = 'thumb video';
+					const img = document.createElement('img'); img.loading = 'lazy'; img.src = thumb; img.alt = title; img.decoding = 'async';
+					const tag = document.createElement('div'); tag.className = 'play'; tag.innerHTML = '<i class="fas fa-play"></i> İzle';
+					t.appendChild(img); t.appendChild(tag); t.addEventListener('click', ()=>window.open(url,'_blank'));
+					results.appendChild(t);
+				});
+				return;
+			}
 			items.forEach(({title,desc,url})=>{
 				const c = document.createElement('div');
 				c.className = 'card';
@@ -85,9 +130,8 @@
 		async function run(){
 			if(!q){ meta.textContent = ''; results.innerHTML = ''; return; }
 			meta.innerHTML = `<span class="badge"><i class=\"fas fa-tag\"></i> ${q}</span>`;
-			makeSkeleton(activeTab==='images'?8:activeTab==='videos'?6:6);
-			// Simüle gecikme
-			await new Promise(r=>setTimeout(r, 700));
+			makeSkeleton(activeTab==='images'?12:activeTab==='videos'?6:6);
+			await new Promise(r=>setTimeout(r, 600));
 			render(fake[activeTab](q));
 		}
 		document.getElementById('q').addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ location.href = '/results.html?q=' + encodeURIComponent(e.target.value.trim()); }});
@@ -97,6 +141,8 @@
 			setActive(btn.dataset.tab);
 			run();
 		});
+		lbClose.addEventListener('click', ()=> lb.classList.remove('open'));
+		lb.addEventListener('click', (e)=>{ if(e.target===lb) lb.classList.remove('open'); });
 		setActive('news');
 		run();
 	</script>
