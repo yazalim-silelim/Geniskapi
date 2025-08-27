@@ -798,6 +798,13 @@
             --surface-dark: color-mix(in oklab, black 86%, var(--primary) 6%);
         }
 
+        /* Color themes (override primary palette) */
+        body.theme-emerald { --primary: oklch(0.73 0.17 156); --primary-dark: oklch(0.63 0.17 156); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-blue { --primary: oklch(0.70 0.16 255); --primary-dark: oklch(0.62 0.16 255); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-purple { --primary: oklch(0.68 0.20 295); --primary-dark: oklch(0.60 0.20 295); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-rose { --primary: oklch(0.72 0.22 20); --primary-dark: oklch(0.62 0.22 20); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-amber { --primary: oklch(0.82 0.17 85); --primary-dark: oklch(0.74 0.17 85); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+
         body {
             background:
                 radial-gradient(1200px 800px at 10% -10%, color-mix(in oklab, var(--primary), white 88%), transparent 60%),
@@ -1075,6 +1082,15 @@
                 <div class="settings-card">
                     <h3>Temalar</h3>
                     <div class="setting-row"><span>Koyu Tema</span><label class="switch"><input type="checkbox" id="setDark"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Renk Teması</span>
+                        <select id="setTheme" aria-label="Renk teması">
+                            <option value="emerald">Zümrüt</option>
+                            <option value="blue">Mavi</option>
+                            <option value="purple">Mor</option>
+                            <option value="rose">Gül</option>
+                            <option value="amber">Kehribar</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="settings-card">
                     <h3>Diller</h3>
@@ -1342,6 +1358,7 @@
             const compact = document.getElementById('setCompact');
             const rounded = document.getElementById('setRounded');
             const glassOff = document.getElementById('setGlassOff');
+            const themeSel = document.getElementById('setTheme');
 
             // Load persisted
             const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
@@ -1361,6 +1378,7 @@
             if (pref.compact) document.body.classList.add('compact');
             if (pref.rounded) document.body.classList.add('rounded-xl');
             if (pref.glassOff) document.body.classList.add('glass-off');
+            if (pref.theme) setThemeClass(pref.theme);
 
             if (grid instanceof HTMLInputElement) grid.checked = !!pref.grid;
             if (qa instanceof HTMLInputElement) qa.checked = !!pref.qa;
@@ -1371,6 +1389,7 @@
             if (compact instanceof HTMLInputElement) compact.checked = !!pref.compact;
             if (rounded instanceof HTMLInputElement) rounded.checked = !!pref.rounded;
             if (glassOff instanceof HTMLInputElement) glassOff.checked = !!pref.glassOff;
+            if (themeSel instanceof HTMLSelectElement && pref.theme) themeSel.value = pref.theme;
 
             function save() {
                 localStorage.setItem('geniskapi-settings', JSON.stringify({
@@ -1382,7 +1401,8 @@
                     reduceMotion: reduceMotion instanceof HTMLInputElement ? reduceMotion.checked : false,
                     compact: compact instanceof HTMLInputElement ? compact.checked : false,
                     rounded: rounded instanceof HTMLInputElement ? rounded.checked : false,
-                    glassOff: glassOff instanceof HTMLInputElement ? glassOff.checked : false
+                    glassOff: glassOff instanceof HTMLInputElement ? glassOff.checked : false,
+                    theme: themeSel instanceof HTMLSelectElement ? themeSel.value : 'emerald'
                 }));
             }
 
@@ -1395,6 +1415,13 @@
             compact?.addEventListener('change', () => { document.body.classList.toggle('compact', compact.checked); save(); });
             rounded?.addEventListener('change', () => { document.body.classList.toggle('rounded-xl', rounded.checked); save(); });
             glassOff?.addEventListener('change', () => { document.body.classList.toggle('glass-off', glassOff.checked); save(); });
+            themeSel?.addEventListener('change', () => { setThemeClass(themeSel.value); save(); });
+
+            function setThemeClass(name) {
+                const classes = ['theme-emerald','theme-blue','theme-purple','theme-rose','theme-amber'];
+                document.body.classList.remove(...classes);
+                document.body.classList.add(`theme-${name}`);
+            }
 
             // i18n minimal labels (TR/EN)
             function applyLabels(locale) {
