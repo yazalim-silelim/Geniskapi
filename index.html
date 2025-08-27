@@ -804,6 +804,8 @@
         body.theme-purple { --primary: oklch(0.68 0.20 295); --primary-dark: oklch(0.60 0.20 295); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
         body.theme-rose { --primary: oklch(0.72 0.22 20); --primary-dark: oklch(0.62 0.22 20); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
         body.theme-amber { --primary: oklch(0.82 0.17 85); --primary-dark: oklch(0.74 0.17 85); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-contrast { --primary: oklch(0.80 0.27 25); --primary-dark: oklch(0.72 0.27 25); --primary-light: color-mix(in oklab, var(--primary), white 85%); --ring: oklch(0.88 0.20 85); }
+        body.theme-contrast :where(a, button, input, textarea):focus-visible { outline-width: 3px; }
 
         body {
             background:
@@ -1089,6 +1091,7 @@
                             <option value="purple">Mor</option>
                             <option value="rose">Gül</option>
                             <option value="amber">Kehribar</option>
+                            <option value="contrast">Yüksek Kontrast</option>
                         </select>
                     </div>
                 </div>
