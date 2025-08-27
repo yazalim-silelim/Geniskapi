@@ -610,6 +610,168 @@
             visibility: visible;
             opacity: 1;
         }
+        
+        /* Modern enhancements (2025) */
+        html {
+            color-scheme: light dark;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            /* Update core colors using perceptual spaces for better contrast */
+            --primary: oklch(0.73 0.17 156);
+            --primary-dark: oklch(0.63 0.17 156);
+            --primary-light: color-mix(in oklab, var(--primary), white 85%);
+            --ring: color-mix(in oklab, var(--primary), white 20%);
+            --surface: color-mix(in oklab, white 96%, var(--primary) 2%);
+            --surface-dark: color-mix(in oklab, black 86%, var(--primary) 6%);
+        }
+
+        body {
+            background:
+                radial-gradient(1200px 800px at 10% -10%, color-mix(in oklab, var(--primary), white 88%), transparent 60%),
+                radial-gradient(1000px 600px at 110% 110%, color-mix(in oklab, var(--primary), white 92%), transparent 60%),
+                var(--light-1);
+        }
+
+        body.dark {
+            background:
+                radial-gradient(1200px 800px at -10% -10%, color-mix(in oklab, var(--primary), black 80%), transparent 60%),
+                radial-gradient(1000px 600px at 110% 110%, color-mix(in oklab, var(--primary), black 85%), transparent 60%),
+                var(--dark-1);
+        }
+
+        /* Fluid type scale */
+        :where(body) {
+            font-size: clamp(15px, 0.4vw + 14px, 18px);
+        }
+
+        /* Refined focus visibility */
+        :where(a, button, input, textarea) {
+            outline: none;
+        }
+        :where(a, button, input, textarea):focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
+        }
+
+        /* Glassy search */
+        .search-box {
+            background: color-mix(in oklab, white 80%, var(--primary) 2%);
+            border: 1px solid color-mix(in oklab, var(--primary), white 86%);
+            backdrop-filter: saturate(140%) blur(10px);
+            -webkit-backdrop-filter: saturate(140%) blur(10px);
+        }
+        body.dark .search-box {
+            background: color-mix(in oklab, black 70%, var(--primary) 10%);
+            border-color: color-mix(in oklab, var(--primary), black 75%);
+        }
+        .search-box:focus-within,
+        .search-box:has(.search-input:focus-visible) {
+            box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary), white 70%);
+        }
+        body.dark .search-box:focus-within,
+        body.dark .search-box:has(.search-input:focus-visible) {
+            box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary), black 70%);
+        }
+
+        .search-input::placeholder {
+            color: color-mix(in oklab, var(--dark-3), white 20%);
+        }
+        body.dark .search-input::placeholder {
+            color: color-mix(in oklab, var(--light-3), black 20%);
+        }
+
+        /* Buttons */
+        .btn {
+            border: 1px solid transparent;
+            will-change: transform;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, color-mix(in oklab, var(--primary), white 6%), var(--primary));
+            box-shadow: 0 8px 20px -10px color-mix(in oklab, var(--primary), black 70%);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px -12px color-mix(in oklab, var(--primary), black 70%);
+        }
+        .btn-secondary {
+            background: color-mix(in oklab, white 85%, var(--primary) 3%);
+            border-color: color-mix(in oklab, var(--primary), white 80%);
+        }
+        body.dark .btn-secondary {
+            background: color-mix(in oklab, black 70%, var(--primary) 10%);
+            border-color: color-mix(in oklab, var(--primary), black 70%);
+        }
+
+        /* Quick actions */
+        .quick-action {
+            background: transparent;
+            border: 1px solid color-mix(in oklab, var(--primary), white 88%);
+        }
+        body.dark .quick-action {
+            border-color: color-mix(in oklab, var(--primary), black 75%);
+        }
+        .quick-action:hover {
+            background: color-mix(in oklab, white 85%, var(--primary) 4%);
+        }
+        body.dark .quick-action:hover {
+            background: color-mix(in oklab, black 75%, var(--primary) 10%);
+        }
+        .action-icon {
+            background: color-mix(in oklab, var(--primary-light), white 20%);
+        }
+
+        /* Theme toggle polish */
+        .theme-toggle {
+            border: 1px solid color-mix(in oklab, var(--primary), white 85%);
+            background: color-mix(in oklab, white 88%, var(--primary) 2%);
+        }
+        body.dark .theme-toggle {
+            border-color: color-mix(in oklab, var(--primary), black 70%);
+            background: color-mix(in oklab, black 78%, var(--primary) 8%);
+        }
+
+        /* Suggestion list surface */
+        .search-suggestions {
+            backdrop-filter: blur(8px) saturate(130%);
+            -webkit-backdrop-filter: blur(8px) saturate(130%);
+            border: 1px solid color-mix(in oklab, var(--primary), white 85%);
+        }
+        body.dark .search-suggestions {
+            border-color: color-mix(in oklab, var(--primary), black 75%);
+        }
+
+        /* Accessibility: larger touch targets */
+        .search-button,
+        .theme-toggle,
+        .btn {
+            min-height: 2.5rem;
+            min-width: 2.5rem;
+        }
+
+        /* Motion reduction */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Respect system backdrops */
+        @supports not (backdrop-filter: blur(4px)) {
+            .search-box,
+            .search-suggestions {
+                background: color-mix(in oklab, white 92%, var(--primary) 2%);
+            }
+            body.dark .search-box,
+            body.dark .search-suggestions {
+                background: color-mix(in oklab, black 72%, var(--primary) 10%);
+            }
+        }
     </style>
 </head>
 <body>

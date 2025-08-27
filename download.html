@@ -6,17 +6,19 @@
     <title>İndirme sayfası</title>
     <style>
         :root {
-            --color-bg: #050505;
-            --color-text: #ffffff;
-            --color-primary: #ff3366;
-            --color-secondary: #3366ff;
-            --color-tertiary: #33ddff;
-            --color-accent: #ffcc00;
-            --card-radius: 16px;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --card-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.5);
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color-scheme: dark;
+            --color-bg: oklch(0.14 0.03 280);
+            --color-text: oklch(0.97 0.01 260);
+            --color-primary: oklch(0.7 0.25 25);
+            --color-secondary: oklch(0.68 0.22 265);
+            --color-tertiary: oklch(0.83 0.16 215);
+            --color-accent: oklch(0.9 0.2 90);
+            --ring: color-mix(in oklab, var(--color-primary), white 20%);
+            --card-radius: 20px;
+            --card-bg: color-mix(in oklab, black 82%, white 5%);
+            --card-border: color-mix(in oklab, white 14%, black 86%);
+            --card-shadow: 0 25px 60px -30px color-mix(in oklab, black 50%, var(--color-secondary) 10%);
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
@@ -27,11 +29,17 @@
 
         body {
             font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--color-bg);
+            background:
+                radial-gradient(1200px 800px at -10% -10%, color-mix(in oklab, var(--color-secondary), black 70%), transparent 60%),
+                radial-gradient(1000px 800px at 110% 110%, color-mix(in oklab, var(--color-primary), black 70%), transparent 60%),
+                var(--color-bg);
             color: var(--color-text);
             min-height: 100vh;
             overflow-x: hidden;
             line-height: 1.5;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .background {
@@ -47,9 +55,9 @@
         .gradient-blob {
             position: absolute;
             border-radius: 100%;
-            filter: blur(40px);
-            opacity: 0.3;
-            animation: float 20s infinite alternate ease-in-out;
+            filter: blur(60px);
+            opacity: 0.35;
+            animation: float 22s infinite alternate ease-in-out;
         }
 
         .gradient-blob:nth-child(1) {
@@ -93,13 +101,13 @@
 
         @keyframes float {
             0% {
-                transform: translate(0, 0) scale(1);
+                transform: translate3d(0, 0, 0) scale(1);
             }
             50% {
-                transform: translate(2%, 2%) scale(1.02);
+                transform: translate3d(2%, 2%, 0) scale(1.03);
             }
             100% {
-                transform: translate(-2%, -2%) scale(0.98);
+                transform: translate3d(-2%, -2%, 0) scale(0.98);
             }
         }
 
@@ -115,11 +123,7 @@
             font-weight: 800;
             margin-bottom: 0.5rem;
             line-height: 1.1;
-            background: linear-gradient(
-                to right,
-                var(--color-text),
-                rgba(255, 255, 255, 0.7)
-            );
+            background: linear-gradient(90deg, var(--color-text), color-mix(in oklab, var(--color-text), black 20%));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -144,7 +148,7 @@
             position: relative;
             height: 320px;
             border-radius: var(--card-radius);
-            background: var(--card-bg);
+            background: linear-gradient(180deg, color-mix(in oklab, var(--card-bg), white 2%), var(--card-bg));
             border: 1px solid var(--card-border);
             box-shadow: var(--card-shadow);
             transform-style: preserve-3d;
@@ -161,7 +165,7 @@
             inset: 0;
             background: radial-gradient(
                 circle at var(--x, 50%) var(--y, 50%),
-                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.14) 0%,
                 transparent 50%
             );
             opacity: 0;
@@ -187,11 +191,7 @@
             margin-bottom: 0.75rem;
             font-weight: 700;
             transform: translateZ(20px);
-            background: linear-gradient(
-                to right,
-                var(--color-text),
-                rgba(255, 255, 255, 0.8)
-            );
+            background: linear-gradient(90deg, var(--color-text), color-mix(in oklab, var(--color-text), black 10%));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -214,8 +214,8 @@
 
         .card-button {
             padding: 0.6rem 1.2rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: color-mix(in oklab, white 12%, black 88%);
+            border: 1px solid color-mix(in oklab, white 24%, black 76%);
             border-radius: 100px;
             color: var(--color-text);
             font-weight: 600;
@@ -223,11 +223,18 @@
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
+            min-height: 40px;
+            outline: none;
         }
 
         .card-button:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: color-mix(in oklab, white 22%, black 78%);
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px -12px rgba(0,0,0,0.6);
+        }
+        .card-button:focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
         }
 
         .card-icon {
@@ -455,6 +462,11 @@
                     transform: translateY(-10px);
                 }
             }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
