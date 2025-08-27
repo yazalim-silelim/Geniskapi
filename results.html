@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<title>Sonuçlar</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		:root { --primary: #10B981; --bg: #fafafa; --fg: #111; }
+		@media (prefers-color-scheme: dark) { :root { --bg: #0b0b0d; --fg: #eee; } }
+		* { box-sizing: border-box; }
+		body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; }
+		header { position: sticky; top: 0; z-index: 10; display: flex; gap: .5rem; align-items: center; padding: .75rem 1rem; background: rgba(255,255,255,.6); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0,0,0,.08); }
+		@media (prefers-color-scheme: dark) { header { background: rgba(0,0,0,.5); border-bottom-color: rgba(255,255,255,.12); } }
+		input[type="search"] { flex: 1; padding: .6rem .8rem; border-radius: 999px; border: 1px solid rgba(0,0,0,.15); outline: none; }
+		.results { max-width: 900px; margin: 1rem auto; padding: 0 1rem; display: grid; gap: .75rem; }
+		.card { padding: .9rem 1rem; border-radius: 14px; border: 1px solid rgba(0,0,0,.08); background: rgba(255,255,255,.7); }
+		.card h3 { margin: 0 0 .25rem; font-size: 1rem; }
+		.card p { margin: 0; opacity: .85; font-size: .9rem; }
+		.skeleton { position: relative; overflow: hidden; }
+		.skeleton * { opacity: 0; }
+		@keyframes shimmer { 0%{ background-position:-200% 0;} 100%{ background-position:200% 0;} }
+		.skeleton::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(0,0,0,.04), rgba(0,0,0,.08), rgba(0,0,0,.04)); background-size:200% 100%; animation: shimmer 1.4s infinite; }
+		@media (prefers-color-scheme: dark) { .card { background: rgba(0,0,0,.5); border-color: rgba(255,255,255,.12);} .skeleton::after { background: linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.08), rgba(255,255,255,.04)); } }
+		.badge { display:inline-flex; align-items:center; gap:.4rem; padding:.2rem .5rem; border-radius:999px; font-size:.7rem; background: rgba(16,185,129,.12); color:#03624d; }
+	</style>
+</head>
+<body>
+	<header>
+		<a href="/index.html" aria-label="Ana sayfa"><i class="fas fa-door-open"></i></a>
+		<input id="q" type="search" placeholder="Ara..." />
+		<span id="meta"></span>
+	</header>
+	<main class="results" id="results"></main>
+	<script>
+		const params = new URLSearchParams(location.search);
+		const q = params.get('q') || '';
+		document.getElementById('q').value = q;
+		const meta = document.getElementById('meta');
+		const results = document.getElementById('results');
+		function makeSkeleton(n=6){
+			results.innerHTML = '';
+			for(let i=0;i<n;i++){
+				const c = document.createElement('div');
+				c.className = 'card skeleton';
+				c.innerHTML = '<h3>_____</h3><p>__________</p>';
+				results.appendChild(c);
+			}
+		}
+		function render(items){
+			results.innerHTML = '';
+			items.forEach(({title,desc,url})=>{
+				const c = document.createElement('div');
+				c.className = 'card';
+				c.innerHTML = `<h3><a href="${url}" target="_blank">${title}</a></h3><p>${desc}</p>`;
+				results.appendChild(c);
+			});
+		}
+		function fakeFetch(query){
+			return new Promise(res=>{
+				setTimeout(()=>{
+					const base = [
+						{title:`${query} - Resmi Site`, desc:`${query} hakkında resmi bilgiler.`, url:'https://example.com'},
+						{title:`${query} Nasıl Yapılır?`, desc:`${query} ile ilgili adım adım anlatım.`, url:'https://example.com/howto'},
+						{title:`${query} Son Haberler`, desc:`Güncel gelişmeler ve haberler.`, url:'https://news.google.com'}
+					];
+					res(base);
+				}, 800);
+			});
+		}
+		async function run(){
+			if(!q){ meta.textContent = ''; results.innerHTML = ''; return; }
+			meta.innerHTML = `<span class="badge"><i class=\"fas fa-tag\"></i> ${q}</span>`;
+			makeSkeleton(6);
+			const items = await fakeFetch(q);
+			render(items);
+		}
+		document.getElementById('q').addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ location.href = '/results.html?q=' + encodeURIComponent(e.target.value.trim()); }});
+		run();
+	</script>
+</body>
+</html>

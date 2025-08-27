@@ -1130,6 +1130,7 @@
                     <div class="setting-row"><span>Daha yuvarlak köşeler</span><label class="switch"><input type="checkbox" id="setRounded"><span class="slider"></span></label></div>
                     <div class="setting-row"><span>Glass efektleri kapat</span><label class="switch"><input type="checkbox" id="setGlassOff"><span class="slider"></span></label></div>
                     <div class="setting-row"><span>Minimal görünüm</span><label class="switch"><input type="checkbox" id="setMinimal"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Dahili sonuçları kullan</span><label class="switch"><input type="checkbox" id="setInternalResults"><span class="slider"></span></label></div>
                 </div>
                 <div class="settings-card">
                     <h3>Temalar</h3>
@@ -1506,6 +1507,7 @@
             const contrast = document.getElementById('setContrast');
             const applyDarkContrast = document.getElementById('applyDarkContrast');
             const accent = document.getElementById('setAccent');
+            const internalRes = document.getElementById('setInternalResults');
 
             // Load persisted
             const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
@@ -1544,6 +1546,7 @@
             const minimal = document.getElementById('setMinimal');
             if (minimal instanceof HTMLInputElement) minimal.checked = !!pref.minimal;
             if (accent instanceof HTMLInputElement && pref.accent) accent.value = pref.accent;
+            if (internalRes instanceof HTMLInputElement) internalRes.checked = !!pref.useInternalResults;
 
             function save() {
                 localStorage.setItem('geniskapi-settings', JSON.stringify({
@@ -1561,6 +1564,7 @@
                     mode: modeSel instanceof HTMLSelectElement ? modeSel.value : 'auto',
                     minimal: minimal instanceof HTMLInputElement ? minimal.checked : false,
                     accent: accent instanceof HTMLInputElement ? accent.value : undefined
+                    ,useInternalResults: internalRes instanceof HTMLInputElement ? internalRes.checked : false
                 }));
             }
 
@@ -1579,6 +1583,7 @@
             minimal?.addEventListener('change', () => { document.body.classList.toggle('minimal-on', minimal.checked); save(); });
             applyDarkContrast?.addEventListener('click', (e) => { e.preventDefault(); if (!document.body.classList.contains('dark')) toggleTheme(); document.body.classList.add('contrast-on'); if (contrast instanceof HTMLInputElement) contrast.checked = true; save(); });
             accent?.addEventListener('input', () => { applyAccent(accent.value); save(); });
+            internalRes?.addEventListener('change', () => { save(); });
 
             function setThemeClass(name) {
                 const classes = ['theme-emerald','theme-blue','theme-purple','theme-rose','theme-amber'];
@@ -1655,7 +1660,12 @@
         function performSearch() {
             const query = document.getElementById('searchInput').value.trim();
             if (query) {
-                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+                const useInternal = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}').useInternalResults;
+                if (useInternal) {
+                    window.location.href = `/results.html?q=${encodeURIComponent(query)}`;
+                } else {
+                    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+                }
             }
         }
         
