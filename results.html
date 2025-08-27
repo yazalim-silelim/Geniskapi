@@ -17,7 +17,7 @@
 		.tab { padding: .5rem .75rem; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); background: rgba(255,255,255,.7); cursor: pointer; white-space: nowrap; }
 		.tab.active { background: var(--primary); color: white; border-color: transparent; }
 		@media (prefers-color-scheme: dark) { .tab { background: rgba(0,0,0,.5); border-color: rgba(255,255,255,.12);} }
-		.results { max-width: 900px; margin: .25rem auto 1rem auto; padding: 0 1rem; display: grid; gap: .75rem; }
+		.results { max-width: 900px; margin: .25rem auto 4rem auto; padding: 0 1rem; display: grid; gap: .75rem; }
 		.card { padding: .9rem 1rem; border-radius: 14px; border: 1px solid rgba(0,0,0,.08); background: rgba(255,255,255,.7); }
 		.card h3 { margin: 0 0 .25rem; font-size: 1rem; }
 		.card p { margin: 0; opacity: .85; font-size: .9rem; }
@@ -42,6 +42,9 @@
 		/* Video overlay */
 		.play { position: absolute; inset:auto auto 8px 8px; background: rgba(0,0,0,.6); color: white; padding: 4px 8px; border-radius: 999px; font-size: .75rem; display: none; }
 		.thumb.video:hover .play { display: inline-flex; align-items:center; gap:6px; }
+		/* Back to top */
+		.top { position: fixed; right: 1rem; bottom: 1rem; z-index: 60; width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; background: var(--primary); color: white; border: none; box-shadow: 0 10px 20px rgba(0,0,0,.2); opacity:0; transform: translateY(8px); transition: .2s ease; }
+		.top.show { opacity:1; transform: translateY(0); }
 	</style>
 </head>
 <body>
@@ -57,6 +60,8 @@
 		<button class="tab" data-tab="maps"><i class="fas fa-map-marked-alt"></i> Haritalar</button>
 	</nav>
 	<main class="results" id="results"></main>
+	<div id="sentinel"></div>
+	<button class="top" id="toTop" aria-label="Yukarı dön"><i class="fas fa-arrow-up"></i></button>
 	<div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
 		<i class="fas fa-times close" id="lbClose" aria-label="Kapat"></i>
 		<img id="lbImg" alt="" />
@@ -68,46 +73,45 @@
 		const meta = document.getElementById('meta');
 		const results = document.getElementById('results');
 		const tabs = document.getElementById('tabs');
+		const sentinel = document.getElementById('sentinel');
+		const toTop = document.getElementById('toTop');
 		const lb = document.getElementById('lightbox');
 		const lbImg = document.getElementById('lbImg');
 		const lbClose = document.getElementById('lbClose');
 		let activeTab = 'news';
+		let page = 0;
 		function setActive(tab){
-			activeTab = tab;
+			activeTab = tab; page = 0;
 			[...tabs.children].forEach(btn=>btn.classList.toggle('active', btn.dataset.tab===tab));
 		}
 		function makeSkeleton(n=6){
-			results.innerHTML = '';
+			const containerNeeded = activeTab==='images';
+			if(page===0){ results.innerHTML=''; }
+			const parent = containerNeeded ? (page===0 ? (()=>{ const g=document.createElement('div'); g.className='grid'; results.appendChild(g); return g; })() : results.querySelector('.grid')) : results;
 			for(let i=0;i<n;i++){
-				const c = document.createElement('div');
-				c.className = activeTab==='images' ? 'thumb skeleton' : 'card skeleton';
-				if(activeTab==='images') c.style.aspectRatio = (Math.random()*0.6 + 0.7).toFixed(2);
+				const c = document.createElement(containerNeeded ? 'div':'div');
+				c.className = containerNeeded ? 'thumb skeleton' : 'card skeleton';
+				if(containerNeeded) c.style.aspectRatio = (Math.random()*0.6 + 0.7).toFixed(2);
 				else c.innerHTML = '<h3>_____</h3><p>__________</p>';
-				results.appendChild(c);
+				parent.appendChild(c);
 			}
 		}
 		const fake = {
-			news: (query)=>[
-				{title:`${query} - Resmi Site`, desc:`${query} hakkında resmi bilgiler.`, url:'https://example.com'},
-				{title:`${query} Nasıl Yapılır?`, desc:`Adım adım anlatım.`, url:'https://example.com/howto'},
-				{title:`${query} Son Haberler`, desc:`Güncel gelişmeler.`, url:'https://news.google.com'}
-			],
-			images: (query)=> Array.from({length:12}).map((_,i)=>({src:`https://picsum.photos/seed/${encodeURIComponent(query)}-${i}/600/400`, alt:`${query} Görsel ${i+1}`})),
-			videos: (query)=> Array.from({length:6}).map((_,i)=>({title:`${query} Video ${i+1}`, url:'https://www.youtube.com', thumb:`https://picsum.photos/seed/${encodeURIComponent(query)}-v${i}/480/270`})),
-			maps: (query)=>[{title:`${query} Harita`, desc:'Haritalarda ara', url:'https://www.google.com/maps'}]
+			news: (query,p)=> Array.from({length:6}).map((_,i)=>({title:`${query} Haber ${(p*6)+i+1}`, desc:`Güncel gelişmeler.`, url:'https://news.google.com'})),
+			images: (query,p)=> Array.from({length:12}).map((_,i)=>({src:`https://picsum.photos/seed/${encodeURIComponent(query)}-${p}-${i}/600/400`, alt:`${query} Görsel ${(p*12)+i+1}`})),
+			videos: (query,p)=> Array.from({length:6}).map((_,i)=>({title:`${query} Video ${(p*6)+i+1}`, url:'https://www.youtube.com', thumb:`https://picsum.photos/seed/${encodeURIComponent(query)}-v${p}-${i}/480/270`})),
+			maps: (query,p)=> Array.from({length:3}).map((_,i)=>({title:`${query} Konum ${(p*3)+i+1}`, desc:'Haritalarda ara', url:'https://www.google.com/maps'}))
 		};
-		function render(items){
-			results.innerHTML = '';
+		function append(items){
 			if(activeTab==='images'){
-				const grid = document.createElement('div');
-				grid.className = 'grid';
+				let grid = results.querySelector('.grid');
+				if(!grid){ grid=document.createElement('div'); grid.className='grid'; results.appendChild(grid); }
 				items.forEach(({src,alt})=>{
 					const t = document.createElement('div'); t.className = 'thumb';
 					const img = document.createElement('img'); img.loading = 'lazy'; img.src = src; img.alt = alt; img.decoding = 'async';
 					img.addEventListener('click', ()=>{ lb.classList.add('open'); lbImg.src = src; lbImg.alt = alt; });
 					t.appendChild(img); grid.appendChild(t);
 				});
-				results.appendChild(grid);
 				return;
 			}
 			if(activeTab==='videos'){
@@ -121,18 +125,23 @@
 				return;
 			}
 			items.forEach(({title,desc,url})=>{
-				const c = document.createElement('div');
-				c.className = 'card';
+				const c = document.createElement('div'); c.className = 'card';
 				c.innerHTML = `<h3><a href="${url}" target="_blank">${title}</a></h3>${desc?`<p>${desc}</p>`:''}`;
 				results.appendChild(c);
 			});
 		}
+		async function loadMore(){
+			makeSkeleton(activeTab==='images'?12:activeTab==='videos'?6:6);
+			await new Promise(r=>setTimeout(r, 600));
+			append(fake[activeTab](q,page));
+			page++;
+		}
 		async function run(){
 			if(!q){ meta.textContent = ''; results.innerHTML = ''; return; }
 			meta.innerHTML = `<span class="badge"><i class=\"fas fa-tag\"></i> ${q}</span>`;
-			makeSkeleton(activeTab==='images'?12:activeTab==='videos'?6:6);
-			await new Promise(r=>setTimeout(r, 600));
-			render(fake[activeTab](q));
+			page = 0;
+			results.innerHTML='';
+			await loadMore();
 		}
 		document.getElementById('q').addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ location.href = '/results.html?q=' + encodeURIComponent(e.target.value.trim()); }});
 		tabs.addEventListener('click', (e)=>{
@@ -141,6 +150,12 @@
 			setActive(btn.dataset.tab);
 			run();
 		});
+		const io = new IntersectionObserver((entries)=>{
+			if(entries.some(e=>e.isIntersecting)) loadMore();
+		});
+		io.observe(sentinel);
+		window.addEventListener('scroll', ()=>{ toTop.classList.toggle('show', window.scrollY>300); }, {passive:true});
+		toTop.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
 		lbClose.addEventListener('click', ()=> lb.classList.remove('open'));
 		lb.addEventListener('click', (e)=>{ if(e.target===lb) lb.classList.remove('open'); });
 		setActive('news');
