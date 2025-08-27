@@ -69,7 +69,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
+            position: sticky;
+            top: 0;
             z-index: 50;
             backdrop-filter: saturate(140%) blur(10px);
             -webkit-backdrop-filter: saturate(140%) blur(10px);
@@ -81,6 +82,8 @@
             background: color-mix(in oklab, black 82%, var(--primary) 10%);
             border-bottom-color: color-mix(in oklab, var(--primary), black 70%);
         }
+
+        .header-hidden { transform: translateY(-100%); transition: transform 300ms ease; }
 
         .header-nav {
             display: flex;
@@ -443,6 +446,7 @@
                 linear-gradient(to right, color-mix(in oklab, var(--primary), transparent 96%) 1px, transparent 1px),
                 linear-gradient(to bottom, color-mix(in oklab, var(--primary), transparent 96%) 1px, transparent 1px);
             background-size: 24px 24px;
+            background-position: 0 0, 0 0;
         }
 
         body.dark .bg-pattern {
@@ -578,6 +582,45 @@
         }
 
         .quick-action:hover .action-icon { transform: translateY(-2px) rotate(-4deg) scale(1.05); }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            transform: scale(0);
+            background: color-mix(in oklab, var(--primary), white 30%);
+            opacity: 0.35;
+            animation: ripple 500ms linear;
+        }
+        @keyframes ripple { to { transform: scale(2.2); opacity: 0; } }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 220ms ease, transform 220ms ease;
+            z-index: 60;
+        }
+        .back-to-top.show { opacity: 1; transform: translateY(0); }
+
+        /* Theme transition helper */
+        body.theme-anim, body.theme-anim header, body.theme-anim footer, body.theme-anim .search-box, body.theme-anim .btn, body.theme-anim .quick-action {
+            transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+        }
 
         /* (removed) suggestion items entrance */
 
@@ -984,6 +1027,10 @@
         </div>
     </footer>
     
+    <button id="backToTop" class="back-to-top" aria-label="Yukarı dön">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
     <script>
         // Reveal on scroll for news cards
         const revealObserver = new IntersectionObserver((entries) => {
@@ -1021,6 +1068,7 @@
             
             // Arka plan animasyonunu başlat
             initBackgroundAnimation();
+            initPolishInteractions();
             
             // Öneriler kaldırıldı
         });
@@ -1034,6 +1082,70 @@
                 document.body.classList.add('dark');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
+        }
+
+        function initPolishInteractions() {
+            // Hide-on-scroll header
+            let lastY = window.scrollY;
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                const y = window.scrollY;
+                if (!header) return;
+                if (y > lastY && y > 24) header.classList.add('header-hidden');
+                else header.classList.remove('header-hidden');
+                lastY = y;
+            }, { passive: true });
+
+            // Back to top
+            const toTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (!toTop) return;
+                toTop.classList.toggle('show', window.scrollY > 300);
+            }, { passive: true });
+            toTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // Ripple on buttons
+            const rippleTargets = document.querySelectorAll('.btn, .search-button');
+            rippleTargets.forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const target = e.currentTarget;
+                    if (!(target instanceof HTMLElement)) return;
+                    const rect = target.getBoundingClientRect();
+                    const span = document.createElement('span');
+                    span.className = 'ripple';
+                    const size = Math.max(rect.width, rect.height) * 2;
+                    span.style.width = span.style.height = `${size}px`;
+                    span.style.left = `${(e.clientX || 0) - rect.left - size / 2}px`;
+                    span.style.top = `${(e.clientY || 0) - rect.top - size / 2}px`;
+                    target.style.position = getComputedStyle(target).position === 'static' ? 'relative' : getComputedStyle(target).position;
+                    target.appendChild(span);
+                    setTimeout(() => span.remove(), 500);
+                });
+            });
+
+            // Ctrl+K focus search, Esc blur
+            window.addEventListener('keydown', (e) => {
+                const input = document.getElementById('searchInput');
+                if (e.key.toLowerCase() === 'k' && (e.ctrlKey || e.metaKey)) {
+                    e.preventDefault();
+                    input?.focus();
+                }
+                if (e.key === 'Escape' && document.activeElement === input) {
+                    (document.activeElement)?.blur();
+                }
+            });
+
+            // Parallax grid subtle move
+            const bg = document.querySelector('.bg-pattern');
+            window.addEventListener('mousemove', (e) => {
+                if (!bg) return;
+                const x = (e.clientX / window.innerWidth - 0.5) * 6;
+                const y = (e.clientY / window.innerHeight - 0.5) * 6;
+                (bg as HTMLElement).style.backgroundPosition = `${x}px ${y}px, ${-x}px ${-y}px`;
+            });
+
+            // Theme transition helper
+            document.body.classList.add('theme-anim');
         }
         
         // Event listener'ları ayarlama
