@@ -494,6 +494,7 @@
         @media (max-width: 768px) { .bottom-bar { display: block; } }
         .fab { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(2.5rem + env(safe-area-inset-bottom)); z-index: 56; width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: var(--primary); color: white; border: none; box-shadow: var(--shadow-lg); }
         .fab:active { transform: translateX(-50%) scale(0.98); }
+        .hidden { display: none !important; }
         body.minimal-on * { box-shadow: none !important; }
         body.minimal-on header, body.minimal-on footer { border-color: color-mix(in oklab, var(--primary), white 90%); }
         body.dark.minimal-on header, body.dark.minimal-on footer { border-color: color-mix(in oklab, var(--primary), black 80%); }
@@ -1130,7 +1131,7 @@
                     <div class="setting-row"><span>Daha yuvarlak köşeler</span><label class="switch"><input type="checkbox" id="setRounded"><span class="slider"></span></label></div>
                     <div class="setting-row"><span>Glass efektleri kapat</span><label class="switch"><input type="checkbox" id="setGlassOff"><span class="slider"></span></label></div>
                     <div class="setting-row"><span>Minimal görünüm</span><label class="switch"><input type="checkbox" id="setMinimal"><span class="slider"></span></label></div>
-                    <div class="setting-row"><span>Dahili sonuçları kullan</span><label class="switch"><input type="checkbox" id="setInternalResults"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Alt Ara butonunu göster</span><label class="switch"><input type="checkbox" id="setShowFab"><span class="slider"></span></label></div>
                 </div>
                 <div class="settings-card">
                     <h3>Temalar</h3>
@@ -1507,7 +1508,7 @@
             const contrast = document.getElementById('setContrast');
             const applyDarkContrast = document.getElementById('applyDarkContrast');
             const accent = document.getElementById('setAccent');
-            const internalRes = document.getElementById('setInternalResults');
+            const showFab = document.getElementById('setShowFab');
 
             // Load persisted
             const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
@@ -1546,7 +1547,10 @@
             const minimal = document.getElementById('setMinimal');
             if (minimal instanceof HTMLInputElement) minimal.checked = !!pref.minimal;
             if (accent instanceof HTMLInputElement && pref.accent) accent.value = pref.accent;
-            if (internalRes instanceof HTMLInputElement) internalRes.checked = !!pref.useInternalResults;
+            if (showFab instanceof HTMLInputElement) showFab.checked = pref.showFab !== false; // default true
+            // Apply FAB visibility on load
+            const fab = document.getElementById('fabSearch');
+            if (fab) fab.classList.toggle('hidden', showFab instanceof HTMLInputElement ? !showFab.checked : false);
 
             function save() {
                 localStorage.setItem('geniskapi-settings', JSON.stringify({
@@ -1564,7 +1568,7 @@
                     mode: modeSel instanceof HTMLSelectElement ? modeSel.value : 'auto',
                     minimal: minimal instanceof HTMLInputElement ? minimal.checked : false,
                     accent: accent instanceof HTMLInputElement ? accent.value : undefined
-                    ,useInternalResults: internalRes instanceof HTMLInputElement ? internalRes.checked : false
+                    ,showFab: showFab instanceof HTMLInputElement ? showFab.checked : true
                 }));
             }
 
@@ -1583,7 +1587,7 @@
             minimal?.addEventListener('change', () => { document.body.classList.toggle('minimal-on', minimal.checked); save(); });
             applyDarkContrast?.addEventListener('click', (e) => { e.preventDefault(); if (!document.body.classList.contains('dark')) toggleTheme(); document.body.classList.add('contrast-on'); if (contrast instanceof HTMLInputElement) contrast.checked = true; save(); });
             accent?.addEventListener('input', () => { applyAccent(accent.value); save(); });
-            internalRes?.addEventListener('change', () => { save(); });
+            showFab?.addEventListener('change', () => { document.getElementById('fabSearch')?.classList.toggle('hidden', !showFab.checked); save(); });
 
             function setThemeClass(name) {
                 const classes = ['theme-emerald','theme-blue','theme-purple','theme-rose','theme-amber'];
@@ -1660,12 +1664,7 @@
         function performSearch() {
             const query = document.getElementById('searchInput').value.trim();
             if (query) {
-                const useInternal = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}').useInternalResults;
-                if (useInternal) {
-                    window.location.href = `/results.html?q=${encodeURIComponent(query)}`;
-                } else {
-                    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
-                }
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
             }
         }
         
