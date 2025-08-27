@@ -13,7 +13,11 @@
 		header { position: sticky; top: 0; z-index: 10; display: flex; gap: .5rem; align-items: center; padding: .75rem 1rem; background: rgba(255,255,255,.6); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0,0,0,.08); }
 		@media (prefers-color-scheme: dark) { header { background: rgba(0,0,0,.5); border-bottom-color: rgba(255,255,255,.12); } }
 		input[type="search"] { flex: 1; padding: .6rem .8rem; border-radius: 999px; border: 1px solid rgba(0,0,0,.15); outline: none; }
-		.results { max-width: 900px; margin: 1rem auto; padding: 0 1rem; display: grid; gap: .75rem; }
+		.tabs { display: flex; gap: .5rem; padding: .5rem 1rem; overflow-x: auto; }
+		.tab { padding: .5rem .75rem; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); background: rgba(255,255,255,.7); cursor: pointer; white-space: nowrap; }
+		.tab.active { background: var(--primary); color: white; border-color: transparent; }
+		@media (prefers-color-scheme: dark) { .tab { background: rgba(0,0,0,.5); border-color: rgba(255,255,255,.12);} }
+		.results { max-width: 900px; margin: .25rem auto 1rem auto; padding: 0 1rem; display: grid; gap: .75rem; }
 		.card { padding: .9rem 1rem; border-radius: 14px; border: 1px solid rgba(0,0,0,.08); background: rgba(255,255,255,.7); }
 		.card h3 { margin: 0 0 .25rem; font-size: 1rem; }
 		.card p { margin: 0; opacity: .85; font-size: .9rem; }
@@ -31,6 +35,12 @@
 		<input id="q" type="search" placeholder="Ara..." />
 		<span id="meta"></span>
 	</header>
+	<nav class="tabs" id="tabs" aria-label="Sekmeler">
+		<button class="tab active" data-tab="news"><i class="fas fa-newspaper"></i> Haberler</button>
+		<button class="tab" data-tab="images"><i class="fas fa-image"></i> Görseller</button>
+		<button class="tab" data-tab="videos"><i class="fas fa-video"></i> Videolar</button>
+		<button class="tab" data-tab="maps"><i class="fas fa-map-marked-alt"></i> Haritalar</button>
+	</nav>
 	<main class="results" id="results"></main>
 	<script>
 		const params = new URLSearchParams(location.search);
@@ -38,6 +48,12 @@
 		document.getElementById('q').value = q;
 		const meta = document.getElementById('meta');
 		const results = document.getElementById('results');
+		const tabs = document.getElementById('tabs');
+		let activeTab = 'news';
+		function setActive(tab){
+			activeTab = tab;
+			[...tabs.children].forEach(btn=>btn.classList.toggle('active', btn.dataset.tab===tab));
+		}
 		function makeSkeleton(n=6){
 			results.innerHTML = '';
 			for(let i=0;i<n;i++){
@@ -47,35 +63,41 @@
 				results.appendChild(c);
 			}
 		}
+		const fake = {
+			news: (query)=>[
+				{title:`${query} - Resmi Site`, desc:`${query} hakkında resmi bilgiler.`, url:'https://example.com'},
+				{title:`${query} Nasıl Yapılır?`, desc:`Adım adım anlatım.`, url:'https://example.com/howto'},
+				{title:`${query} Son Haberler`, desc:`Güncel gelişmeler.`, url:'https://news.google.com'}
+			],
+			images: (query)=> Array.from({length:8}).map((_,i)=>({title:`${query} Görsel ${i+1}`, desc:'', url:'https://www.google.com/imghp'})),
+			videos: (query)=> Array.from({length:6}).map((_,i)=>({title:`${query} Video ${i+1}`, desc:'', url:'https://www.youtube.com'})),
+			maps: (query)=>[{title:`${query} Harita`, desc:'Haritalarda ara', url:'https://www.google.com/maps'}]
+		};
 		function render(items){
 			results.innerHTML = '';
 			items.forEach(({title,desc,url})=>{
 				const c = document.createElement('div');
 				c.className = 'card';
-				c.innerHTML = `<h3><a href="${url}" target="_blank">${title}</a></h3><p>${desc}</p>`;
+				c.innerHTML = `<h3><a href="${url}" target="_blank">${title}</a></h3>${desc?`<p>${desc}</p>`:''}`;
 				results.appendChild(c);
-			});
-		}
-		function fakeFetch(query){
-			return new Promise(res=>{
-				setTimeout(()=>{
-					const base = [
-						{title:`${query} - Resmi Site`, desc:`${query} hakkında resmi bilgiler.`, url:'https://example.com'},
-						{title:`${query} Nasıl Yapılır?`, desc:`${query} ile ilgili adım adım anlatım.`, url:'https://example.com/howto'},
-						{title:`${query} Son Haberler`, desc:`Güncel gelişmeler ve haberler.`, url:'https://news.google.com'}
-					];
-					res(base);
-				}, 800);
 			});
 		}
 		async function run(){
 			if(!q){ meta.textContent = ''; results.innerHTML = ''; return; }
 			meta.innerHTML = `<span class="badge"><i class=\"fas fa-tag\"></i> ${q}</span>`;
-			makeSkeleton(6);
-			const items = await fakeFetch(q);
-			render(items);
+			makeSkeleton(activeTab==='images'?8:activeTab==='videos'?6:6);
+			// Simüle gecikme
+			await new Promise(r=>setTimeout(r, 700));
+			render(fake[activeTab](q));
 		}
 		document.getElementById('q').addEventListener('keypress', (e)=>{ if(e.key==='Enter'){ location.href = '/results.html?q=' + encodeURIComponent(e.target.value.trim()); }});
+		tabs.addEventListener('click', (e)=>{
+			const btn = e.target.closest('.tab');
+			if(!btn) return;
+			setActive(btn.dataset.tab);
+			run();
+		});
+		setActive('news');
 		run();
 	</script>
 </body>
