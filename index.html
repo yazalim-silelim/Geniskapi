@@ -336,6 +336,69 @@
             text-decoration: underline;
         }
 
+        /* Yenilikler section */
+        .section {
+            width: 100%;
+            max-width: 1100px;
+            margin: 4rem auto 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 10;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 1.25rem;
+        }
+        .section-title {
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            background: color-mix(in oklab, var(--primary-light), white 10%);
+            color: var(--primary-dark);
+            border: 1px solid color-mix(in oklab, var(--primary), white 80%);
+        }
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .news-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .news-card {
+            position: relative;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            background: color-mix(in oklab, white 85%, var(--primary) 2%);
+            border: 1px solid color-mix(in oklab, var(--primary), white 86%);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            overflow: hidden;
+            transform: translateY(6px);
+            opacity: 0;
+        }
+        body.dark .news-card {
+            background: color-mix(in oklab, black 78%, var(--primary) 10%);
+            border-color: color-mix(in oklab, var(--primary), black 70%);
+        }
+        .news-card:hover { transform: translateY(0); box-shadow: var(--shadow); }
+        .news-card.reveal { opacity: 1; transform: translateY(0); }
+        .news-title { font-weight: 700; margin-bottom: 0.25rem; }
+        .news-desc { font-size: 0.9rem; opacity: 0.85; }
+        .news-meta { margin-top: 0.75rem; display: flex; gap: 0.5rem; align-items: center; font-size: 0.8rem; color: var(--dark-3); }
+        body.dark .news-meta { color: var(--light-3); }
+        .news-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary), transparent 85%); }
+
         .theme-toggle {
             background: none;
             border: none;
@@ -807,6 +870,10 @@
                 <i class="fas fa-comment-dots"></i>
                 <span>Geri Bildirim</span>
             </a>
+            <a href="#yenilikler" class="nav-link" aria-label="Yenilikler">
+                <i class="fas fa-bolt"></i>
+                <span>Yenilikler</span>
+            </a>
         </div>
         
         <button class="theme-toggle" id="themeToggle" aria-label="Temayı değiştir">
@@ -880,6 +947,33 @@
         </div>
     </main>
     
+    <section class="section" id="yenilikler">
+        <div class="section-header">
+            <h2 class="section-title">Yenilikler</h2>
+            <span class="badge"><i class="fas fa-bolt"></i> Güncel</span>
+        </div>
+        <div class="news-grid">
+            <article class="news-card" aria-label="Arayüz ve Tema Güncellemeleri">
+                <div class="news-dot" aria-hidden="true"></div>
+                <h3 class="news-title">Arayüz ve Tema Güncellemeleri</h3>
+                <p class="news-desc">Cam etkileri, koyu/açık tema uyumu ve daha temiz focus halkaları eklendi.</p>
+                <div class="news-meta"><i class="fas fa-clock"></i> 2025</div>
+            </article>
+            <article class="news-card" aria-label="Performans ve Erişilebilirlik">
+                <div class="news-dot" aria-hidden="true"></div>
+                <h3 class="news-title">Performans ve Erişilebilirlik</h3>
+                <p class="news-desc">`/` kısayoluyla aramaya odaklanma, skip link, geliştirilmiş ARIA ve daha akıcı mikro animasyonlar.</p>
+                <div class="news-meta"><i class="fas fa-universal-access"></i> Daha iyi erişilebilirlik</div>
+            </article>
+            <article class="news-card" aria-label="PWA Hazırlıkları">
+                <div class="news-dot" aria-hidden="true"></div>
+                <h3 class="news-title">PWA Hazırlıkları</h3>
+                <p class="news-desc">Manifest ve servis çalışanı eklendi; mobilde gelişmiş `theme-color` ve kurulum desteği.</p>
+                <div class="news-meta"><i class="fas fa-download"></i> Kurulabilir</div>
+            </article>
+        </div>
+    </section>
+
     <footer>
         <p>© 2025 GenişKapı V2 | Google arama teknolojisi kullanılmaktadır</p>
         <div class="footer-links" role="contentinfo" aria-label="Alt bilgi bağlantıları">
@@ -891,6 +985,18 @@
     </footer>
     
     <script>
+        // Reveal on scroll for news cards
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('reveal');
+                    revealObserver.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.news-card').forEach(el => revealObserver.observe(el));
+        });
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').catch(() => {});
