@@ -67,8 +67,13 @@
             z-index: 50;
             backdrop-filter: saturate(140%) blur(10px);
             -webkit-backdrop-filter: saturate(140%) blur(10px);
-            background: color-mix(in oklab, white 60%, var(--primary) 4%);
+            background: color-mix(in oklab, white 70%, var(--primary) 3%);
             border-bottom: 1px solid color-mix(in oklab, var(--primary), white 85%);
+        }
+
+        body.dark header {
+            background: color-mix(in oklab, black 82%, var(--primary) 10%);
+            border-bottom-color: color-mix(in oklab, var(--primary), black 70%);
         }
 
         .header-nav {
@@ -660,23 +665,13 @@
             background: color-mix(in oklab, black 70%, var(--primary) 10%);
             border-color: color-mix(in oklab, var(--primary), black 75%);
         }
-        .search-box:focus-within::after {
-            content: "";
-            position: absolute;
-            inset: -2px;
-            border-radius: inherit;
-            background:
-                conic-gradient(from 180deg at 50% 50%, color-mix(in oklab, var(--primary), white 10%), transparent 20%, color-mix(in oklab, var(--primary), white 20%), transparent 60%, color-mix(in oklab, var(--primary), white 10%));
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            padding: 2px;
-            filter: blur(0.5px);
-            animation: ringSpin 6s linear infinite;
-            pointer-events: none;
+        /* Simplified focus ring without spinning conic effect */
+        .search-box:focus-within {
+            box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary), white 70%);
         }
-        @keyframes ringSpin { to { transform: rotate(360deg); } }
+        body.dark .search-box:focus-within {
+            box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary), black 70%);
+        }
 
         .search-input::placeholder {
             color: color-mix(in oklab, var(--dark-3), white 20%);
