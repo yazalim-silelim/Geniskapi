@@ -65,6 +65,10 @@
             align-items: center;
             position: relative;
             z-index: 50;
+            backdrop-filter: saturate(140%) blur(10px);
+            -webkit-backdrop-filter: saturate(140%) blur(10px);
+            background: color-mix(in oklab, white 60%, var(--primary) 4%);
+            border-bottom: 1px solid color-mix(in oklab, var(--primary), white 85%);
         }
 
         .header-nav {
@@ -286,13 +290,17 @@
             text-align: center;
             font-size: 0.875rem;
             color: var(--dark-3);
-            background-color: var(--light-2);
+            background: color-mix(in oklab, white 70%, var(--primary) 3%);
+            border-top: 1px solid color-mix(in oklab, var(--primary), white 85%);
+            backdrop-filter: saturate(130%) blur(8px);
+            -webkit-backdrop-filter: saturate(130%) blur(8px);
             transition: var(--transition);
         }
 
         body.dark footer {
-            background-color: var(--dark-2);
+            background: color-mix(in oklab, black 82%, var(--primary) 10%);
             color: var(--light-3);
+            border-top-color: color-mix(in oklab, var(--primary), black 70%);
         }
 
         .footer-links {
@@ -346,51 +354,7 @@
             background-color: var(--dark-2);
         }
 
-        .search-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background-color: white;
-            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-            box-shadow: var(--shadow-md);
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 100;
-            display: none;
-            margin-top: 0;
-        }
-
-        body.dark .search-suggestions {
-            background-color: var(--dark-2);
-            border: 1px solid var(--dark-3);
-        }
-
-        .suggestion-item {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .suggestion-item:hover {
-            background-color: var(--light-2);
-            transform: translateX(2px);
-        }
-
-        body.dark .suggestion-item:hover {
-            background-color: var(--dark-3);
-        }
-
-        .suggestion-icon {
-            color: var(--dark-3);
-        }
-
-        body.dark .suggestion-icon {
-            color: var(--light-3);
-        }
+        /* (removed) search suggestions */
 
         .bg-pattern {
             position: absolute;
@@ -400,7 +364,11 @@
             bottom: 0;
             overflow: hidden;
             z-index: 0;
-            opacity: 0.03;
+            opacity: 0.04;
+            background-image:
+                linear-gradient(to right, color-mix(in oklab, var(--primary), transparent 96%) 1px, transparent 1px),
+                linear-gradient(to bottom, color-mix(in oklab, var(--primary), transparent 96%) 1px, transparent 1px);
+            background-size: 24px 24px;
         }
 
         body.dark .bg-pattern {
@@ -456,13 +424,7 @@
             animation: pulse 2s infinite;
         }
 
-        /* Dropdown placement and animation */
-        .search-suggestions { top: calc(100% + 8px); border-radius: var(--radius-lg); }
-        @keyframes dropdownIn {
-            0% { opacity: 0; transform: translateY(-6px) scale(0.98); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .search-suggestions.open { display: block; animation: dropdownIn 240ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+        /* (removed) search suggestions animation */
 
         /* Search box focus micro-interactions */
         .search-box:focus-within .search-button { color: var(--primary); transform: scale(1.05); }
@@ -543,19 +505,7 @@
 
         .quick-action:hover .action-icon { transform: translateY(-2px) rotate(-4deg) scale(1.05); }
 
-        /* Suggestion items entrance */
-        @keyframes suggestIn {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .search-suggestions.open .suggestion-item { animation: suggestIn 220ms ease forwards; }
-        .search-suggestions.open .suggestion-item:nth-child(1) { animation-delay: 0ms; }
-        .search-suggestions.open .suggestion-item:nth-child(2) { animation-delay: 30ms; }
-        .search-suggestions.open .suggestion-item:nth-child(3) { animation-delay: 60ms; }
-        .search-suggestions.open .suggestion-item:nth-child(4) { animation-delay: 90ms; }
-        .search-suggestions.open .suggestion-item:nth-child(5) { animation-delay: 120ms; }
-        .search-suggestions.open .suggestion-item:nth-child(6) { animation-delay: 150ms; }
-        .search-suggestions.open .suggestion-item:nth-child(7) { animation-delay: 180ms; }
+        /* (removed) suggestion items entrance */
 
         .loader {
             display: none;
@@ -710,14 +660,23 @@
             background: color-mix(in oklab, black 70%, var(--primary) 10%);
             border-color: color-mix(in oklab, var(--primary), black 75%);
         }
-        .search-box:focus-within,
-        .search-box:has(.search-input:focus-visible) {
-            box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary), white 70%);
+        .search-box:focus-within::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background:
+                conic-gradient(from 180deg at 50% 50%, color-mix(in oklab, var(--primary), white 10%), transparent 20%, color-mix(in oklab, var(--primary), white 20%), transparent 60%, color-mix(in oklab, var(--primary), white 10%));
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            padding: 2px;
+            filter: blur(0.5px);
+            animation: ringSpin 6s linear infinite;
+            pointer-events: none;
         }
-        body.dark .search-box:focus-within,
-        body.dark .search-box:has(.search-input:focus-visible) {
-            box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary), black 70%);
-        }
+        @keyframes ringSpin { to { transform: rotate(360deg); } }
 
         .search-input::placeholder {
             color: color-mix(in oklab, var(--dark-3), white 20%);
@@ -776,15 +735,7 @@
             background: color-mix(in oklab, black 78%, var(--primary) 8%);
         }
 
-        /* Suggestion list surface */
-        .search-suggestions {
-            backdrop-filter: blur(8px) saturate(130%);
-            -webkit-backdrop-filter: blur(8px) saturate(130%);
-            border: 1px solid color-mix(in oklab, var(--primary), white 85%);
-        }
-        body.dark .search-suggestions {
-            border-color: color-mix(in oklab, var(--primary), black 75%);
-        }
+        /* (removed) suggestion list surface */
 
         /* Accessibility: larger touch targets */
         .search-button,
@@ -805,12 +756,10 @@
 
         /* Respect system backdrops */
         @supports not (backdrop-filter: blur(4px)) {
-            .search-box,
-            .search-suggestions {
+            .search-box {
                 background: color-mix(in oklab, white 92%, var(--primary) 2%);
             }
-            body.dark .search-box,
-            body.dark .search-suggestions {
+            body.dark .search-box {
                 background: color-mix(in oklab, black 72%, var(--primary) 10%);
             }
         }
@@ -865,10 +814,6 @@
                 <button class="search-button" id="searchButton">
                     <i class="fas fa-search"></i>
                 </button>
-                
-                <div class="search-suggestions" id="searchSuggestions">
-                    <!-- Suggestions will be populated here -->
-                </div>
             </div>
             
             <div class="action-buttons">
@@ -942,10 +887,7 @@
             // Arka plan animasyonunu başlat
             initBackgroundAnimation();
             
-            // Demo arama önerileri ekle
-            setTimeout(() => {
-                showDemoSuggestions();
-            }, 1000);
+            // Öneriler kaldırıldı
         });
         
         // Tema kontrol fonksiyonu
@@ -976,18 +918,13 @@
                 }
             });
             
-            // Arama kutusu odaklanma
+            // Arama kutusu odaklanma (öneriler kaldırıldı)
             document.getElementById('searchInput').addEventListener('focus', function() {
                 document.getElementById('searchBox').classList.add('focused');
-                const s = document.getElementById('searchSuggestions');
-                s.classList.add('open');
             });
-            
             document.getElementById('searchInput').addEventListener('blur', function() {
                 setTimeout(() => {
                     document.getElementById('searchBox').classList.remove('focused');
-                    const s = document.getElementById('searchSuggestions');
-                    s.classList.remove('open');
                 }, 200);
             });
             
@@ -1092,37 +1029,7 @@
             });
         }
         
-        // Demo arama önerileri
-        function showDemoSuggestions() {
-            const suggestions = [
-                { icon: 'fa-search', text: 'GenişKapı V2 nedir?' },
-                { icon: 'fa-newspaper', text: 'Son teknoloji haberleri 2025' },
-                { icon: 'fa-map', text: 'İstanbul hava durumu' },
-                { icon: 'fa-film', text: '2025 film önerileri' },
-                { icon: 'fa-utensils', text: 'En iyi restoranlar' },
-                { icon: 'fa-mobile', text: 'Yeni çıkan telefonlar' },
-                { icon: 'fa-gamepad', text: 'Popüler oyunlar' }
-            ];
-            
-            const suggestionsContainer = document.getElementById('searchSuggestions');
-            suggestionsContainer.innerHTML = '';
-            
-            suggestions.forEach(suggestion => {
-                const suggestionItem = document.createElement('div');
-                suggestionItem.className = 'suggestion-item';
-                suggestionItem.innerHTML = `
-                    <i class="fas ${suggestion.icon} suggestion-icon"></i>
-                    <span>${suggestion.text}</span>
-                `;
-                
-                suggestionItem.addEventListener('click', () => {
-                    document.getElementById('searchInput').value = suggestion.text;
-                    performSearch();
-                });
-                
-                suggestionsContainer.appendChild(suggestionItem);
-            });
-        }
+        // (öneriler kaldırıldı)
     </script>
 </body>
 </html>
