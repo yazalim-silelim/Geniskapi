@@ -7,8 +7,14 @@
     <meta name="msvalidate.01" content="2572B86A9F2EE5C376ABEC7FE2BA749A" />
     <title>Yeni çağın arama motoru: GenişKapı.</title>
      <meta name="description" content="GenişKapı tarayıcısı normal tarayıcılardan daha modern ve hızlı tarayıcıdır.">
-</head>
+ 
     <meta name="keywords" content="GenişKapı, Yazalım Silelim, GenişKapı search engine, Geniskapi search engine, search engine, search">
+    <meta name="theme-color" content="#10B981">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -654,6 +660,28 @@
             outline-offset: 2px;
         }
 
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+        .skip-link:focus {
+            left: 1rem;
+            top: 1rem;
+            width: auto;
+            height: auto;
+            padding: 0.5rem 0.75rem;
+            background: var(--surface);
+            color: var(--text-dark);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            z-index: 9999;
+        }
+
         /* Glassy search */
         .search-box {
             background: color-mix(in oklab, white 80%, var(--primary) 2%);
@@ -761,6 +789,7 @@
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#main">İçeriğe geç</a>
     <!-- Loading Screen -->
     <div class="loader" id="loader">
         <div class="spinner"></div>
@@ -768,24 +797,24 @@
     </div>
     
     <!-- Main App -->
-    <header>
-        <div class="header-nav">
-            <a href="loading.html" class="nav-link">
+    <header role="banner">
+        <div class="header-nav" role="navigation" aria-label="Üst gezinme">
+            <a href="loading.html" class="nav-link" aria-label="Versiyonlar sayfası">
                 <i class="fas fa-code-branch"></i>
                 <span>Versiyonlar</span>
             </a>
-            <a href="#" class="nav-link" id="feedbackButton">
+            <a href="#" class="nav-link" id="feedbackButton" aria-label="Geri bildirim gönder">
                 <i class="fas fa-comment-dots"></i>
                 <span>Geri Bildirim</span>
             </a>
         </div>
         
-        <button class="theme-toggle" id="themeToggle">
+        <button class="theme-toggle" id="themeToggle" aria-label="Temayı değiştir">
             <i class="fas fa-moon"></i>
         </button>
     </header>
     
-    <main>
+    <main id="main">
         <!-- Background Animation -->
         <div class="bg-pattern">
             <div class="bg-circle" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
@@ -800,23 +829,23 @@
             <p class="logo-slogan">Yeni Nesil Arama Deneyimi</p>
         </div>
         
-        <div class="search-container">
+        <div class="search-container" role="search" aria-label="Sitede ara">
             <div class="search-box" id="searchBox">
-                <input type="text" class="search-input" id="searchInput" placeholder="GenişKapı V2'de arama yapın..." autofocus>
-                <button class="search-button" id="voiceSearch">
+                <input type="text" class="search-input" id="searchInput" placeholder="GenişKapı V2'de arama yapın..." autocomplete="on" aria-label="Arama" autofocus>
+                <button class="search-button" id="voiceSearch" aria-label="Sesli arama">
                     <i class="fas fa-microphone"></i>
                 </button>
-                <button class="search-button" id="searchButton">
+                <button class="search-button" id="searchButton" aria-label="Ara">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
             
             <div class="action-buttons">
-                <button class="btn btn-primary" id="searchAction">
+                <button class="btn btn-primary" id="searchAction" aria-label="GenişKapı'da ara">
                     <i class="fas fa-search"></i>
                     GenişKapı'da Ara
                 </button>
-                <button class="btn btn-secondary" id="luckyButton">
+                <button class="btn btn-secondary" id="luckyButton" aria-label="Kendimi şanslı hissediyorum">
                     <i class="fas fa-feather-alt"></i>
                     Kendimi Şanslı Hissediyorum
                 </button>
@@ -853,15 +882,20 @@
     
     <footer>
         <p>© 2025 GenişKapı V2 | Google arama teknolojisi kullanılmaktadır</p>
-        <div class="footer-links">
-            <a href="#" class="footer-link">Gizlilik Politikası</a>
-            <a href="#" class="footer-link">Kullanım Şartları</a>
-            <a href="#" class="footer-link">Hakkımızda</a>
-            <a href="#" class="footer-link">İletişim</a>
+        <div class="footer-links" role="contentinfo" aria-label="Alt bilgi bağlantıları">
+            <a href="#" class="footer-link" aria-label="Gizlilik Politikası">Gizlilik Politikası</a>
+            <a href="#" class="footer-link" aria-label="Kullanım Şartları">Kullanım Şartları</a>
+            <a href="#" class="footer-link" aria-label="Hakkımızda">Hakkımızda</a>
+            <a href="#" class="footer-link" aria-label="İletişim">İletişim</a>
         </div>
     </footer>
     
     <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
         // Uygulama başlatma
         document.addEventListener('DOMContentLoaded', function() {
             // Yükleme ekranını göster
@@ -953,6 +987,15 @@
                 window.open('https://www.google.com/maps', '_blank');
             });
             
+            // Slash shortcut to focus search
+            window.addEventListener('keydown', (e) => {
+                if (e.key === '/' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.defaultPrevented)) {
+                    e.preventDefault();
+                    const input = document.getElementById('searchInput');
+                    if (input) input.focus();
+                }
+            });
+
             // Geri bildirim butonu
             document.getElementById('feedbackButton').addEventListener('click', function(e) {
                 e.preventDefault();
@@ -971,6 +1014,10 @@
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             } else {
                 themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) {
+                metaTheme.setAttribute('content', isDark ? '#0b0b0d' : '#10B981');
             }
         }
         
