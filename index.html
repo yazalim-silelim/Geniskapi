@@ -465,6 +465,25 @@
         body.glass-off .search-box { backdrop-filter: none; -webkit-backdrop-filter: none; }
         @media (max-width: 480px) { .modal-card { width: 100vw; height: 100vh; border-radius: 0; padding: 1rem; } }
         a, button { -webkit-tap-highlight-color: transparent; }
+
+        /* Command Palette */
+        .cmdk { position: fixed; inset: 0; display: none; align-items: flex-start; justify-content: center; padding-top: 10vh; background: rgba(0,0,0,0.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 1100; }
+        .cmdk.open { display: flex; }
+        .cmdk-card { width: min(720px, 94vw); background: color-mix(in oklab, white 94%, var(--primary) 2%); border: 1px solid color-mix(in oklab, var(--primary), white 85%); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); overflow: hidden; }
+        body.dark .cmdk-card { background: color-mix(in oklab, black 80%, var(--primary) 8%); border-color: color-mix(in oklab, var(--primary), black 70%); }
+        .cmdk-search { width: 100%; padding: 0.9rem 1rem; border: none; outline: none; font-size: 1rem; background: transparent; color: inherit; }
+        .cmdk-list { max-height: 50vh; overflow: auto; padding: 0.25rem; }
+        .cmdk-item { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.65rem 0.75rem; border-radius: var(--radius); cursor: pointer; }
+        .cmdk-item:hover, .cmdk-item.active { background: color-mix(in oklab, var(--primary), white 90%); }
+        body.dark .cmdk-item:hover, body.dark .cmdk-item.active { background: color-mix(in oklab, var(--primary), black 80%); }
+        .cmdk-hint { font-size: 0.75rem; opacity: 0.75; padding: 0.5rem 0.75rem; display: flex; justify-content: space-between; }
+
+        /* Skeletons for Yenilikler */
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .news-card.skeleton { position: relative; overflow: hidden; }
+        .news-card.skeleton * { opacity: 0; }
+        .news-card.skeleton::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(0,0,0,0.08), rgba(0,0,0,0.04)); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        body.dark .news-card.skeleton::after { background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.08), rgba(255,255,255,0.04)); }
         body.minimal-on * { box-shadow: none !important; }
         body.minimal-on header, body.minimal-on footer { border-color: color-mix(in oklab, var(--primary), white 90%); }
         body.dark.minimal-on header, body.dark.minimal-on footer { border-color: color-mix(in oklab, var(--primary), black 80%); }
@@ -1142,6 +1161,15 @@
         </div>
     </div>
 
+    <!-- Command Palette -->
+    <div class="cmdk" id="cmdk" role="dialog" aria-modal="true" aria-label="Komut Paleti">
+        <div class="cmdk-card">
+            <input id="cmdkSearch" class="cmdk-search" placeholder="Komut arayın (ör. Tema: Karanlık)" aria-label="Komut ara" />
+            <div class="cmdk-list" id="cmdkList"></div>
+            <div class="cmdk-hint"><span>Ok tuşları + Enter</span><span>Esc ile kapat</span></div>
+        </div>
+    </div>
+
     <section class="section" id="yenilikler">
         <div class="section-header">
             <h2 class="section-title">Yenilikler</h2>
@@ -1195,6 +1223,10 @@
         }, { threshold: 0.2 });
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.news-card').forEach(el => revealObserver.observe(el));
+            // Add skeleton state initially, remove after a short delay to simulate load
+            const news = document.querySelectorAll('.news-card');
+            news.forEach(el => el.classList.add('skeleton'));
+            setTimeout(() => news.forEach(el => el.classList.remove('skeleton')), 800);
         });
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1275,14 +1307,14 @@
                 });
             });
 
-            // Ctrl+K focus search, Esc blur
+            // Ctrl/Cmd+K: open command palette; Esc: blur/close
             window.addEventListener('keydown', (e) => {
                 const input = document.getElementById('searchInput');
                 if (e.key.toLowerCase() === 'k' && (e.ctrlKey || e.metaKey)) {
                     e.preventDefault();
-                    input?.focus();
+                    openCommandPalette();
                 }
-                if (e.key === 'Escape' && document.activeElement === input) {
+                if (e.key === 'Escape' && (document.activeElement === input)) {
                     (document.activeElement)?.blur();
                 }
             });
@@ -1301,6 +1333,46 @@
 
             // Theme transition helper
             document.body.classList.add('theme-anim');
+
+            // Command Palette logic
+            const cmdk = document.getElementById('cmdk');
+            const cmdkSearch = document.getElementById('cmdkSearch');
+            const cmdkList = document.getElementById('cmdkList');
+            const actions = [
+                { label: 'Tema: Karanlık', run: () => { if (!document.body.classList.contains('dark')) toggleTheme(); } },
+                { label: 'Tema: Aydınlık', run: () => { if (document.body.classList.contains('dark')) toggleTheme(); } },
+                { label: 'Ayarlar: Aç', run: () => { document.getElementById('settingsModal')?.classList.add('open'); } },
+                { label: 'Grid: Aç/Kapat', run: () => { const el = document.getElementById('setGrid'); if (el instanceof HTMLInputElement) { el.checked = !el.checked; el.dispatchEvent(new Event('change')); } } },
+                { label: 'Kontrast: Aç/Kapat', run: () => { const el = document.getElementById('setContrast'); if (el instanceof HTMLInputElement) { el.checked = !el.checked; el.dispatchEvent(new Event('change')); } } },
+                { label: 'Dil: Türkçe', run: () => { const el = document.getElementById('setLang'); if (el instanceof HTMLSelectElement) { el.value = 'tr'; el.dispatchEvent(new Event('change')); } } },
+                { label: 'Language: English', run: () => { const el = document.getElementById('setLang'); if (el instanceof HTMLSelectElement) { el.value = 'en'; el.dispatchEvent(new Event('change')); } } },
+                { label: 'Arama: Odaklan', run: () => document.getElementById('searchInput')?.focus() },
+            ];
+            function renderActions(filter = '') {
+                const q = filter.trim().toLowerCase();
+                cmdkList.innerHTML = '';
+                actions.filter(a => a.label.toLowerCase().includes(q)).forEach((a, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'cmdk-item';
+                    item.textContent = a.label;
+                    item.tabIndex = 0;
+                    item.addEventListener('click', () => { a.run(); closeCommandPalette(); });
+                    cmdkList.appendChild(item);
+                    if (i === 0) item.classList.add('active');
+                });
+            }
+            window.openCommandPalette = function() { cmdk.classList.add('open'); renderActions(); cmdkSearch.value=''; cmdkSearch.focus(); };
+            window.closeCommandPalette = function() { cmdk.classList.remove('open'); };
+            cmdk?.addEventListener('click', (e) => { if (e.target === cmdk) window.closeCommandPalette(); });
+            cmdkSearch?.addEventListener('input', () => renderActions(cmdkSearch.value));
+            cmdkSearch?.addEventListener('keydown', (e) => {
+                const items = Array.from(cmdkList.querySelectorAll('.cmdk-item'));
+                const idx = items.findIndex(x => x.classList.contains('active'));
+                if (e.key === 'ArrowDown') { e.preventDefault(); const ni = Math.min(idx + 1, items.length - 1); items[idx]?.classList.remove('active'); items[ni]?.classList.add('active'); items[ni]?.scrollIntoView({ block: 'nearest' }); }
+                if (e.key === 'ArrowUp') { e.preventDefault(); const pi = Math.max(idx - 1, 0); items[idx]?.classList.remove('active'); items[pi]?.classList.add('active'); items[pi]?.scrollIntoView({ block: 'nearest' }); }
+                if (e.key === 'Enter') { e.preventDefault(); const active = items.find(x => x.classList.contains('active')); active?.dispatchEvent(new Event('click')); }
+                if (e.key === 'Escape') { e.preventDefault(); window.closeCommandPalette(); }
+            });
         }
         
         // Event listener'ları ayarlama
@@ -1524,7 +1596,11 @@
         
         // Tema değiştirme fonksiyonu
         function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark');
+            const transition = document.startViewTransition ? document.startViewTransition.bind(document) : (fn) => { fn(); return { finished: Promise.resolve() }; };
+            let isDark;
+            transition(() => {
+                isDark = document.body.classList.toggle('dark');
+            });
             localStorage.setItem('geniskapi-theme', isDark ? 'dark' : 'light');
             
             const themeToggle = document.getElementById('themeToggle');
