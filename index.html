@@ -459,6 +459,11 @@
         body.glass-off footer { background: color-mix(in oklab, white 94%, var(--primary) 2%); }
         body.dark.glass-off footer { background: color-mix(in oklab, black 86%, var(--primary) 8%); }
         body.glass-off .search-box { backdrop-filter: none; -webkit-backdrop-filter: none; }
+        body.minimal-on * { box-shadow: none !important; }
+        body.minimal-on header, body.minimal-on footer { border-color: color-mix(in oklab, var(--primary), white 90%); }
+        body.dark.minimal-on header, body.dark.minimal-on footer { border-color: color-mix(in oklab, var(--primary), black 80%); }
+        body.minimal-on .quick-action:hover { transform: none; }
+        body.minimal-on .btn-primary { background: var(--primary); }
 
         .theme-toggle {
             background: none;
@@ -1081,10 +1086,18 @@
                     <div class="setting-row"><span>Compact görünüm</span><label class="switch"><input type="checkbox" id="setCompact"><span class="slider"></span></label></div>
                     <div class="setting-row"><span>Daha yuvarlak köşeler</span><label class="switch"><input type="checkbox" id="setRounded"><span class="slider"></span></label></div>
                     <div class="setting-row"><span>Glass efektleri kapat</span><label class="switch"><input type="checkbox" id="setGlassOff"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Minimal görünüm</span><label class="switch"><input type="checkbox" id="setMinimal"><span class="slider"></span></label></div>
                 </div>
                 <div class="settings-card">
                     <h3>Temalar</h3>
                     <div class="setting-row"><span>Koyu Tema</span><label class="switch"><input type="checkbox" id="setDark"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Tema Modu</span>
+                        <select id="setMode" aria-label="Tema modu">
+                            <option value="auto">Otomatik</option>
+                            <option value="light">Aydınlık</option>
+                            <option value="dark">Karanlık</option>
+                        </select>
+                    </div>
                     <div class="setting-row"><span>Renk Teması</span>
                         <select id="setTheme" aria-label="Renk teması">
                             <option value="emerald">Zümrüt</option>
@@ -1095,6 +1108,7 @@
                         </select>
                     </div>
                     <div class="setting-row"><span>Yüksek Kontrast</span><label class="switch"><input type="checkbox" id="setContrast"><span class="slider"></span></label></div>
+                    <div class="setting-row"><button class="btn btn-secondary" id="applyDarkContrast">Koyu + Kontrast Uygula</button></div>
                 </div>
                 <div class="settings-card">
                     <h3>Diller</h3>
@@ -1363,7 +1377,9 @@
             const rounded = document.getElementById('setRounded');
             const glassOff = document.getElementById('setGlassOff');
             const themeSel = document.getElementById('setTheme');
+            const modeSel = document.getElementById('setMode');
             const contrast = document.getElementById('setContrast');
+            const applyDarkContrast = document.getElementById('applyDarkContrast');
 
             // Load persisted
             const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
@@ -1385,6 +1401,7 @@
             if (pref.glassOff) document.body.classList.add('glass-off');
             if (pref.theme) setThemeClass(pref.theme);
             if (pref.contrast) document.body.classList.add('contrast-on');
+            if (pref.minimal) document.body.classList.add('minimal-on');
 
             if (grid instanceof HTMLInputElement) grid.checked = !!pref.grid;
             if (qa instanceof HTMLInputElement) qa.checked = !!pref.qa;
@@ -1397,6 +1414,9 @@
             if (glassOff instanceof HTMLInputElement) glassOff.checked = !!pref.glassOff;
             if (themeSel instanceof HTMLSelectElement && pref.theme) themeSel.value = pref.theme;
             if (contrast instanceof HTMLInputElement) contrast.checked = !!pref.contrast;
+            if (modeSel instanceof HTMLSelectElement && pref.mode) modeSel.value = pref.mode;
+            const minimal = document.getElementById('setMinimal');
+            if (minimal instanceof HTMLInputElement) minimal.checked = !!pref.minimal;
 
             function save() {
                 localStorage.setItem('geniskapi-settings', JSON.stringify({
@@ -1410,7 +1430,9 @@
                     rounded: rounded instanceof HTMLInputElement ? rounded.checked : false,
                     glassOff: glassOff instanceof HTMLInputElement ? glassOff.checked : false,
                     theme: themeSel instanceof HTMLSelectElement ? themeSel.value : 'emerald',
-                    contrast: contrast instanceof HTMLInputElement ? contrast.checked : false
+                    contrast: contrast instanceof HTMLInputElement ? contrast.checked : false,
+                    mode: modeSel instanceof HTMLSelectElement ? modeSel.value : 'auto',
+                    minimal: minimal instanceof HTMLInputElement ? minimal.checked : false
                 }));
             }
 
@@ -1425,11 +1447,25 @@
             glassOff?.addEventListener('change', () => { document.body.classList.toggle('glass-off', glassOff.checked); save(); });
             themeSel?.addEventListener('change', () => { setThemeClass(themeSel.value); save(); });
             contrast?.addEventListener('change', () => { document.body.classList.toggle('contrast-on', contrast.checked); save(); });
+            modeSel?.addEventListener('change', () => { applyMode(modeSel.value); save(); });
+            minimal?.addEventListener('change', () => { document.body.classList.toggle('minimal-on', minimal.checked); save(); });
+            applyDarkContrast?.addEventListener('click', (e) => { e.preventDefault(); if (!document.body.classList.contains('dark')) toggleTheme(); document.body.classList.add('contrast-on'); if (contrast instanceof HTMLInputElement) contrast.checked = true; save(); });
 
             function setThemeClass(name) {
                 const classes = ['theme-emerald','theme-blue','theme-purple','theme-rose','theme-amber'];
                 document.body.classList.remove(...classes);
                 document.body.classList.add(`theme-${name}`);
+            }
+
+            function applyMode(mode) {
+                if (mode === 'auto') {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (prefersDark !== document.body.classList.contains('dark')) toggleTheme();
+                } else if (mode === 'dark') {
+                    if (!document.body.classList.contains('dark')) toggleTheme();
+                } else if (mode === 'light') {
+                    if (document.body.classList.contains('dark')) toggleTheme();
+                }
             }
 
             // i18n minimal labels (TR/EN)
