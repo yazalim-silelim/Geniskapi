@@ -484,6 +484,16 @@
         .news-card.skeleton * { opacity: 0; }
         .news-card.skeleton::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(0,0,0,0.08), rgba(0,0,0,0.04)); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
         body.dark .news-card.skeleton::after { background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.08), rgba(255,255,255,0.04)); }
+
+        /* Bottom bar + FAB (mobile) */
+        .bottom-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; display: none; padding: 0.25rem calc(1rem + env(safe-area-inset-right)) calc(0.25rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left)); background: color-mix(in oklab, white 90%, var(--primary) 3%); border-top: 1px solid color-mix(in oklab, var(--primary), white 85%); backdrop-filter: blur(8px) saturate(120%); -webkit-backdrop-filter: blur(8px) saturate(120%); }
+        body.dark .bottom-bar { background: color-mix(in oklab, black 80%, var(--primary) 8%); border-top-color: color-mix(in oklab, var(--primary), black 70%); }
+        .bottom-actions { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+        .bottom-actions a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; color: inherit; text-decoration: none; }
+        .bottom-actions a:active { transform: scale(0.98); }
+        @media (max-width: 768px) { .bottom-bar { display: block; } }
+        .fab { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(2.5rem + env(safe-area-inset-bottom)); z-index: 56; width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: var(--primary); color: white; border: none; box-shadow: var(--shadow-lg); }
+        .fab:active { transform: translateX(-50%) scale(0.98); }
         body.minimal-on * { box-shadow: none !important; }
         body.minimal-on header, body.minimal-on footer { border-color: color-mix(in oklab, var(--primary), white 90%); }
         body.dark.minimal-on header, body.dark.minimal-on footer { border-color: color-mix(in oklab, var(--primary), black 80%); }
@@ -1211,6 +1221,15 @@
         <i class="fas fa-arrow-up"></i>
     </button>
     
+    <div class="bottom-bar" aria-label="Alt gezinme">
+        <div class="bottom-actions">
+            <a href="#yenilikler" aria-label="Yenilikler"><i class="fas fa-bolt"></i></a>
+            <a href="loading.html" aria-label="Versiyonlar"><i class="fas fa-code-branch"></i></a>
+            <a href="#" id="openSettingsMobile" aria-label="Ayarlar"><i class="fas fa-gear"></i></a>
+        </div>
+    </div>
+    <button class="fab" id="fabSearch" aria-label="Ara"><i class="fas fa-search"></i></button>
+    
     <script>
         // Reveal on scroll for news cards
         const revealObserver = new IntersectionObserver((entries) => {
@@ -1287,6 +1306,15 @@
                 toTop.classList.toggle('show', window.scrollY > 300);
             }, { passive: true });
             toTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // Bottom bar actions
+            document.getElementById('openSettingsMobile')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('settingsModal')?.classList.add('open'); });
+            document.getElementById('fabSearch')?.addEventListener('click', () => {
+                const input = document.getElementById('searchInput');
+                input?.focus();
+                // On mobile, also open keyboard and scroll to input
+                input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
 
             // Ripple on buttons
             const rippleTargets = document.querySelectorAll('.btn, .search-button');
