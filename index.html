@@ -804,8 +804,9 @@
         body.theme-purple { --primary: oklch(0.68 0.20 295); --primary-dark: oklch(0.60 0.20 295); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
         body.theme-rose { --primary: oklch(0.72 0.22 20); --primary-dark: oklch(0.62 0.22 20); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
         body.theme-amber { --primary: oklch(0.82 0.17 85); --primary-dark: oklch(0.74 0.17 85); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
-        body.theme-contrast { --primary: oklch(0.80 0.27 25); --primary-dark: oklch(0.72 0.27 25); --primary-light: color-mix(in oklab, var(--primary), white 85%); --ring: oklch(0.88 0.20 85); }
-        body.theme-contrast :where(a, button, input, textarea):focus-visible { outline-width: 3px; }
+        /* High contrast as independent toggle */
+        body.contrast-on { --primary: oklch(0.80 0.27 25); --primary-dark: oklch(0.72 0.27 25); --primary-light: color-mix(in oklab, var(--primary), white 85%); --ring: oklch(0.88 0.20 85); }
+        body.contrast-on :where(a, button, input, textarea):focus-visible { outline-width: 3px; }
 
         body {
             background:
@@ -1091,9 +1092,9 @@
                             <option value="purple">Mor</option>
                             <option value="rose">Gül</option>
                             <option value="amber">Kehribar</option>
-                            <option value="contrast">Yüksek Kontrast</option>
                         </select>
                     </div>
+                    <div class="setting-row"><span>Yüksek Kontrast</span><label class="switch"><input type="checkbox" id="setContrast"><span class="slider"></span></label></div>
                 </div>
                 <div class="settings-card">
                     <h3>Diller</h3>
@@ -1362,6 +1363,7 @@
             const rounded = document.getElementById('setRounded');
             const glassOff = document.getElementById('setGlassOff');
             const themeSel = document.getElementById('setTheme');
+            const contrast = document.getElementById('setContrast');
 
             // Load persisted
             const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
@@ -1382,6 +1384,7 @@
             if (pref.rounded) document.body.classList.add('rounded-xl');
             if (pref.glassOff) document.body.classList.add('glass-off');
             if (pref.theme) setThemeClass(pref.theme);
+            if (pref.contrast) document.body.classList.add('contrast-on');
 
             if (grid instanceof HTMLInputElement) grid.checked = !!pref.grid;
             if (qa instanceof HTMLInputElement) qa.checked = !!pref.qa;
@@ -1393,6 +1396,7 @@
             if (rounded instanceof HTMLInputElement) rounded.checked = !!pref.rounded;
             if (glassOff instanceof HTMLInputElement) glassOff.checked = !!pref.glassOff;
             if (themeSel instanceof HTMLSelectElement && pref.theme) themeSel.value = pref.theme;
+            if (contrast instanceof HTMLInputElement) contrast.checked = !!pref.contrast;
 
             function save() {
                 localStorage.setItem('geniskapi-settings', JSON.stringify({
@@ -1405,7 +1409,8 @@
                     compact: compact instanceof HTMLInputElement ? compact.checked : false,
                     rounded: rounded instanceof HTMLInputElement ? rounded.checked : false,
                     glassOff: glassOff instanceof HTMLInputElement ? glassOff.checked : false,
-                    theme: themeSel instanceof HTMLSelectElement ? themeSel.value : 'emerald'
+                    theme: themeSel instanceof HTMLSelectElement ? themeSel.value : 'emerald',
+                    contrast: contrast instanceof HTMLInputElement ? contrast.checked : false
                 }));
             }
 
@@ -1419,6 +1424,7 @@
             rounded?.addEventListener('change', () => { document.body.classList.toggle('rounded-xl', rounded.checked); save(); });
             glassOff?.addEventListener('change', () => { document.body.classList.toggle('glass-off', glassOff.checked); save(); });
             themeSel?.addEventListener('change', () => { setThemeClass(themeSel.value); save(); });
+            contrast?.addEventListener('change', () => { document.body.classList.toggle('contrast-on', contrast.checked); save(); });
 
             function setThemeClass(name) {
                 const classes = ['theme-emerald','theme-blue','theme-purple','theme-rose','theme-amber'];
