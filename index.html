@@ -985,7 +985,7 @@
                 <i class="fas fa-door-open logo-icon"></i>
                 <span>GenişKapı</span>
             </div>
-            <p class="logo-slogan">Yeni Nesil Arama Deneyimi</p>
+            <p class="logo-slogan" id="logoSlogan">Yeni Nesil Arama Deneyimi</p>
         </div>
         
         <div class="search-container" role="search" aria-label="Sitede ara">
@@ -1002,11 +1002,11 @@
             <div class="action-buttons">
                 <button class="btn btn-primary" id="searchAction" aria-label="GenişKapı'da ara">
                     <i class="fas fa-search"></i>
-                    GenişKapı'da Ara
+                    <span id="btnSearchLabel">GenişKapı'da Ara</span>
                 </button>
                 <button class="btn btn-secondary" id="luckyButton" aria-label="Kendimi şanslı hissediyorum">
                     <i class="fas fa-feather-alt"></i>
-                    Kendimi Şanslı Hissediyorum
+                    <span id="btnLuckyLabel">Kendimi Şanslı Hissediyorum</span>
                 </button>
             </div>
             
@@ -1015,25 +1015,25 @@
                     <div class="action-icon">
                         <i class="fas fa-newspaper"></i>
                     </div>
-                    <span class="action-label">Haberler</span>
+                    <span class="action-label" id="quickNewsLabel">Haberler</span>
                 </div>
                 <div class="quick-action" id="quickImages">
                     <div class="action-icon">
                         <i class="fas fa-image"></i>
                     </div>
-                    <span class="action-label">Görseller</span>
+                    <span class="action-label" id="quickImagesLabel">Görseller</span>
                 </div>
                 <div class="quick-action" id="quickVideos">
                     <div class="action-icon">
                         <i class="fas fa-video"></i>
                     </div>
-                    <span class="action-label">Videolar</span>
+                    <span class="action-label" id="quickVideosLabel">Videolar</span>
                 </div>
                 <div class="quick-action" id="quickMaps">
                     <div class="action-icon">
                         <i class="fas fa-map-marked-alt"></i>
                     </div>
-                    <span class="action-label">Haritalar</span>
+                    <span class="action-label" id="quickMapsLabel">Haritalar</span>
                 </div>
             </div>
         </div>
@@ -1349,20 +1349,31 @@
             grid?.addEventListener('change', () => { document.body.classList.toggle('grid-on', grid.checked); save(); });
             qa?.addEventListener('change', () => { document.querySelectorAll('.quick-action').forEach(el => el.classList.toggle('qa-animated', qa.checked)); save(); });
             dark?.addEventListener('change', () => { const wantDark = dark.checked; if (wantDark !== document.body.classList.contains('dark')) { toggleTheme(); } save(); });
-            lang?.addEventListener('change', () => { const v = lang.value; document.documentElement.lang = v; save(); });
+            lang?.addEventListener('change', () => { const v = lang.value; document.documentElement.lang = v; applyLabels(v); save(); });
 
             // i18n minimal labels (TR/EN)
             function applyLabels(locale) {
                 const dict = locale === 'en' ? {
-                    versions: 'Versions', feedback: 'Feedback', whatsnew: "What's New", settings: 'Settings'
+                    versions: 'Versions', feedback: 'Feedback', whatsnew: "What's New", settings: 'Settings',
+                    btnSearch: 'Search on GenişKapı', btnLucky: "I'm Feeling Lucky",
+                    quickNews: 'News', quickImages: 'Images', quickVideos: 'Videos', quickMaps: 'Maps', slogan: 'Next‑Gen Search Experience'
                 } : {
-                    versions: 'Versiyonlar', feedback: 'Geri Bildirim', whatsnew: 'Yenilikler', settings: 'Ayarlar'
+                    versions: 'Versiyonlar', feedback: 'Geri Bildirim', whatsnew: 'Yenilikler', settings: 'Ayarlar',
+                    btnSearch: "GenişKapı'da Ara", btnLucky: 'Kendimi Şanslı Hissediyorum',
+                    quickNews: 'Haberler', quickImages: 'Görseller', quickVideos: 'Videolar', quickMaps: 'Haritalar', slogan: 'Yeni Nesil Arama Deneyimi'
                 };
                 const id = (x) => document.getElementById(x);
                 id('navVersionsLabel')?.replaceChildren(document.createTextNode(dict.versions));
                 id('navFeedbackLabel')?.replaceChildren(document.createTextNode(dict.feedback));
                 id('navWhatsNewLabel')?.replaceChildren(document.createTextNode(dict.whatsnew));
                 id('navSettingsLabel')?.replaceChildren(document.createTextNode(dict.settings));
+                id('btnSearchLabel')?.replaceChildren(document.createTextNode(dict.btnSearch));
+                id('btnLuckyLabel')?.replaceChildren(document.createTextNode(dict.btnLucky));
+                id('quickNewsLabel')?.replaceChildren(document.createTextNode(dict.quickNews));
+                id('quickImagesLabel')?.replaceChildren(document.createTextNode(dict.quickImages));
+                id('quickVideosLabel')?.replaceChildren(document.createTextNode(dict.quickVideos));
+                id('quickMapsLabel')?.replaceChildren(document.createTextNode(dict.quickMaps));
+                id('logoSlogan')?.replaceChildren(document.createTextNode(dict.slogan));
             }
             applyLabels(document.documentElement.lang || 'tr');
         }
