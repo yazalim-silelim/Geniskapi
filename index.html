@@ -819,6 +819,14 @@
         body.contrast-on { --primary: oklch(0.80 0.27 25); --primary-dark: oklch(0.72 0.27 25); --primary-light: color-mix(in oklab, var(--primary), white 85%); --ring: oklch(0.88 0.20 85); }
         body.contrast-on :where(a, button, input, textarea):focus-visible { outline-width: 3px; }
 
+        /* Accent override (user-picked color) */
+        body.accent-on {
+            --primary: var(--accent);
+            --primary-dark: color-mix(in oklab, var(--accent), black 15%);
+            --primary-light: color-mix(in oklab, var(--accent), white 85%);
+            --ring: color-mix(in oklab, var(--accent), white 20%);
+        }
+
         body {
             background:
                 radial-gradient(1200px 800px at 10% -10%, color-mix(in oklab, var(--primary), white 88%), transparent 60%),
@@ -1113,6 +1121,7 @@
                             <option value="amber">Kehribar</option>
                         </select>
                     </div>
+                    <div class="setting-row"><span>Vurgu Rengi</span><input type="color" id="setAccent" value="#10B981" aria-label="Vurgu rengi"></div>
                     <div class="setting-row"><span>Yüksek Kontrast</span><label class="switch"><input type="checkbox" id="setContrast"><span class="slider"></span></label></div>
                     <div class="setting-row"><button class="btn btn-secondary" id="applyDarkContrast">Koyu + Kontrast Uygula</button></div>
                 </div>
@@ -1389,6 +1398,7 @@
             const modeSel = document.getElementById('setMode');
             const contrast = document.getElementById('setContrast');
             const applyDarkContrast = document.getElementById('applyDarkContrast');
+            const accent = document.getElementById('setAccent');
 
             // Load persisted
             const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
@@ -1426,6 +1436,7 @@
             if (modeSel instanceof HTMLSelectElement && pref.mode) modeSel.value = pref.mode;
             const minimal = document.getElementById('setMinimal');
             if (minimal instanceof HTMLInputElement) minimal.checked = !!pref.minimal;
+            if (accent instanceof HTMLInputElement && pref.accent) accent.value = pref.accent;
 
             function save() {
                 localStorage.setItem('geniskapi-settings', JSON.stringify({
@@ -1441,7 +1452,8 @@
                     theme: themeSel instanceof HTMLSelectElement ? themeSel.value : 'emerald',
                     contrast: contrast instanceof HTMLInputElement ? contrast.checked : false,
                     mode: modeSel instanceof HTMLSelectElement ? modeSel.value : 'auto',
-                    minimal: minimal instanceof HTMLInputElement ? minimal.checked : false
+                    minimal: minimal instanceof HTMLInputElement ? minimal.checked : false,
+                    accent: accent instanceof HTMLInputElement ? accent.value : undefined
                 }));
             }
 
@@ -1459,6 +1471,7 @@
             modeSel?.addEventListener('change', () => { applyMode(modeSel.value); save(); });
             minimal?.addEventListener('change', () => { document.body.classList.toggle('minimal-on', minimal.checked); save(); });
             applyDarkContrast?.addEventListener('click', (e) => { e.preventDefault(); if (!document.body.classList.contains('dark')) toggleTheme(); document.body.classList.add('contrast-on'); if (contrast instanceof HTMLInputElement) contrast.checked = true; save(); });
+            accent?.addEventListener('input', () => { applyAccent(accent.value); save(); });
 
             function setThemeClass(name) {
                 const classes = ['theme-emerald','theme-blue','theme-purple','theme-rose','theme-amber'];
@@ -1475,6 +1488,11 @@
                 } else if (mode === 'light') {
                     if (document.body.classList.contains('dark')) toggleTheme();
                 }
+            }
+
+            function applyAccent(hex) {
+                document.body.style.setProperty('--accent', hex);
+                document.body.classList.toggle('accent-on', !!hex);
             }
 
             // i18n minimal labels (TR/EN)
