@@ -445,6 +445,21 @@
         input:checked + .slider { background: var(--primary); }
         input:checked + .slider::before { transform: translateX(20px); }
 
+        /* Beta feature classes */
+        body.reduce-motion * { animation: none !important; transition: none !important; }
+        body.compact header { padding: 0.75rem 1rem; }
+        body.compact .search-box { padding: 0.6rem 1rem; }
+        body.compact .logo { font-size: 2rem; }
+        body.compact .action-buttons { margin-bottom: 1.5rem; }
+        body.blobs-off .bg-circle { display: none !important; }
+        body.rounded-xl { --radius-sm: 0.75rem; --radius: 1rem; --radius-lg: 1.25rem; --radius-xl: 1.5rem; --radius-2xl: 2rem; }
+        body.glass-off header, body.glass-off footer { backdrop-filter: none; -webkit-backdrop-filter: none; }
+        body.glass-off header { background: color-mix(in oklab, white 96%, var(--primary) 2%); }
+        body.dark.glass-off header { background: color-mix(in oklab, black 84%, var(--primary) 8%); }
+        body.glass-off footer { background: color-mix(in oklab, white 94%, var(--primary) 2%); }
+        body.dark.glass-off footer { background: color-mix(in oklab, black 86%, var(--primary) 8%); }
+        body.glass-off .search-box { backdrop-filter: none; -webkit-backdrop-filter: none; }
+
         .theme-toggle {
             background: none;
             border: none;
@@ -1051,6 +1066,11 @@
                     <h3>Beta Özellikler</h3>
                     <div class="setting-row"><span>Modern ızgara arka planı</span><label class="switch"><input type="checkbox" id="setGrid"><span class="slider"></span></label></div>
                     <div class="setting-row"><span>Quick Actions animasyonları</span><label class="switch"><input type="checkbox" id="setQAAnim"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Arka plan blobları</span><label class="switch"><input type="checkbox" id="setBlobs"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Hareket azalt (beta)</span><label class="switch"><input type="checkbox" id="setReduceMotion"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Compact görünüm</span><label class="switch"><input type="checkbox" id="setCompact"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Daha yuvarlak köşeler</span><label class="switch"><input type="checkbox" id="setRounded"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Glass efektleri kapat</span><label class="switch"><input type="checkbox" id="setGlassOff"><span class="slider"></span></label></div>
                 </div>
                 <div class="settings-card">
                     <h3>Temalar</h3>
@@ -1317,6 +1337,11 @@
             const qa = document.getElementById('setQAAnim');
             const dark = document.getElementById('setDark');
             const lang = document.getElementById('setLang');
+            const blobs = document.getElementById('setBlobs');
+            const reduceMotion = document.getElementById('setReduceMotion');
+            const compact = document.getElementById('setCompact');
+            const rounded = document.getElementById('setRounded');
+            const glassOff = document.getElementById('setGlassOff');
 
             // Load persisted
             const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
@@ -1331,18 +1356,33 @@
                 }
             }
             if (pref.lang) document.documentElement.lang = pref.lang;
+            if (pref.blobs === false) document.body.classList.add('blobs-off');
+            if (pref.reduceMotion) document.body.classList.add('reduce-motion');
+            if (pref.compact) document.body.classList.add('compact');
+            if (pref.rounded) document.body.classList.add('rounded-xl');
+            if (pref.glassOff) document.body.classList.add('glass-off');
 
             if (grid instanceof HTMLInputElement) grid.checked = !!pref.grid;
             if (qa instanceof HTMLInputElement) qa.checked = !!pref.qa;
             if (dark instanceof HTMLInputElement) dark.checked = document.body.classList.contains('dark');
             if (lang instanceof HTMLSelectElement && pref.lang) lang.value = pref.lang;
+            if (blobs instanceof HTMLInputElement) blobs.checked = pref.blobs !== false; // default true
+            if (reduceMotion instanceof HTMLInputElement) reduceMotion.checked = !!pref.reduceMotion;
+            if (compact instanceof HTMLInputElement) compact.checked = !!pref.compact;
+            if (rounded instanceof HTMLInputElement) rounded.checked = !!pref.rounded;
+            if (glassOff instanceof HTMLInputElement) glassOff.checked = !!pref.glassOff;
 
             function save() {
                 localStorage.setItem('geniskapi-settings', JSON.stringify({
                     grid: grid instanceof HTMLInputElement ? grid.checked : false,
                     qa: qa instanceof HTMLInputElement ? qa.checked : false,
                     dark: dark instanceof HTMLInputElement ? dark.checked : document.body.classList.contains('dark'),
-                    lang: lang instanceof HTMLSelectElement ? lang.value : 'tr'
+                    lang: lang instanceof HTMLSelectElement ? lang.value : 'tr',
+                    blobs: blobs instanceof HTMLInputElement ? blobs.checked : true,
+                    reduceMotion: reduceMotion instanceof HTMLInputElement ? reduceMotion.checked : false,
+                    compact: compact instanceof HTMLInputElement ? compact.checked : false,
+                    rounded: rounded instanceof HTMLInputElement ? rounded.checked : false,
+                    glassOff: glassOff instanceof HTMLInputElement ? glassOff.checked : false
                 }));
             }
 
@@ -1350,6 +1390,11 @@
             qa?.addEventListener('change', () => { document.querySelectorAll('.quick-action').forEach(el => el.classList.toggle('qa-animated', qa.checked)); save(); });
             dark?.addEventListener('change', () => { const wantDark = dark.checked; if (wantDark !== document.body.classList.contains('dark')) { toggleTheme(); } save(); });
             lang?.addEventListener('change', () => { const v = lang.value; document.documentElement.lang = v; applyLabels(v); save(); });
+            blobs?.addEventListener('change', () => { document.body.classList.toggle('blobs-off', !blobs.checked); save(); });
+            reduceMotion?.addEventListener('change', () => { document.body.classList.toggle('reduce-motion', reduceMotion.checked); save(); });
+            compact?.addEventListener('change', () => { document.body.classList.toggle('compact', compact.checked); save(); });
+            rounded?.addEventListener('change', () => { document.body.classList.toggle('rounded-xl', rounded.checked); save(); });
+            glassOff?.addEventListener('change', () => { document.body.classList.toggle('glass-off', glassOff.checked); save(); });
 
             // i18n minimal labels (TR/EN)
             function applyLabels(locale) {
