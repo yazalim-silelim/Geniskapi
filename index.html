@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="google-site-verification" content="H-LVYvpQfniUFVbnM2VLTdYwmG_adbopJwsQLPD7ACI" />
+    <meta name="msvalidate.01" content="2572B86A9F2EE5C376ABEC7FE2BA749A" />
+    <title>Yeni çağın arama motoru: GenişKapı.</title>
+     <meta name="description" content="GenişKapı tarayıcısı normal tarayıcılardan daha modern ve hızlı tarayıcıdır.">
+ 
+    <meta name="keywords" content="GenişKapı, Yazalım Silelim, GenişKapı search engine, Geniskapi search engine, search engine, search">
+    <meta name="theme-color" content="#10B981">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #10B981;
+            --primary-dark: #059669;
+            --primary-light: #D1FAE5;
+            --dark-1: #18181B;
+            --dark-2: #27272A;
+            --dark-3: #3F3F46;
+            --light-1: #FAFAFA;
+            --light-2: #F4F4F5;
+            --light-3: #E4E4E7;
+            --text-dark: #18181B;
+            --text-light: #FAFAFA;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-sm: 0.375rem;
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+            background-color: var(--light-1);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            padding-top: env(safe-area-inset-top);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        body.dark {
+            background-color: var(--dark-1);
+            color: var(--text-light);
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: saturate(140%) blur(10px);
+            -webkit-backdrop-filter: saturate(140%) blur(10px);
+            background: color-mix(in oklab, white 70%, var(--primary) 3%);
+            border-bottom: 1px solid color-mix(in oklab, var(--primary), white 85%);
+        }
+
+        body.dark header {
+            background: color-mix(in oklab, black 82%, var(--primary) 10%);
+            border-bottom-color: color-mix(in oklab, var(--primary), black 70%);
+        }
+
+        .header-hidden { transform: translateY(-100%); transition: transform 300ms ease; }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark .nav-link {
+            color: var(--text-light);
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-icon {
+            font-size: 1.2em;
+            transition: var(--transition);
+        }
+
+        .logo-slogan {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--dark-3);
+            letter-spacing: 0.05em;
+        }
+
+        body.dark .logo-slogan {
+            color: var(--light-3);
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 20;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--light-3);
+            border-radius: var(--radius-2xl);
+            padding: 0.75rem 1.5rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        body.dark .search-box {
+            background-color: var(--dark-2);
+            border-color: var(--dark-3);
+        }
+
+        .search-box:hover {
+            box-shadow: var(--shadow);
+        }
+
+        /* Override legacy focused class to avoid duplicate ring */
+        .search-box.focused { box-shadow: none; }
+
+        body.dark .search-box.focused {
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+            padding: 0.75rem 0.5rem;
+            color: var(--text-dark);
+        }
+
+        body.dark .search-input {
+            color: var(--text-light);
+        }
+
+        .search-input::placeholder {
+            color: var(--dark-3);
+        }
+
+        body.dark .search-input::placeholder {
+            color: var(--light-3);
+        }
+
+        .search-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--dark-3);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.dark .search-button {
+            color: var(--light-3);
+        }
+
+        .search-button:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .voice-search {
+            margin-left: 0.5rem;
+            cursor: pointer;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background-color: var(--light-2);
+            color: var(--text-dark);
+        }
+
+        body.dark .btn-secondary {
+            background-color: var(--dark-3);
+            color: var(--text-light);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-3);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        body.dark .btn-secondary:hover {
+            background-color: var(--dark-2);
+        }
+
+        footer {
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--dark-3);
+            background: color-mix(in oklab, white 70%, var(--primary) 3%);
+            border-top: 1px solid color-mix(in oklab, var(--primary), white 85%);
+            backdrop-filter: saturate(130%) blur(8px);
+            -webkit-backdrop-filter: saturate(130%) blur(8px);
+            transition: var(--transition);
+        }
+
+        body.dark footer {
+            background: color-mix(in oklab, black 82%, var(--primary) 10%);
+            color: var(--light-3);
+            border-top-color: color-mix(in oklab, var(--primary), black 70%);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-link {
+            color: var(--dark-3);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        body.dark .footer-link {
+            color: var(--light-3);
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* Yenilikler section */
+        .section {
+            width: 100%;
+            max-width: 1100px;
+            margin: 4rem auto 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 10;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 1.25rem;
+        }
+        .section-title {
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            background: color-mix(in oklab, var(--primary-light), white 10%);
+            color: var(--primary-dark);
+            border: 1px solid color-mix(in oklab, var(--primary), white 80%);
+        }
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .news-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .news-card {
+            position: relative;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            background: color-mix(in oklab, white 85%, var(--primary) 2%);
+            border: 1px solid color-mix(in oklab, var(--primary), white 86%);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            overflow: hidden;
+            transform: translateY(6px);
+            opacity: 0;
+        }
+        body.dark .news-card {
+            background: color-mix(in oklab, black 78%, var(--primary) 10%);
+            border-color: color-mix(in oklab, var(--primary), black 70%);
+        }
+        .news-card:hover { transform: translateY(0); box-shadow: var(--shadow); }
+        .news-card.reveal { opacity: 1; transform: translateY(0); }
+        .news-title { font-weight: 700; margin-bottom: 0.25rem; }
+        .news-desc { font-size: 0.9rem; opacity: 0.85; }
+        .news-meta { margin-top: 0.75rem; display: flex; gap: 0.5rem; align-items: center; font-size: 0.8rem; color: var(--dark-3); }
+        body.dark .news-meta { color: var(--light-3); }
+        .news-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary), transparent 85%); }
+
+        /* Settings modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 1000;
+        }
+        .modal.open { display: flex; }
+        .modal-card {
+            width: min(680px, 92vw);
+            background: color-mix(in oklab, white 90%, var(--primary) 2%);
+            color: var(--text-dark);
+            border: 1px solid color-mix(in oklab, var(--primary), white 85%);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            padding: 1rem;
+        }
+        body.dark .modal-card {
+            background: color-mix(in oklab, black 78%, var(--primary) 8%);
+            color: var(--text-light);
+            border-color: color-mix(in oklab, var(--primary), black 70%);
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.5rem 0.75rem; }
+        .modal-title { font-weight: 700; font-size: 1.1rem; }
+        .modal-close { border: none; background: transparent; color: inherit; cursor: pointer; font-size: 1.1rem; padding: 0.25rem; }
+        .settings-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 0.5rem; }
+        @media (min-width: 768px) { .settings-grid { grid-template-columns: 1fr 1fr; } }
+        .settings-card { padding: 0.9rem; border-radius: var(--radius-lg); border: 1px solid color-mix(in oklab, var(--primary), white 86%); background: color-mix(in oklab, white 92%, var(--primary) 2%); }
+        body.dark .settings-card { background: color-mix(in oklab, black 75%, var(--primary) 10%); border-color: color-mix(in oklab, var(--primary), black 70%); }
+        .settings-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .setting-row { display: flex; align-items: center; justify-content: space-between; margin: 0.5rem 0; gap: 1rem; }
+        .switch { position: relative; width: 46px; height: 26px; }
+        .switch input { display: none; }
+        .slider { position: absolute; inset: 0; background: color-mix(in oklab, var(--primary), white 85%); border-radius: 999px; transition: var(--transition); }
+        .slider::before { content: ""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; border-radius: 50%; background: white; transition: var(--transition); box-shadow: var(--shadow-sm); }
+        input:checked + .slider { background: var(--primary); }
+        input:checked + .slider::before { transform: translateX(20px); }
+
+        /* Beta feature classes */
+        body.reduce-motion * { animation: none !important; transition: none !important; }
+        body.compact header { padding: 0.75rem 1rem; }
+        body.compact .search-box { padding: 0.6rem 1rem; }
+        body.compact .logo { font-size: 2rem; }
+        body.compact .action-buttons { margin-bottom: 1.5rem; }
+        body.blobs-off .bg-circle { display: none !important; }
+        body.rounded-xl { --radius-sm: 0.75rem; --radius: 1rem; --radius-lg: 1.25rem; --radius-xl: 1.5rem; --radius-2xl: 2rem; }
+        body.glass-off header, body.glass-off footer { backdrop-filter: none; -webkit-backdrop-filter: none; }
+        body.glass-off header { background: color-mix(in oklab, white 96%, var(--primary) 2%); }
+        body.dark.glass-off header { background: color-mix(in oklab, black 84%, var(--primary) 8%); }
+        body.glass-off footer { background: color-mix(in oklab, white 94%, var(--primary) 2%); }
+        body.dark.glass-off footer { background: color-mix(in oklab, black 86%, var(--primary) 8%); }
+        body.glass-off .search-box { backdrop-filter: none; -webkit-backdrop-filter: none; }
+        @media (max-width: 480px) { .modal-card { width: 100vw; height: 100vh; border-radius: 0; padding: 1rem; } }
+        a, button { -webkit-tap-highlight-color: transparent; }
+
+        /* Command Palette */
+        .cmdk { position: fixed; inset: 0; display: none; align-items: flex-start; justify-content: center; padding-top: 10vh; background: rgba(0,0,0,0.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 1100; }
+        .cmdk.open { display: flex; }
+        .cmdk-card { width: min(720px, 94vw); background: color-mix(in oklab, white 94%, var(--primary) 2%); border: 1px solid color-mix(in oklab, var(--primary), white 85%); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); overflow: hidden; }
+        body.dark .cmdk-card { background: color-mix(in oklab, black 80%, var(--primary) 8%); border-color: color-mix(in oklab, var(--primary), black 70%); }
+        .cmdk-search { width: 100%; padding: 0.9rem 1rem; border: none; outline: none; font-size: 1rem; background: transparent; color: inherit; }
+        .cmdk-list { max-height: 50vh; overflow: auto; padding: 0.25rem; }
+        .cmdk-item { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.65rem 0.75rem; border-radius: var(--radius); cursor: pointer; }
+        .cmdk-item:hover, .cmdk-item.active { background: color-mix(in oklab, var(--primary), white 90%); }
+        body.dark .cmdk-item:hover, body.dark .cmdk-item.active { background: color-mix(in oklab, var(--primary), black 80%); }
+        .cmdk-hint { font-size: 0.75rem; opacity: 0.75; padding: 0.5rem 0.75rem; display: flex; justify-content: space-between; }
+
+        /* Skeletons for Yenilikler */
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .news-card.skeleton { position: relative; overflow: hidden; }
+        .news-card.skeleton * { opacity: 0; }
+        .news-card.skeleton::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(0,0,0,0.08), rgba(0,0,0,0.04)); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        body.dark .news-card.skeleton::after { background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.08), rgba(255,255,255,0.04)); }
+
+        /* Bottom bar + FAB (mobile) */
+        .bottom-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; display: none; padding: 0.25rem calc(1rem + env(safe-area-inset-right)) calc(0.25rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left)); background: color-mix(in oklab, white 90%, var(--primary) 3%); border-top: 1px solid color-mix(in oklab, var(--primary), white 85%); backdrop-filter: blur(8px) saturate(120%); -webkit-backdrop-filter: blur(8px) saturate(120%); }
+        body.dark .bottom-bar { background: color-mix(in oklab, black 80%, var(--primary) 8%); border-top-color: color-mix(in oklab, var(--primary), black 70%); }
+        .bottom-actions { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+        .bottom-actions a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; color: inherit; text-decoration: none; }
+        .bottom-actions a:active { transform: scale(0.98); }
+        @media (max-width: 768px) { .bottom-bar { display: block; } }
+        .fab { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(2.5rem + env(safe-area-inset-bottom)); z-index: 56; width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: var(--primary); color: white; border: none; box-shadow: var(--shadow-lg); }
+        .fab:active { transform: translateX(-50%) scale(0.98); }
+        .hidden { display: none !important; }
+        body.minimal-on * { box-shadow: none !important; }
+        body.minimal-on header, body.minimal-on footer { border-color: color-mix(in oklab, var(--primary), white 90%); }
+        body.dark.minimal-on header, body.dark.minimal-on footer { border-color: color-mix(in oklab, var(--primary), black 80%); }
+        body.minimal-on .quick-action:hover { transform: none; }
+        body.minimal-on .btn-primary { background: var(--primary); }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 50%;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-3);
+            background-color: var(--light-2);
+        }
+
+        body.dark .theme-toggle {
+            color: var(--light-3);
+            background-color: var(--dark-3);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--light-3);
+            transform: rotate(30deg);
+            color: var(--primary);
+        }
+
+        body.dark .theme-toggle:hover {
+            background-color: var(--dark-2);
+        }
+
+        /* (removed) search suggestions */
+
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            z-index: 0;
+            opacity: 0.04;
+            background-position: 0 0, 0 0;
+        }
+        body.grid-on .bg-pattern {
+            background-image:
+                linear-gradient(to right, color-mix(in oklab, var(--primary), transparent 96%) 1px, transparent 1px),
+                linear-gradient(to bottom, color-mix(in oklab, var(--primary), transparent 96%) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        body.dark .bg-pattern {
+            opacity: 0.05;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: var(--primary);
+            filter: blur(60px);
+            transition: transform 15s linear;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .logo-slogan {
+                font-size: 0.875rem;
+            }
+
+            .search-box {
+                padding: 0.75rem 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* (removed) search suggestions animation */
+
+        /* Search box focus micro-interactions */
+        .search-box:focus-within .search-button { color: var(--primary); transform: scale(1.05); }
+        .search-box:focus-within .logo-icon { transform: scale(1.03); }
+
+        /* Gentle float for quick actions */
+        @keyframes floatY {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0); }
+        }
+        .quick-action.qa-animated { animation: floatY 6s ease-in-out infinite; }
+        .quick-actions .quick-action:nth-child(1) { animation-delay: 0s; }
+        .quick-actions .quick-action:nth-child(2) { animation-delay: 0.8s; }
+        .quick-actions .quick-action:nth-child(3) { animation-delay: 1.6s; }
+        .quick-actions .quick-action:nth-child(4) { animation-delay: 2.4s; }
+
+        @keyframes voicePulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        .voice-active {
+            animation: voicePulse 1.5s infinite;
+            border-radius: 50%;
+            color: var(--primary) !important;
+        }
+
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 80px;
+        }
+
+        .quick-action:hover {
+            background-color: var(--light-2);
+            transform: translateY(-3px);
+        }
+
+        body.dark .quick-action:hover {
+            background-color: var(--dark-3);
+        }
+
+        .action-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            padding: 0.75rem;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        .action-label {
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .quick-action:hover .action-icon { transform: translateY(-2px) rotate(-4deg) scale(1.05); }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            transform: scale(0);
+            background: color-mix(in oklab, var(--primary), white 30%);
+            opacity: 0.35;
+            animation: ripple 500ms linear;
+        }
+        @keyframes ripple { to { transform: scale(2.2); opacity: 0; } }
+
+        /* Back to top */
+        .back-to-top {
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 220ms ease, transform 220ms ease;
+            z-index: 60;
+        }
+        .back-to-top.show { opacity: 1; transform: translateY(0); }
+
+        /* Theme transition helper */
+        body.theme-anim, body.theme-anim header, body.theme-anim footer, body.theme-anim .search-box, body.theme-anim .btn, body.theme-anim .quick-action {
+            transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+        }
+
+        /* (removed) suggestion items entrance */
+
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        body.dark .loader {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .loader.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-3);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        body.dark .spinner {
+            border-color: var(--dark-3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-2);
+        }
+
+        body.dark ::-webkit-scrollbar-track {
+            background: var(--dark-2);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--dark-3);
+            border-radius: 4px;
+        }
+
+        body.dark ::-webkit-scrollbar-thumb {
+            background: var(--light-3);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 120px;
+            background-color: var(--dark-1);
+            color: white;
+            text-align: center;
+            border-radius: var(--radius-sm);
+            padding: 0.5rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: var(--transition);
+            font-size: 0.75rem;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Modern enhancements (2025) */
+        html {
+            color-scheme: light dark;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            /* Update core colors using perceptual spaces for better contrast */
+            --primary: oklch(0.73 0.17 156);
+            --primary-dark: oklch(0.63 0.17 156);
+            --primary-light: color-mix(in oklab, var(--primary), white 85%);
+            --ring: color-mix(in oklab, var(--primary), white 20%);
+            --surface: color-mix(in oklab, white 96%, var(--primary) 2%);
+            --surface-dark: color-mix(in oklab, black 86%, var(--primary) 6%);
+        }
+
+        /* Color themes (override primary palette) */
+        body.theme-emerald { --primary: oklch(0.73 0.17 156); --primary-dark: oklch(0.63 0.17 156); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-blue { --primary: oklch(0.70 0.16 255); --primary-dark: oklch(0.62 0.16 255); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-purple { --primary: oklch(0.68 0.20 295); --primary-dark: oklch(0.60 0.20 295); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-rose { --primary: oklch(0.72 0.22 20); --primary-dark: oklch(0.62 0.22 20); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        body.theme-amber { --primary: oklch(0.82 0.17 85); --primary-dark: oklch(0.74 0.17 85); --primary-light: color-mix(in oklab, var(--primary), white 85%); }
+        /* High contrast as independent toggle */
+        body.contrast-on { --primary: oklch(0.80 0.27 25); --primary-dark: oklch(0.72 0.27 25); --primary-light: color-mix(in oklab, var(--primary), white 85%); --ring: oklch(0.88 0.20 85); }
+        body.contrast-on :where(a, button, input, textarea):focus-visible { outline-width: 3px; }
+
+        /* Accent override (user-picked color) */
+        body.accent-on {
+            --primary: var(--accent);
+            --primary-dark: color-mix(in oklab, var(--accent), black 15%);
+            --primary-light: color-mix(in oklab, var(--accent), white 85%);
+            --ring: color-mix(in oklab, var(--accent), white 20%);
+        }
+
+        body {
+            background:
+                radial-gradient(1200px 800px at 10% -10%, color-mix(in oklab, var(--primary), white 88%), transparent 60%),
+                radial-gradient(1000px 600px at 110% 110%, color-mix(in oklab, var(--primary), white 92%), transparent 60%),
+                var(--light-1);
+        }
+
+        body.dark {
+            background:
+                radial-gradient(1200px 800px at -10% -10%, color-mix(in oklab, var(--primary), black 80%), transparent 60%),
+                radial-gradient(1000px 600px at 110% 110%, color-mix(in oklab, var(--primary), black 85%), transparent 60%),
+                var(--dark-1);
+        }
+
+        /* Fluid type scale */
+        :where(body) {
+            font-size: clamp(15px, 0.4vw + 14px, 18px);
+        }
+
+        /* Refined focus visibility */
+        :where(a, button, input, textarea) {
+            outline: none;
+        }
+        :where(a, button, input, textarea):focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 2px;
+        }
+
+        /* Skip link for accessibility */
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+        .skip-link:focus {
+            left: 1rem;
+            top: 1rem;
+            width: auto;
+            height: auto;
+            padding: 0.5rem 0.75rem;
+            background: var(--surface);
+            color: var(--text-dark);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            z-index: 9999;
+        }
+
+        /* Glassy search */
+        .search-box {
+            background: color-mix(in oklab, white 80%, var(--primary) 2%);
+            border: 1px solid color-mix(in oklab, var(--primary), white 86%);
+            backdrop-filter: saturate(140%) blur(10px);
+            -webkit-backdrop-filter: saturate(140%) blur(10px);
+        }
+        body.dark .search-box {
+            background: color-mix(in oklab, black 70%, var(--primary) 10%);
+            border-color: color-mix(in oklab, var(--primary), black 75%);
+        }
+        /* Simplified focus ring without spinning conic effect */
+        .search-box:focus-within {
+            box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary), white 70%);
+        }
+        body.dark .search-box:focus-within {
+            box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary), black 70%);
+        }
+
+        .search-input::placeholder {
+            color: color-mix(in oklab, var(--dark-3), white 20%);
+        }
+        body.dark .search-input::placeholder {
+            color: color-mix(in oklab, var(--light-3), black 20%);
+        }
+
+        /* Buttons */
+        .btn {
+            border: 1px solid transparent;
+            will-change: transform;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, color-mix(in oklab, var(--primary), white 6%), var(--primary));
+            box-shadow: 0 8px 20px -10px color-mix(in oklab, var(--primary), black 70%);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px -12px color-mix(in oklab, var(--primary), black 70%);
+        }
+        .btn-secondary {
+            background: color-mix(in oklab, white 85%, var(--primary) 3%);
+            border-color: color-mix(in oklab, var(--primary), white 80%);
+        }
+        body.dark .btn-secondary {
+            background: color-mix(in oklab, black 70%, var(--primary) 10%);
+            border-color: color-mix(in oklab, var(--primary), black 70%);
+        }
+
+        /* Quick actions */
+        .quick-action {
+            background: transparent;
+            border: 1px solid color-mix(in oklab, var(--primary), white 88%);
+        }
+        body.dark .quick-action {
+            border-color: color-mix(in oklab, var(--primary), black 75%);
+        }
+        .quick-action:hover {
+            background: color-mix(in oklab, white 85%, var(--primary) 4%);
+        }
+        body.dark .quick-action:hover {
+            background: color-mix(in oklab, black 75%, var(--primary) 10%);
+        }
+        .action-icon {
+            background: color-mix(in oklab, var(--primary-light), white 20%);
+        }
+
+        /* Theme toggle polish */
+        .theme-toggle {
+            border: 1px solid color-mix(in oklab, var(--primary), white 85%);
+            background: color-mix(in oklab, white 88%, var(--primary) 2%);
+        }
+        body.dark .theme-toggle {
+            border-color: color-mix(in oklab, var(--primary), black 70%);
+            background: color-mix(in oklab, black 78%, var(--primary) 8%);
+        }
+
+        /* (removed) suggestion list surface */
+
+        /* Accessibility: larger touch targets */
+        .search-button,
+        .theme-toggle,
+        .btn {
+            min-height: 2.5rem;
+            min-width: 2.5rem;
+        }
+
+        /* Motion reduction */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Respect system backdrops */
+        @supports not (backdrop-filter: blur(4px)) {
+            .search-box {
+                background: color-mix(in oklab, white 92%, var(--primary) 2%);
+            }
+            body.dark .search-box {
+                background: color-mix(in oklab, black 72%, var(--primary) 10%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main">İçeriğe geç</a>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <p class="loading-text">GenişKapı V2 Yükleniyor...</p>
+    </div>
+    
+    <!-- Main App -->
+    <header role="banner">
+        <div class="header-nav" role="navigation" aria-label="Üst gezinme">
+            <a href="loading.html" class="nav-link" aria-label="Versiyonlar sayfası">
+                <i class="fas fa-code-branch"></i>
+                <span id="navVersionsLabel">Versiyonlar</span>
+            </a>
+            <a href="#" class="nav-link" id="feedbackButton" aria-label="Geri bildirim gönder">
+                <i class="fas fa-comment-dots"></i>
+                <span id="navFeedbackLabel">Geri Bildirim</span>
+            </a>
+            <a href="#yenilikler" class="nav-link" aria-label="Yenilikler">
+                <i class="fas fa-bolt"></i>
+                <span id="navWhatsNewLabel">Yenilikler</span>
+            </a>
+            <a href="#" class="nav-link" id="settingsOpen" aria-label="Ayarlar">
+                <i class="fas fa-gear"></i>
+                <span id="navSettingsLabel">Ayarlar</span>
+            </a>
+        </div>
+        
+        <button class="theme-toggle" id="themeToggle" aria-label="Temayı değiştir">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+    
+    <main id="main">
+        <!-- Background Animation -->
+        <div class="bg-pattern">
+            <div class="bg-circle" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+            <div class="bg-circle" style="width: 500px; height: 500px; bottom: -200px; right: -100px;"></div>
+        </div>
+        
+        <div class="logo-container">
+            <div class="logo" id="logo">
+                <i class="fas fa-door-open logo-icon"></i>
+                <span>GenişKapı</span>
+            </div>
+            <p class="logo-slogan" id="logoSlogan">Yeni Nesil Arama Deneyimi</p>
+        </div>
+        
+        <div class="search-container" role="search" aria-label="Sitede ara">
+            <div class="search-box" id="searchBox">
+                <input type="search" inputmode="search" enterkeyhint="search" class="search-input" id="searchInput" placeholder="GenişKapı V2'de arama yapın..." autocomplete="on" aria-label="Arama" autofocus>
+                <button class="search-button" id="voiceSearch" aria-label="Sesli arama">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="search-button" id="searchButton" aria-label="Ara">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="searchAction" aria-label="GenişKapı'da ara">
+                    <i class="fas fa-search"></i>
+                    <span id="btnSearchLabel">GenişKapı'da Ara</span>
+                </button>
+                <button class="btn btn-secondary" id="luckyButton" aria-label="Kendimi şanslı hissediyorum">
+                    <i class="fas fa-feather-alt"></i>
+                    <span id="btnLuckyLabel">Kendimi Şanslı Hissediyorum</span>
+                </button>
+            </div>
+            
+            <div class="quick-actions">
+                <div class="quick-action" id="quickNews">
+                    <div class="action-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <span class="action-label" id="quickNewsLabel">Haberler</span>
+                </div>
+                <div class="quick-action" id="quickImages">
+                    <div class="action-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <span class="action-label" id="quickImagesLabel">Görseller</span>
+                </div>
+                <div class="quick-action" id="quickVideos">
+                    <div class="action-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <span class="action-label" id="quickVideosLabel">Videolar</span>
+                </div>
+                <div class="quick-action" id="quickMaps">
+                    <div class="action-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <span class="action-label" id="quickMapsLabel">Haritalar</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title" id="settingsTitle">Ayarlar</div>
+                <button class="modal-close" id="settingsClose" aria-label="Kapat"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3>Beta Özellikler</h3>
+                    <div class="setting-row"><span>Modern ızgara arka planı</span><label class="switch"><input type="checkbox" id="setGrid"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Quick Actions animasyonları</span><label class="switch"><input type="checkbox" id="setQAAnim"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Arka plan blobları</span><label class="switch"><input type="checkbox" id="setBlobs"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Hareket azalt (beta)</span><label class="switch"><input type="checkbox" id="setReduceMotion"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Compact görünüm</span><label class="switch"><input type="checkbox" id="setCompact"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Daha yuvarlak köşeler</span><label class="switch"><input type="checkbox" id="setRounded"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Glass efektleri kapat</span><label class="switch"><input type="checkbox" id="setGlassOff"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Minimal görünüm</span><label class="switch"><input type="checkbox" id="setMinimal"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Alt Ara butonunu göster</span><label class="switch"><input type="checkbox" id="setShowFab"><span class="slider"></span></label></div>
+                </div>
+                <div class="settings-card">
+                    <h3>Temalar</h3>
+                    <div class="setting-row"><span>Koyu Tema</span><label class="switch"><input type="checkbox" id="setDark"><span class="slider"></span></label></div>
+                    <div class="setting-row"><span>Tema Modu</span>
+                        <select id="setMode" aria-label="Tema modu">
+                            <option value="auto">Otomatik</option>
+                            <option value="light">Aydınlık</option>
+                            <option value="dark">Karanlık</option>
+                        </select>
+                    </div>
+                    <div class="setting-row"><span>Renk Teması</span>
+                        <select id="setTheme" aria-label="Renk teması">
+                            <option value="emerald">Zümrüt</option>
+                            <option value="blue">Mavi</option>
+                            <option value="purple">Mor</option>
+                            <option value="rose">Gül</option>
+                            <option value="amber">Kehribar</option>
+                        </select>
+                    </div>
+                    <div class="setting-row"><span>Vurgu Rengi</span><input type="color" id="setAccent" value="#10B981" aria-label="Vurgu rengi"></div>
+                    <div class="setting-row"><span>Yüksek Kontrast</span><label class="switch"><input type="checkbox" id="setContrast"><span class="slider"></span></label></div>
+                    <div class="setting-row"><button class="btn btn-secondary" id="applyDarkContrast">Koyu + Kontrast Uygula</button></div>
+                </div>
+                <div class="settings-card">
+                    <h3>Diller</h3>
+                    <div class="setting-row"><span>Arayüz Dili</span>
+                        <select id="setLang" aria-label="Dil seçimi">
+                            <option value="tr">Türkçe</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings-card">
+                    <h3>Site Hakkında</h3>
+                    <p style="opacity:.85; font-size:.9rem;">GenişKapı V2 – modern arayüz, hızlı arama deneyimi ve PWA hazırlıklarıyla geliştirilmiştir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Palette -->
+    <div class="cmdk" id="cmdk" role="dialog" aria-modal="true" aria-label="Komut Paleti">
+        <div class="cmdk-card">
+            <input id="cmdkSearch" class="cmdk-search" placeholder="Komut arayın (ör. Tema: Karanlık)" aria-label="Komut ara" />
+            <div class="cmdk-list" id="cmdkList"></div>
+            <div class="cmdk-hint"><span>Ok tuşları + Enter</span><span>Esc ile kapat</span></div>
+        </div>
+    </div>
+
+    <section class="section" id="yenilikler">
+        <div class="section-header">
+            <h2 class="section-title">Yenilikler</h2>
+            <span class="badge"><i class="fas fa-bolt"></i> Güncel</span>
+        </div>
+        <div class="news-grid">
+            <article class="news-card" aria-label="Arayüz ve Tema Güncellemeleri">
+                <div class="news-dot" aria-hidden="true"></div>
+                <h3 class="news-title">Arayüz ve Tema Güncellemeleri</h3>
+                <p class="news-desc">Cam etkileri, koyu/açık tema uyumu ve daha temiz focus halkaları eklendi.</p>
+                <div class="news-meta"><i class="fas fa-clock"></i> 2025</div>
+            </article>
+            <article class="news-card" aria-label="Performans ve Erişilebilirlik">
+                <div class="news-dot" aria-hidden="true"></div>
+                <h3 class="news-title">Performans ve Erişilebilirlik</h3>
+                <p class="news-desc">`/` kısayoluyla aramaya odaklanma, skip link, geliştirilmiş ARIA ve daha akıcı mikro animasyonlar.</p>
+                <div class="news-meta"><i class="fas fa-universal-access"></i> Daha iyi erişilebilirlik</div>
+            </article>
+            <article class="news-card" aria-label="PWA Hazırlıkları">
+                <div class="news-dot" aria-hidden="true"></div>
+                <h3 class="news-title">PWA Hazırlıkları</h3>
+                <p class="news-desc">Manifest ve servis çalışanı eklendi; mobilde gelişmiş `theme-color` ve kurulum desteği.</p>
+                <div class="news-meta"><i class="fas fa-download"></i> Kurulabilir</div>
+            </article>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 GenişKapı V2 | Google arama teknolojisi kullanılmaktadır</p>
+        <div class="footer-links" role="contentinfo" aria-label="Alt bilgi bağlantıları">
+            <a href="#" class="footer-link" aria-label="Gizlilik Politikası">Gizlilik Politikası</a>
+            <a href="#" class="footer-link" aria-label="Kullanım Şartları">Kullanım Şartları</a>
+            <a href="#" class="footer-link" aria-label="Hakkımızda">Hakkımızda</a>
+            <a href="#" class="footer-link" aria-label="İletişim">İletişim</a>
+        </div>
+    </footer>
+    
+    <button id="backToTop" class="back-to-top" aria-label="Yukarı dön">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <div class="bottom-bar" aria-label="Alt gezinme">
+        <div class="bottom-actions">
+            <a href="#yenilikler" aria-label="Yenilikler"><i class="fas fa-bolt"></i></a>
+            <a href="loading.html" aria-label="Versiyonlar"><i class="fas fa-code-branch"></i></a>
+            <a href="#" id="openSettingsMobile" aria-label="Ayarlar"><i class="fas fa-gear"></i></a>
+        </div>
+    </div>
+    <button class="fab" id="fabSearch" aria-label="Ara"><i class="fas fa-search"></i></button>
+    
+    <script>
+        // Reveal on scroll for news cards
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('reveal');
+                    revealObserver.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.news-card').forEach(el => revealObserver.observe(el));
+            // Add skeleton state initially, remove after a short delay to simulate load
+            const news = document.querySelectorAll('.news-card');
+            news.forEach(el => el.classList.add('skeleton'));
+            setTimeout(() => news.forEach(el => el.classList.remove('skeleton')), 800);
+        });
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+        // Uygulama başlatma
+        document.addEventListener('DOMContentLoaded', function() {
+            // Yükleme ekranını göster
+            const loader = document.getElementById('loader');
+            loader.classList.add('active');
+            
+            // 1.5 saniye sonra yükleme ekranını gizle
+            setTimeout(() => {
+                loader.classList.remove('active');
+            }, 1500);
+            
+            // Tema kontrolü
+            checkTheme();
+            
+            // Event listener'ları ayarla
+            setupEventListeners();
+            
+            // Arka plan animasyonunu başlat
+            initBackgroundAnimation();
+            initPolishInteractions();
+            
+            // Öneriler kaldırıldı
+        });
+
+        // Install prompt hook
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window._deferredPrompt = e;
+        });
+        
+        // Tema kontrol fonksiyonu
+        function checkTheme() {
+            const savedTheme = localStorage.getItem('geniskapi-theme');
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+
+        function initPolishInteractions() {
+            // Hide-on-scroll header
+            let lastY = window.scrollY;
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                const y = window.scrollY;
+                if (!header) return;
+                if (y > lastY && y > 24) header.classList.add('header-hidden');
+                else header.classList.remove('header-hidden');
+                lastY = y;
+            }, { passive: true });
+
+            // Back to top
+            const toTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (!toTop) return;
+                toTop.classList.toggle('show', window.scrollY > 300);
+            }, { passive: true });
+            toTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // Bottom bar actions
+            document.getElementById('openSettingsMobile')?.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('settingsModal')?.classList.add('open'); });
+            document.getElementById('fabSearch')?.addEventListener('click', () => {
+                const input = document.getElementById('searchInput');
+                input?.focus();
+                // On mobile, also open keyboard and scroll to input
+                input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+
+            // Ripple on buttons
+            const rippleTargets = document.querySelectorAll('.btn, .search-button');
+            rippleTargets.forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const target = e.currentTarget;
+                    if (!(target instanceof HTMLElement)) return;
+                    const rect = target.getBoundingClientRect();
+                    const span = document.createElement('span');
+                    span.className = 'ripple';
+                    const size = Math.max(rect.width, rect.height) * 2;
+                    span.style.width = span.style.height = `${size}px`;
+                    span.style.left = `${(e.clientX || 0) - rect.left - size / 2}px`;
+                    span.style.top = `${(e.clientY || 0) - rect.top - size / 2}px`;
+                    target.style.position = getComputedStyle(target).position === 'static' ? 'relative' : getComputedStyle(target).position;
+                    target.appendChild(span);
+                    setTimeout(() => span.remove(), 500);
+                });
+            });
+
+            // Ctrl/Cmd+K: open command palette; Esc: blur/close
+            window.addEventListener('keydown', (e) => {
+                const input = document.getElementById('searchInput');
+                if (e.key.toLowerCase() === 'k' && (e.ctrlKey || e.metaKey)) {
+                    e.preventDefault();
+                    openCommandPalette();
+                }
+                if (e.key === 'Escape' && (document.activeElement === input)) {
+                    (document.activeElement)?.blur();
+                }
+            });
+
+            // Parallax grid subtle move (desktop only)
+            const bg = document.querySelector('.bg-pattern');
+            const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            if (!isTouch) {
+                window.addEventListener('mousemove', (e) => {
+                    if (!bg || !(bg instanceof HTMLElement)) return;
+                    const x = (e.clientX / window.innerWidth - 0.5) * 6;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 6;
+                    bg.style.backgroundPosition = `${x}px ${y}px, ${-x}px ${-y}px`;
+                });
+            }
+
+            // Theme transition helper
+            document.body.classList.add('theme-anim');
+
+            // Command Palette logic
+            const cmdk = document.getElementById('cmdk');
+            const cmdkSearch = document.getElementById('cmdkSearch');
+            const cmdkList = document.getElementById('cmdkList');
+            const actions = [
+                { label: 'Tema: Karanlık', run: () => { if (!document.body.classList.contains('dark')) toggleTheme(); } },
+                { label: 'Tema: Aydınlık', run: () => { if (document.body.classList.contains('dark')) toggleTheme(); } },
+                { label: 'Ayarlar: Aç', run: () => { document.getElementById('settingsModal')?.classList.add('open'); } },
+                { label: 'Grid: Aç/Kapat', run: () => { const el = document.getElementById('setGrid'); if (el instanceof HTMLInputElement) { el.checked = !el.checked; el.dispatchEvent(new Event('change')); } } },
+                { label: 'Kontrast: Aç/Kapat', run: () => { const el = document.getElementById('setContrast'); if (el instanceof HTMLInputElement) { el.checked = !el.checked; el.dispatchEvent(new Event('change')); } } },
+                { label: 'Dil: Türkçe', run: () => { const el = document.getElementById('setLang'); if (el instanceof HTMLSelectElement) { el.value = 'tr'; el.dispatchEvent(new Event('change')); } } },
+                { label: 'Language: English', run: () => { const el = document.getElementById('setLang'); if (el instanceof HTMLSelectElement) { el.value = 'en'; el.dispatchEvent(new Event('change')); } } },
+                { label: 'Arama: Odaklan', run: () => document.getElementById('searchInput')?.focus() },
+                { label: 'Uygulamayı yükle', run: () => window._deferredPrompt?.prompt?.() }
+            ];
+            function renderActions(filter = '') {
+                const q = filter.trim().toLowerCase();
+                cmdkList.innerHTML = '';
+                actions.filter(a => a.label.toLowerCase().includes(q)).forEach((a, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'cmdk-item';
+                    item.textContent = a.label;
+                    item.tabIndex = 0;
+                    item.addEventListener('click', () => { a.run(); closeCommandPalette(); });
+                    cmdkList.appendChild(item);
+                    if (i === 0) item.classList.add('active');
+                });
+            }
+            window.openCommandPalette = function() { cmdk.classList.add('open'); renderActions(); cmdkSearch.value=''; cmdkSearch.focus(); };
+            window.closeCommandPalette = function() { cmdk.classList.remove('open'); };
+            cmdk?.addEventListener('click', (e) => { if (e.target === cmdk) window.closeCommandPalette(); });
+            cmdkSearch?.addEventListener('input', () => renderActions(cmdkSearch.value));
+            cmdkSearch?.addEventListener('keydown', (e) => {
+                const items = Array.from(cmdkList.querySelectorAll('.cmdk-item'));
+                const idx = items.findIndex(x => x.classList.contains('active'));
+                if (e.key === 'ArrowDown') { e.preventDefault(); const ni = Math.min(idx + 1, items.length - 1); items[idx]?.classList.remove('active'); items[ni]?.classList.add('active'); items[ni]?.scrollIntoView({ block: 'nearest' }); }
+                if (e.key === 'ArrowUp') { e.preventDefault(); const pi = Math.max(idx - 1, 0); items[idx]?.classList.remove('active'); items[pi]?.classList.add('active'); items[pi]?.scrollIntoView({ block: 'nearest' }); }
+                if (e.key === 'Enter') { e.preventDefault(); const active = items.find(x => x.classList.contains('active')); active?.dispatchEvent(new Event('click')); }
+                if (e.key === 'Escape') { e.preventDefault(); window.closeCommandPalette(); }
+            });
+        }
+        
+        // Event listener'ları ayarlama
+        function setupEventListeners() {
+            // Tema değiştirme butonu
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            // Settings open/close
+            const settingsOpen = document.getElementById('settingsOpen');
+            const settingsClose = document.getElementById('settingsClose');
+            const settingsModal = document.getElementById('settingsModal');
+            settingsOpen?.addEventListener('click', (e) => { e.preventDefault(); settingsModal?.classList.add('open'); });
+            settingsClose?.addEventListener('click', () => settingsModal?.classList.remove('open'));
+            settingsModal?.addEventListener('click', (e) => { if (e.target === settingsModal) settingsModal.classList.remove('open'); });
+            window.addEventListener('keydown', (e) => { if (e.key === 'Escape') settingsModal?.classList.remove('open'); });
+            
+            // Arama butonları
+            document.getElementById('searchButton').addEventListener('click', performSearch);
+            document.getElementById('searchAction').addEventListener('click', performSearch);
+            document.getElementById('luckyButton').addEventListener('click', luckySearch);
+            
+            // Enter tuşu ile arama
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // Arama kutusu odaklanma (öneriler kaldırıldı)
+            document.getElementById('searchInput').addEventListener('focus', function() {
+                document.getElementById('searchBox').classList.add('focused');
+            });
+            document.getElementById('searchInput').addEventListener('blur', function() {
+                setTimeout(() => {
+                    document.getElementById('searchBox').classList.remove('focused');
+                }, 200);
+            });
+            
+            // Sesli arama butonu
+            document.getElementById('voiceSearch').addEventListener('click', voiceSearch);
+            
+            // Hızlı aksiyon butonları
+            document.getElementById('quickNews').addEventListener('click', () => {
+                window.open('https://news.google.com', '_blank');
+            });
+            
+            document.getElementById('quickImages').addEventListener('click', () => {
+                const query = document.getElementById('searchInput').value.trim();
+                if (query) {
+                    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}&tbm=isch`, '_blank');
+                } else {
+                    window.open('https://www.google.com/imghp', '_blank');
+                }
+            });
+            
+            document.getElementById('quickVideos').addEventListener('click', () => {
+                const query = document.getElementById('searchInput').value.trim();
+                if (query) {
+                    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}&tbm=vid`, '_blank');
+                } else {
+                    window.open('https://www.youtube.com', '_blank');
+                }
+            });
+            
+            document.getElementById('quickMaps').addEventListener('click', () => {
+                window.open('https://www.google.com/maps', '_blank');
+            });
+            
+            // Slash shortcut to focus search
+            window.addEventListener('keydown', (e) => {
+                if (e.key === '/' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.defaultPrevented)) {
+                    e.preventDefault();
+                    const input = document.getElementById('searchInput');
+                    if (input) input.focus();
+                }
+            });
+
+            // Geri bildirim butonu
+            document.getElementById('feedbackButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert("Geri bildiriminiz için teşekkür ederiz! V2 sürümüyle ilgili görüşlerinizi bekliyoruz.");
+            });
+            
+            // Settings controls
+            const grid = document.getElementById('setGrid');
+            const qa = document.getElementById('setQAAnim');
+            const dark = document.getElementById('setDark');
+            const lang = document.getElementById('setLang');
+            const blobs = document.getElementById('setBlobs');
+            const reduceMotion = document.getElementById('setReduceMotion');
+            const compact = document.getElementById('setCompact');
+            const rounded = document.getElementById('setRounded');
+            const glassOff = document.getElementById('setGlassOff');
+            const themeSel = document.getElementById('setTheme');
+            const modeSel = document.getElementById('setMode');
+            const contrast = document.getElementById('setContrast');
+            const applyDarkContrast = document.getElementById('applyDarkContrast');
+            const accent = document.getElementById('setAccent');
+            const showFab = document.getElementById('setShowFab');
+
+            // Load persisted
+            const pref = JSON.parse(localStorage.getItem('geniskapi-settings') || '{}');
+            if (pref.grid) document.body.classList.add('grid-on');
+            if (pref.qa) document.querySelectorAll('.quick-action').forEach(el => el.classList.add('qa-animated'));
+            // Ensure theme reflects saved pref OR system
+            if (pref.dark != null) {
+                if (pref.dark) {
+                    if (!document.body.classList.contains('dark')) toggleTheme();
+                } else {
+                    if (document.body.classList.contains('dark')) toggleTheme();
+                }
+            }
+            if (pref.lang) document.documentElement.lang = pref.lang;
+            if (pref.blobs === false) document.body.classList.add('blobs-off');
+            if (pref.reduceMotion) document.body.classList.add('reduce-motion');
+            if (pref.compact) document.body.classList.add('compact');
+            if (pref.rounded) document.body.classList.add('rounded-xl');
+            if (pref.glassOff) document.body.classList.add('glass-off');
+            if (pref.theme) setThemeClass(pref.theme);
+            if (pref.contrast) document.body.classList.add('contrast-on');
+            if (pref.minimal) document.body.classList.add('minimal-on');
+
+            if (grid instanceof HTMLInputElement) grid.checked = !!pref.grid;
+            if (qa instanceof HTMLInputElement) qa.checked = !!pref.qa;
+            if (dark instanceof HTMLInputElement) dark.checked = document.body.classList.contains('dark');
+            if (lang instanceof HTMLSelectElement && pref.lang) lang.value = pref.lang;
+            if (blobs instanceof HTMLInputElement) blobs.checked = pref.blobs !== false; // default true
+            if (reduceMotion instanceof HTMLInputElement) reduceMotion.checked = !!pref.reduceMotion;
+            if (compact instanceof HTMLInputElement) compact.checked = !!pref.compact;
+            if (rounded instanceof HTMLInputElement) rounded.checked = !!pref.rounded;
+            if (glassOff instanceof HTMLInputElement) glassOff.checked = !!pref.glassOff;
+            if (themeSel instanceof HTMLSelectElement && pref.theme) themeSel.value = pref.theme;
+            if (contrast instanceof HTMLInputElement) contrast.checked = !!pref.contrast;
+            if (modeSel instanceof HTMLSelectElement && pref.mode) modeSel.value = pref.mode;
+            const minimal = document.getElementById('setMinimal');
+            if (minimal instanceof HTMLInputElement) minimal.checked = !!pref.minimal;
+            if (accent instanceof HTMLInputElement && pref.accent) accent.value = pref.accent;
+            if (showFab instanceof HTMLInputElement) showFab.checked = pref.showFab !== false; // default true
+            // Apply FAB visibility on load
+            const fab = document.getElementById('fabSearch');
+            if (fab) fab.classList.toggle('hidden', showFab instanceof HTMLInputElement ? !showFab.checked : false);
+
+            function save() {
+                localStorage.setItem('geniskapi-settings', JSON.stringify({
+                    grid: grid instanceof HTMLInputElement ? grid.checked : false,
+                    qa: qa instanceof HTMLInputElement ? qa.checked : false,
+                    dark: dark instanceof HTMLInputElement ? dark.checked : document.body.classList.contains('dark'),
+                    lang: lang instanceof HTMLSelectElement ? lang.value : 'tr',
+                    blobs: blobs instanceof HTMLInputElement ? blobs.checked : true,
+                    reduceMotion: reduceMotion instanceof HTMLInputElement ? reduceMotion.checked : false,
+                    compact: compact instanceof HTMLInputElement ? compact.checked : false,
+                    rounded: rounded instanceof HTMLInputElement ? rounded.checked : false,
+                    glassOff: glassOff instanceof HTMLInputElement ? glassOff.checked : false,
+                    theme: themeSel instanceof HTMLSelectElement ? themeSel.value : 'emerald',
+                    contrast: contrast instanceof HTMLInputElement ? contrast.checked : false,
+                    mode: modeSel instanceof HTMLSelectElement ? modeSel.value : 'auto',
+                    minimal: minimal instanceof HTMLInputElement ? minimal.checked : false,
+                    accent: accent instanceof HTMLInputElement ? accent.value : undefined
+                    ,showFab: showFab instanceof HTMLInputElement ? showFab.checked : true
+                }));
+            }
+
+            grid?.addEventListener('change', () => { document.body.classList.toggle('grid-on', grid.checked); save(); });
+            qa?.addEventListener('change', () => { document.querySelectorAll('.quick-action').forEach(el => el.classList.toggle('qa-animated', qa.checked)); save(); });
+            dark?.addEventListener('change', () => { const wantDark = dark.checked; if (wantDark !== document.body.classList.contains('dark')) { toggleTheme(); } save(); });
+            lang?.addEventListener('change', () => { const v = lang.value; document.documentElement.lang = v; applyLabels(v); save(); });
+            blobs?.addEventListener('change', () => { document.body.classList.toggle('blobs-off', !blobs.checked); save(); });
+            reduceMotion?.addEventListener('change', () => { document.body.classList.toggle('reduce-motion', reduceMotion.checked); save(); });
+            compact?.addEventListener('change', () => { document.body.classList.toggle('compact', compact.checked); save(); });
+            rounded?.addEventListener('change', () => { document.body.classList.toggle('rounded-xl', rounded.checked); save(); });
+            glassOff?.addEventListener('change', () => { document.body.classList.toggle('glass-off', glassOff.checked); save(); });
+            themeSel?.addEventListener('change', () => { setThemeClass(themeSel.value); save(); });
+            contrast?.addEventListener('change', () => { document.body.classList.toggle('contrast-on', contrast.checked); save(); });
+            modeSel?.addEventListener('change', () => { applyMode(modeSel.value); save(); });
+            minimal?.addEventListener('change', () => { document.body.classList.toggle('minimal-on', minimal.checked); save(); });
+            applyDarkContrast?.addEventListener('click', (e) => { e.preventDefault(); if (!document.body.classList.contains('dark')) toggleTheme(); document.body.classList.add('contrast-on'); if (contrast instanceof HTMLInputElement) contrast.checked = true; save(); });
+            accent?.addEventListener('input', () => { applyAccent(accent.value); save(); });
+            showFab?.addEventListener('change', () => { document.getElementById('fabSearch')?.classList.toggle('hidden', !showFab.checked); save(); });
+
+            function setThemeClass(name) {
+                const classes = ['theme-emerald','theme-blue','theme-purple','theme-rose','theme-amber'];
+                document.body.classList.remove(...classes);
+                document.body.classList.add(`theme-${name}`);
+            }
+
+            function applyMode(mode) {
+                if (mode === 'auto') {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (prefersDark !== document.body.classList.contains('dark')) toggleTheme();
+                } else if (mode === 'dark') {
+                    if (!document.body.classList.contains('dark')) toggleTheme();
+                } else if (mode === 'light') {
+                    if (document.body.classList.contains('dark')) toggleTheme();
+                }
+            }
+
+            function applyAccent(hex) {
+                document.body.style.setProperty('--accent', hex);
+                document.body.classList.toggle('accent-on', !!hex);
+            }
+
+            // i18n minimal labels (TR/EN)
+            function applyLabels(locale) {
+                const dict = locale === 'en' ? {
+                    versions: 'Versions', feedback: 'Feedback', whatsnew: "What's New", settings: 'Settings',
+                    btnSearch: 'Search on GenişKapı', btnLucky: "I'm Feeling Lucky",
+                    quickNews: 'News', quickImages: 'Images', quickVideos: 'Videos', quickMaps: 'Maps', slogan: 'Next‑Gen Search Experience'
+                } : {
+                    versions: 'Versiyonlar', feedback: 'Geri Bildirim', whatsnew: 'Yenilikler', settings: 'Ayarlar',
+                    btnSearch: "GenişKapı'da Ara", btnLucky: 'Kendimi Şanslı Hissediyorum',
+                    quickNews: 'Haberler', quickImages: 'Görseller', quickVideos: 'Videolar', quickMaps: 'Haritalar', slogan: 'Yeni Nesil Arama Deneyimi'
+                };
+                const id = (x) => document.getElementById(x);
+                id('navVersionsLabel')?.replaceChildren(document.createTextNode(dict.versions));
+                id('navFeedbackLabel')?.replaceChildren(document.createTextNode(dict.feedback));
+                id('navWhatsNewLabel')?.replaceChildren(document.createTextNode(dict.whatsnew));
+                id('navSettingsLabel')?.replaceChildren(document.createTextNode(dict.settings));
+                id('btnSearchLabel')?.replaceChildren(document.createTextNode(dict.btnSearch));
+                id('btnLuckyLabel')?.replaceChildren(document.createTextNode(dict.btnLucky));
+                id('quickNewsLabel')?.replaceChildren(document.createTextNode(dict.quickNews));
+                id('quickImagesLabel')?.replaceChildren(document.createTextNode(dict.quickImages));
+                id('quickVideosLabel')?.replaceChildren(document.createTextNode(dict.quickVideos));
+                id('quickMapsLabel')?.replaceChildren(document.createTextNode(dict.quickMaps));
+                id('logoSlogan')?.replaceChildren(document.createTextNode(dict.slogan));
+            }
+            applyLabels(document.documentElement.lang || 'tr');
+        }
+        
+        // Tema değiştirme fonksiyonu
+        function toggleTheme() {
+            const transition = document.startViewTransition ? document.startViewTransition.bind(document) : (fn) => { fn(); return { finished: Promise.resolve() }; };
+            let isDark;
+            transition(() => {
+                isDark = document.body.classList.toggle('dark');
+            });
+            localStorage.setItem('geniskapi-theme', isDark ? 'dark' : 'light');
+            
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (isDark) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (metaTheme) {
+                metaTheme.setAttribute('content', isDark ? '#0b0b0d' : '#10B981');
+            }
+        }
+        
+        // Arama fonksiyonu
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+            }
+        }
+        
+        // Şanslı arama fonksiyonu
+        function luckySearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}&btnI=I'm+Feeling+Lucky`, '_blank');
+            }
+        }
+        
+        // Sesli arama fonksiyonu (demo)
+        function voiceSearch() {
+            const voiceButton = document.getElementById('voiceSearch');
+            voiceButton.classList.add('voice-active');
+            
+            setTimeout(() => {
+                voiceButton.classList.remove('voice-active');
+                alert("Sesli arama özelliği demo sürümde çalışmamaktadır. Gerçek uygulamada bu özellik için Web Speech API kullanılabilir.");
+            }, 3000);
+        }
+        
+        // Arka plan animasyonu
+        function initBackgroundAnimation() {
+            const circles = document.querySelectorAll('.bg-circle');
+            circles.forEach(circle => {
+                const randomX = Math.random() * 20 - 10;
+                const randomY = Math.random() * 20 - 10;
+                
+                circle.style.transform = `translate(${randomX}px, ${randomY}px)`;
+                
+                setInterval(() => {
+                    const newX = Math.random() * 20 - 10;
+                    const newY = Math.random() * 20 - 10;
+                    
+                    circle.style.transition = 'transform 15s linear';
+                    circle.style.transform = `translate(${newX}px, ${newY}px)`;
+                    
+                    setTimeout(() => {
+                        circle.style.transition = 'none';
+                    }, 15000);
+                }, 15000);
+            });
+        }
+        
+        // (öneriler kaldırıldı)
+    </script>
+</body>
+</html>

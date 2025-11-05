@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yükleme Ekranı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { color-scheme: dark; }
+        
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:
+                radial-gradient(1200px 800px at -10% -10%, rgba(0, 200, 255, 0.08), transparent 60%),
+                radial-gradient(1000px 600px at 110% 110%, rgba(255, 0, 110, 0.08), transparent 60%),
+                #000000;
+            font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .tilt-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .label {
+            font-size: 30px;
+            font-weight: 500;
+            color: #ffffff;
+            opacity: 0.85;
+            margin-bottom: 16px;
+            text-align: center;
+            transition: opacity 0.25s ease-out;
+        }
+
+        .glow-text {
+            position: relative;
+            font-size: 56px;
+            font-weight: 500;
+            letter-spacing: -0.015em;
+            color: #ffffff;
+            filter: brightness(1.1);
+            z-index: 1;
+        }
+
+        .glow-text::before {
+            content: attr(data-text);
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #00cfff, #a600ff, #ff006e, #ff8800);
+            filter: blur(24px) brightness(0.85);
+            opacity: 0.75;
+            border-radius: 100px;
+            z-index: -1;
+            pointer-events: none;
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease-in-out infinite;
+        }
+
+        .glow-text::after {
+            content: attr(data-text);
+            position: absolute;
+            inset: 0;
+            font-size: inherit;
+            font-weight: inherit;
+            font-family: inherit;
+            letter-spacing: inherit;
+            background: linear-gradient(90deg, #00cfff, #a600ff, #ff006e, #ff8800);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            mix-blend-mode: screen;
+            filter: blur(3px) brightness(1.3);
+            z-index: 0;
+            pointer-events: none;
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Yükleme ekranı stilleri */
+        .loading-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            z-index: 10;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .progress-container {
+            width: 300px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00cfff, #a600ff, #ff006e, #ff8800);
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease-in-out infinite;
+            transition: width 0.3s ease-out;
+        }
+
+        .percentage {
+            color: white;
+            margin-top: 15px;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .door-logo {
+            font-size: 60px;
+            margin-bottom: 30px;
+            color: #2ecc71;
+            text-shadow: 0 0 18px rgba(46, 204, 113, 0.65);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .redirect-message {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Focus visibility for accessibility */
+        :where(button, a, [role="button"]) {
+            outline: none;
+        }
+        :where(button, a, [role="button"]):focus-visible {
+            outline: 2px solid rgba(0, 207, 255, 0.6);
+            outline-offset: 3px;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container" id="loadingScreen">
+        <i class="fas fa-door-open door-logo"></i>
+        
+        <div class="hero">
+            <div class="label">GenişKapı</div>
+            <div class="glow-text" data-text="Yeni Nesil Arama Deneyimi.">
+                Yeni Nesil Arama Deneyimi.
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="percentage" id="percentage">0%</div>
+        <div class="redirect-message" id="redirectMessage">Yönlendiriliyor...</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progressBar');
+            const percentage = document.getElementById('percentage');
+            const loadingScreen = document.getElementById('loadingScreen');
+            const redirectMessage = document.getElementById('redirectMessage');
+            
+            let progress = 0;
+            const interval = 30; // Yükleme hızı (milisaniye)
+            const increment = 1; // Her seferinde artış miktarı
+            
+            const progressInterval = setInterval(() => {
+                progress += increment;
+                
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    
+                    // Yönlendirme mesajını göster
+                    redirectMessage.style.opacity = '1';
+                    
+                    // 1 saniye bekle ve yönlendir
+                    setTimeout(() => {
+                        window.location.href = 'download.html';
+                    }, 1000);
+                }
+                
+                progressBar.style.width = progress + '%';
+                percentage.textContent = progress + '%';
+            }, interval);
+        });
+    </script>
+</body>
+</html>
