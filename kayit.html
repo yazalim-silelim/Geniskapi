@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenişKapı - Premium Kayıt</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6C63FF;
+            --primary-dark: #5752D4;
+            --primary-light: #8B85FF;
+            --secondary-color: #FF6584;
+            --accent-color: #36D1DC;
+            --light-color: #F8FAFC;
+            --dark-color: #1E293B;
+            --gray-color: #64748B;
+            --success-color: #10B981;
+            --error-color: #EF4444;
+            --warning-color: #F59E0B;
+            --border-radius: 16px;
+            --border-radius-lg: 24px;
+            --box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            --box-shadow-lg: 0 25px 50px rgba(0, 0, 0, 0.12);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff10" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            left: 85%;
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            top: 80%;
+            left: 15%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            z-index: 10;
+        }
+
+        .register-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--box-shadow-lg);
+            padding: 50px 40px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient);
+        }
+
+        .register-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .logo-icon i {
+            font-size: 36px;
+            color: white;
+        }
+
+        .logo h1 {
+            color: var(--dark-color);
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            color: var(--gray-color);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .register-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        label i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid #E2E8F0;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            background: white;
+            font-weight: 500;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-color);
+            transition: var(--transition);
+        }
+
+        input:focus + .input-icon {
+            color: var(--primary-color);
+        }
+
+        .validation-message {
+            font-size: 13px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: var(--transition);
+        }
+
+        .validation-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .validation-message.valid {
+            color: var(--success-color);
+        }
+
+        .validation-message.invalid {
+            color: var(--error-color);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(108, 99, 255, 0.05);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .checkbox-group input {
+            width: auto;
+            margin-top: 4px;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: var(--dark-color);
+            font-weight: 500;
+        }
+
+        .checkbox-group a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .register-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 18px 20px;
+            font-size: 17px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .register-btn:hover::before {
+            left: 100%;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
+        }
+
+        .register-btn:active {
+            transform: translateY(0);
+        }
+
+        .notification {
+            background: rgba(54, 209, 220, 0.1);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 25px;
+            text-align: center;
+            border: 1px solid rgba(54, 209, 220, 0.2);
+        }
+
+        .notification p {
+            color: var(--dark-color);
+            font-size: 14px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .notification i {
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 16px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 35px;
+            text-align: center;
+            color: var(--gray-color);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .footer a:hover::after {
+            width: 100%;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #E2E8F0;
+            border-radius: 2px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 480px) {
+            .register-card {
+                padding: 40px 25px;
+            }
+            
+            .logo h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="container">
+        <div class="register-card">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-door-open"></i>
+                </div>
+                <h1>GenişKapı</h1>
+                <p>Premium Arama Deneyimine Hoş Geldiniz</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress" id="formProgress"></div>
+            </div>
+
+            <div class="register-form">
+                <div class="form-group">
+                    <label for="fullname"><i class="fas fa-user"></i> Ad Soyad</label>
+                    <div class="input-with-icon">
+                        <input type="text" id="fullname" placeholder="Tam adınızı yazın">
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                    <div class="validation-message" id="nameValidation">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Lütfen geçerli bir ad ve soyad girin (en az 2 kelime)</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> E-posta Adresi</label>
+                    <div class="input-with-icon">
+                        <input type="email" id="email" placeholder="ornek@email.com">
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                    <div class="validation-message" id="emailValidation">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Lütfen geçerli bir e-posta adresi girin</span>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" checked>
+                    <label for="terms">GenişKapı premium hizmetlerinden, yeniliklerden ve özel tekliflerden e-posta yoluyla haberdar olmak istiyorum. <a href="#">Gizlilik Politikası</a></label>
+                </div>
+
+                <button class="register-btn" id="registerBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    Kayıt Ol ve Premium Erişim Kazan
+                </button>
+
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i> Kayıt başarılı! E-posta gönderiliyor...
+                </div>
+
+                <div class="notification">
+                    <p><i class="fas fa-star"></i> Kayıt olduktan sonra <strong>geniskapisirketi@gmail.com</strong> adresine bilgileriniz iletilecek ve premium bildirimlere erişiminiz başlayacak.</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Zaten premium üye misiniz? <a href="#">Giriş Yapın</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const registerBtn = document.getElementById('registerBtn');
+            const successMessage = document.getElementById('successMessage');
+            const nameValidation = document.getElementById('nameValidation');
+            const emailValidation = document.getElementById('emailValidation');
+            const formProgress = document.getElementById('formProgress');
+            
+            // İsim validasyonu
+            fullnameInput.addEventListener('input', function() {
+                const name = fullnameInput.value.trim();
+                const nameParts = name.split(' ').filter(part => part.length > 0);
+                
+                if (nameParts.length >= 2 && name.length >= 5) {
+                    nameValidation.classList.add('valid');
+                    nameValidation.classList.remove('invalid');
+                    nameValidation.innerHTML = '<i class="fas fa-check-circle"></i> <span>Ad soyad geçerli</span>';
+                    nameValidation.classList.add('show');
+                    updateProgress();
+                } else {
+                    nameValidation.classList.add('invalid');
+                    nameValidation.classList.remove('valid');
+                    nameValidation.innerHTML = '<i class="fas fa-exclamation-circle"></i> <span>Lütfen en az iki kelimeden oluşan geçerli bir ad soyad girin</span>';
+                    nameValidation.classList.add('show');
+                    updateProgress();
+                }
+            });
+            
+            // E-posta validasyonu
+            emailInput.addEventListener('input', function() {
+                const email = emailInput.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (emailRegex.test(email)) {
+                    emailValidation.classList.add('valid');
+                    emailValidation.classList.remove('invalid');
+                    emailValidation.innerHTML = '<i class="fas fa-check-circle"></i> <span>E-posta geçerli</span>';
+                    emailValidation.classList.add('show');
+                    updateProgress();
+                } else {
+                    emailValidation.classList.add('invalid');
+                    emailValidation.classList.remove('valid');
+                    emailValidation.innerHTML = '<i class="fas fa-exclamation-circle"></i> <span>Lütfen geçerli bir e-posta adresi girin</span>';
+                    emailValidation.classList.add('show');
+                    updateProgress();
+                }
+            });
+            
+            // Progress bar güncelleme
+            function updateProgress() {
+                let progress = 0;
+                
+                // İsim kontrolü
+                const name = fullnameInput.value.trim();
+                const nameParts = name.split(' ').filter(part => part.length > 0);
+                if (nameParts.length >= 2 && name.length >= 5) {
+                    progress += 50;
+                }
+                
+                // E-posta kontrolü
+                const email = emailInput.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailRegex.test(email)) {
+                    progress += 50;
+                }
+                
+                formProgress.style.width = progress + '%';
+            }
+            
+            // Kayıt butonu işlevi
+            registerBtn.addEventListener('click', function() {
+                const fullname = fullnameInput.value.trim();
+                const email = emailInput.value.trim();
+                const terms = document.getElementById('terms').checked;
+                
+                // İsim validasyonu
+                const nameParts = fullname.split(' ').filter(part => part.length > 0);
+                if (nameParts.length < 2 || fullname.length < 5) {
+                    nameValidation.classList.add('invalid');
+                    nameValidation.classList.remove('valid');
+                    nameValidation.innerHTML = '<i class="fas fa-exclamation-circle"></i> <span>Lütfen en az iki kelimeden oluşan geçerli bir ad soyad girin</span>';
+                    nameValidation.classList.add('show');
+                    fullnameInput.focus();
+                    return;
+                }
+                
+                // E-posta validasyonu
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    emailValidation.classList.add('invalid');
+                    emailValidation.classList.remove('valid');
+                    emailValidation.innerHTML = '<i class="fas fa-exclamation-circle"></i> <span>Lütfen geçerli bir e-posta adresi girin</span>';
+                    emailValidation.classList.add('show');
+                    emailInput.focus();
+                    return;
+                }
+                
+                if (terms) {
+                    // Başarılı mesajını göster
+                    successMessage.style.display = 'block';
+                    
+                    // E-posta gönderme işlemi
+                    const recipient = 'geniskapisirketi@gmail.com';
+                    const subject = 'Yeni Premium GenişKapı Üyesi - ' + fullname;
+                    const body = `Yeni bir premium kullanıcı GenişKapı'ya kayıt oldu:\n\nAd Soyad: ${fullname}\nE-posta: ${email}\n\nBu kullanıcı premium hizmetler, yenilikler ve özel tekliflerden haberdar olmak istiyor.`;
+                    
+                    // E-posta istemcisini aç
+                    setTimeout(function() {
+                        window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    }, 1500);
+                    
+                    // Formu temizle
+                    setTimeout(function() {
+                        fullnameInput.value = '';
+                        emailInput.value = '';
+                        successMessage.style.display = 'none';
+                        nameValidation.classList.remove('show');
+                        emailValidation.classList.remove('show');
+                        formProgress.style.width = '0%';
+                        
+                        // Kullanıcıyı bilgilendir
+                        alert('Premium kayıt işleminiz tamamlandı! E-posta istemciniz açıldı. Lütfen e-postayı gönderin. GenişKapı premium hizmetlerinden haberdar olacaksınız.');
+                    }, 3000);
+                    
+                } else {
+                    alert('Lütfen premium bildirimleri almayı kabul edin!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
